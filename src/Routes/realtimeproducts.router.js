@@ -18,6 +18,12 @@ function getProducts(products){
 }
 
 
+function saveProducts(prod){
+
+      fs.writeFileSync(products,JSON.stringify(prod))
+
+
+}
 router.get("/",(req,res)=>{
     const product = getProducts(products)
 
@@ -29,7 +35,35 @@ router.get("/",(req,res)=>{
 
 })
 
+router.post("/",(req,res)=>{//funcion que no vamos a usar por que era hacerlo sin router el de los sockets
+    const product = getProducts(products)
 
+    const title = req.body.title
+    const price = req.body.price
+    const description = req.body.description
+    const stock = req.body.stock
+    const category = req.body.category
+    const code = req.body.code
+
+    const newProducts = {
+
+        title:title,
+        price:price,
+        description:description,
+        stock:stock,
+        category:category,
+        code:code,
+        status:true,
+        id: product.length + 1
+     
+      }
+      product.push(newProducts)
+      saveProducts(product)
+
+
+
+
+})
 
 
 

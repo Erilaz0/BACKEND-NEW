@@ -23,7 +23,7 @@ app.engine("handlebars", handleBars.engine())
 app.set("views", __dirname + "\\vista");
 app.set("view engine","handlebars")
 
-app.use(express.static(path.join(__dirname,"/public")))
+
 
 
 app.use("/api/products/",products)
@@ -31,7 +31,8 @@ app.use("/api/carts/",cart)
 
 
 
-app.use("/",handler)
+app.use("/realtimeproducts",handler)
+
 
 
 
@@ -47,13 +48,24 @@ const serverExpress = app.listen(PORT,()=>{
 
 
 const serverSocket = new s(serverExpress)
+serverSocket.on("connection",sock=>{
 
-serverSocket.on("connection",socket=>{
+    console.log(sock.id)
+
+    serverSocket.on("newProduct",data =>{
+
+    
+    
+        console.log(data)
+        console.log("aaa")
+    
+    
+      })
 
 
 
-    let nombre = "alan"
-    console.log(`identificacion ${socket.id}`)
-    console.log("a")
 
 })
+
+
+
