@@ -2,11 +2,12 @@ const express = require("express")
 const app = express()
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
-const handler = require("./Routes/realtimeproducts.router")
+const handler = require("./Routes/views.router")
 const handleBars = require("express-handlebars")
 const path = require("path")
 const s = require("socket.io").Server
 const moongoose = require("mongoose")
+const productsModel = require("./models/products.modelo.js")
 
 
 
@@ -23,7 +24,7 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.engine("handlebars", handleBars.engine())
-app.set('views', path.join(__dirname + '/views'));
+app.set("views", __dirname + "\\views");
 app.set("view engine","handlebars")
 
 
@@ -36,7 +37,7 @@ app.use("/api/carts/",cart)
 
 
 
-app.use("/realtimeproducts",handler)
+app.use("/",handler)
 
 
 
@@ -53,19 +54,23 @@ const serverExpress = app.listen(PORT,()=>{
 
 
 const serverSocket = new s(serverExpress)
-serverSocket.on("connection",sock=>{
+serverSocket.on("connection", sock => {
 
     console.log(sock.id)
 
-    serverSocket.on("newProduct",data =>{
+    sock.on("newProduct", agregarProducto =>{
+    const newP = productsModel.create(agregarProducto)
+    })
 
-    
-    
-        console.log(data)
-        console.log("aaa")
-    
-    
-      })
+
+    sock.on("deleted", async (id) => {
+
+     const idDelete = id.id
+     console.log(idDelete)
+     const deletProduct = await productsModel.deleteOne({_id:idDelete})
+
+
+    })
 
 
 

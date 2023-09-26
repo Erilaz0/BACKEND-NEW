@@ -9,32 +9,11 @@
 <body>
     {{{body}}}
  {{#each products}}
-      <li>{{this.title}} - ${{this.price}}</li>
+      <li>titulo: {{title}} descripcion:{{description}} precio: ${{price}} stock: {{stock}} categoria: {{category}}</li>
       {{/each}}
                                               
-       <form id="form" method="post" action="/realtimeproducts">
-        <label for="title">title:</label>
-        <input type="text" id="title" name="title" required>
+   
 
-        <label for="price">price:</label>
-        <input type="text" id="price" name="price" required>
-
-        <label for="description">description:</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
-
-        <label for="category">category:</label>
-        <input type="text" id="category" name="category" required>
-       
-        <label for="code">codigo:</label>
-        <input type="text" id="code" name="codigo" required>
-       
-        <label for="stock">stock:</label>
-        <input type="text" id="stock" name="stock" required>
-
-        <button type="submit">Crear Producto</button>
-    </form>
-  <script src="/socket.io/socket.io.js"></script> 
- <script  src="home.js"></script>
 
 
 </body>

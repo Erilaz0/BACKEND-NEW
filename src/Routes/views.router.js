@@ -3,11 +3,33 @@ const router = Router()
 const path = require("path")
 const handleBars = require("express-handlebars")
 const fs = require("fs")
+const productsModel = require("../models/products.modelo")
 
 
 
 
 
+
+router.get("/", async (req,res)=>{
+    const products = await productsModel.find().lean()
+
+    res.status(200).render("home",{
+        layout: false,
+        products:products       
+
+        })
+
+})
+
+router.get("/realtimeproducts", async (req,res)=>{
+    const products = await productsModel.find().lean()
+
+    res.status(200).render("realtimeproducts")
+
+})
+
+
+/*
 
 const products = path.join(__dirname,"..","archivosJson","products.json")
 
@@ -24,16 +46,9 @@ function saveProducts(prod){
 
 
 }
-router.get("/",(req,res)=>{
-    const product = getProducts(products)
 
-    res.status(200).render("home",{
-        
-        products:product       
 
-        })
 
-})
 
 router.post("/",(req,res)=>{//funcion que no vamos a usar por que era hacerlo sin router el de los sockets
     const product = getProducts(products)
@@ -67,7 +82,7 @@ router.post("/",(req,res)=>{//funcion que no vamos a usar por que era hacerlo si
 
 
 
-
+*/
 
 
 
