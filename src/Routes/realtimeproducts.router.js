@@ -27,7 +27,7 @@ function saveProducts(prod){
 router.get("/",(req,res)=>{
     const product = getProducts(products)
 
-    res.status(200).render("main",{
+    res.status(200).render("home",{
         
         products:product       
 

@@ -38,7 +38,7 @@ socket.on("nombre",data=>{
 
       
    
-    data.emit("newProduct",newProduct)
+    data.emit("newProduct",pr)
   
   
   
@@ -59,5 +59,5 @@ form.addEventListener("submit",enviar)
 
 
  
-s.on("connection",sock=>{sock.emit("data","hola")})
+
 

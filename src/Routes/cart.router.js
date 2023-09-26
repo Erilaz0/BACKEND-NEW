@@ -2,11 +2,15 @@ const Router = require("express").Router
 const router = Router()
 const fs = require("fs")
 const path = require("path")
+const cartsModelo = require("../models/carts.modelo.js")
 
-const products = path.join(__dirname,"..","archivosJson","products.json")
-const carrito = path.join(__dirname,"..","archivosJson","carts.json")
 
-function getProducts(pr){
+
+
+//const products = path.join(__dirname,"..","archivosJson","products.json")
+//const carrito = path.join(__dirname,"..","archivosJson","carts.json")
+
+/* function getProducts(pr){
 
 
      return JSON.parse(fs.readFileSync(pr,"utf-8"))
@@ -30,29 +34,24 @@ function saveCart(cart){
 
 }
 
+*/
 
-
-router.get("/",(req,res)=>{
-    
-    res.send(getCarro(carrito))
+router.get("/", async (req,res)=>{
+    const products = await cartsModelo.find() 
+    res.status(200).send(products)
     
  
 })
 
 
-router.get("/:pid",(req,res)=>{
-      const product = getProducts(products)
+router.get("/:pid", async (req,res)=>{
+      const id = req.params.pid
       
-      const cart = getCarro(carrito)
-      const id = parseInt(req.params.pid)
-      
-      const findCartById = cart.find(cart => cart.id === id)
-      const cartId = findCartById.id
-      console.log(cartId)
-      if(findCartById){
+      const productById = await cartsModelo.find({_id:id})
+      if(productById){
         
         
-        res.status(200).send(findCartById.products)
+        res.status(200).send(productById)
 
 
       }
@@ -68,22 +67,19 @@ router.get("/:pid",(req,res)=>{
 })
 
 
-router.post("/",(req,res)=>{
+router.post("/", async (req,res)=>{
 
    const newCart = req.body
+   const insertCart = await cartsModelo.create(newCart)
 
+   if(insertCart){
 
-   if(!newCart.id || !newCart.products || !newCart){
-
-     res.status(400).send("Complete todos los campos de la solicitud")
+      res.status(200).send("Producto Añadido")
    }
     else{
        
-       const carro = getCarro(carrito)
-       newCart.id = carro.length + 1
-       carro.push(newCart)
-       saveCart(carro)
-       res.status(200).send("Producto añadido al carrito")
+      res.status(400).send("error al crear producto")
+       
     }
 
 
@@ -92,46 +88,31 @@ router.post("/",(req,res)=>{
 
 
 
-router.post("/:cid/products/:pid",(req,res)=>{
+router.put("/:cid/products/:pid", async (req,res)=>{
 
 
-    const cartId = parseInt(req.params.cid)
-    const productoId = parseInt(req.params.pid)
-    const { quantity } = req.body
-    // console.log("cartId: " + cartId + " productoId: " + productoId + " quantity: " + quantity)
+    const cartId = req.params.cid
+    const productoId = req.params.pid
+    const quantity = parseInt(req.body.quantity)
+    console.log(quantity)
 
     if(!quantity && productoId === 0 && cartId === 0){
 
        res.status(400).send({error:"invalid data"})
 
     }else{
-       const product = getProducts(products)
-       const cart = getCarro(carrito)
-       const findCart = cart.find(cart => cart.id === cartId)
-       console.log(findCart)
-       const cartProducts = findCart.products
        
-       const cartProduct = cartProducts.findIndex(item => item.product === productoId)
-       console.log(cartProduct + "b")
-       if(cartProduct === -1){
-         res.status(400).send({error:"producto no encontrado"})
+      const updateProductQuantity = await cartsModelo.updateOne({ _id : cartId , "products.product" : productoId},{$inc:{"products.$.quantity": quantity}})
+      if(updateProductQuantity){
 
-       }else{
-         const productQuantity = cartProducts[cartProduct].quantity
-         console.log(productQuantity)
-         const totalQuantity = quantity + productQuantity
-         console.log(totalQuantity)
-         console.log(cartProducts[cartProduct])
-         cartProducts[cartProduct] = {
-
-            product:productoId,
-            quantity: totalQuantity
+          res.status(200).send("Cantidad actualizada correctamente")
 
          }
-          saveCart(cart)
-          res.status(200).send("carrito modificado exitosamente")
-       }
-
+         
+         else{
+            res.status(400).send("error")
+         }
+     
     }
      
 

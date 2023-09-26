@@ -6,6 +6,8 @@ const handler = require("./Routes/realtimeproducts.router")
 const handleBars = require("express-handlebars")
 const path = require("path")
 const s = require("socket.io").Server
+const moongoose = require("mongoose")
+
 
 
 
@@ -14,14 +16,17 @@ PORT= 8080
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(express.static(__dirname + '/public'));
 
 
 // Parse application/json
 
 
 app.engine("handlebars", handleBars.engine())
-app.set("views", __dirname + "\\vista");
+app.set('views', path.join(__dirname + '/views'));
 app.set("view engine","handlebars")
+
+
 
 
 
@@ -68,4 +73,6 @@ serverSocket.on("connection",sock=>{
 })
 
 
-
+moongoose.connect("mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority")
+  .then(console.log("db conectada"))
+  .catch(error => console.log(error))

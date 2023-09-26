@@ -3,7 +3,11 @@ const router = Router()
 const { error } = require("console")
 const fs = require("fs")
 const path = require("path")
+const productsModelo = require("../models/products.modelo.js") 
+const productsModel = require("../models/products.modelo.js")
 
+/*
+ 
 
 const products = path.join(__dirname,"..","archivosJson","products.json")
 
@@ -22,20 +26,22 @@ function getProducts(path){
 
 
 }
+*/
 
-router.get("/",(req,res)=>{
+router.get("/",async (req,res)=>{
     const limit = parseInt(req.query.limit)
-    const Products = getProducts(products)
-    
+    //const Products = getProducts(products)
+    const products = await productsModelo.find({},"-_id title description code price stock category")
     if (!limit || limit === 0){
-        res.send(getProducts(products))
+        
+        res.status(200).send(products)
        
     }
     else{
 
        const limitContainer = []
        for(i = 0; i < limit; i++){
-        limitContainer.push(Products[i])
+        limitContainer.push(products[i])
            
 
 
@@ -46,13 +52,13 @@ router.get("/",(req,res)=>{
 })
 
 
-router.get("/:pid",(req,res)=>{
-      const id = parseInt(req.params.pid)
-      const Products = getProducts(products)
-      const idProduct = Products.find(product => product.id === id)
-      if(idProduct){ 
+router.get("/:pid", async (req,res)=>{
+      const id = req.params.pid
+      const products = await productsModelo.findOne({"_id":id}).select("-_id")
+      
+      if(products){ 
         
-        res.json(idProduct)
+        res.status(200).send(products)
       
       }else{
 
@@ -66,16 +72,16 @@ router.get("/:pid",(req,res)=>{
 )
 
 
-router.post("/",(req,res)=>{
+router.post("/", async (req,res)=>{
 
     const {title, description, code, price, status, stock, category} = req.body
     if (!title || !description || !code || !price || !status || !stock || !category) {
         return res.status(400).json({ error: 'Complete all required fields in the body' });
     }
    
-    console.log(title)
+    
 
-    const Products = getProducts(products)
+    
     const newProduct = {
         title,
         description,
@@ -84,71 +90,53 @@ router.post("/",(req,res)=>{
         status,
         stock,
         category,
-        id:Products.length + 1
+        
 
           }
 
-    Products.push(newProduct)
-    saveProducts(Products)
+    await productsModelo.create(newProduct)
     res.status(201).json({ newProduct });
 
 })
 
-router.put("/:pid",(req,res)=>{
+router.put("/:pid", async (req,res)=>{
 
-const id = parseInt(req.params.pid)
-const {title, description, code, price, status, stock, category} = req.body
- if(!title || !description || !code || !price || !status || !stock || !category){
-
-     res.status(400).JSON.parse({error:"completa todos los cammpos"})
-
- }
-
- else{
-
-  const Products = getProducts(products)
-  const productUpdateId = Products.findIndex(product => product.id === id)
-
-  Products[productUpdateId] = {
+const id = req.params.pid
+const productToUpdate = req.body
 
 
-    title,
-    description,
-    code, 
-    price, 
-    status,
-    stock, 
-    category,
-    id : productUpdateId
+const updateProduct = await productsModel.updateOne({_id:id},productToUpdate)
 
-      
-  } 
+  
+
+
    
-  saveProducts(Products)
-  res.status(200).send("Producto actualizado correctamente")
+if(updateProduct){  
+  res.status(200).json("Producto actualizado correctamente")
  }
-})
+else{
+
+    res.status(400).send("producto no actualizado")
+}
+}
+)
 
 
-router.delete("/:pid",(req,res)=>{
+router.delete("/:pid", async (req,res)=>{
 
     const id = req.params.pid
-    const Products = getProducts(products)
-    const indexProductToDelete = Products.findIndex(product => product.id === id)
-    if(!indexProductToDelete){
+    const productDeleted = await productsModel.deleteOne({_id:id})
+    if(productDeleted){
 
-      res.status(400).send("Producto id: " + id + "no existe")
-
+     
+      res.status(200).send("Producto id: " + id + "eliminado correctamente")
        
 
     }
     else{
 
-      const index = indexProductToDelete - 1
-
-      Products.splice(index,1)
-      saveProducts(Products)
-      res.status(200).send("Producto id: " + id + "eliminado correctamente")
+      res.status(400).send("Producto id: " + id + "no existe")
+     
 
 
     }
