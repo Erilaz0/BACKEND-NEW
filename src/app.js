@@ -1,13 +1,17 @@
 const express = require("express")
 const app = express()
+
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
 const handler = require("./Routes/views.router")
+const chat = require("./Routes/chat.router")
+
 const handleBars = require("express-handlebars")
 const path = require("path")
 const s = require("socket.io").Server
 const moongoose = require("mongoose")
 const productsModel = require("./models/products.modelo.js")
+const chatModel = require("./models/chat.modelo")
 
 
 
@@ -39,7 +43,7 @@ app.use("/api/carts/",cart)
 
 app.use("/",handler)
 
-
+app.use("/chat",chat)
 
 
 
@@ -59,6 +63,7 @@ serverSocket.on("connection", sock => {
     console.log(sock.id)
 
     sock.on("newProduct", agregarProducto =>{
+    console.log(agregarProducto)
     const newP = productsModel.create(agregarProducto)
     })
 
@@ -71,6 +76,18 @@ serverSocket.on("connection", sock => {
 
 
     })
+    
+    sock.on("ne", async (nuevoMensaje)=>{
+
+      const newchat = await chatModel.create(nuevoMensaje)
+      const newMessage = await chatModel.find().lean()
+      
+      
+      
+      sock.broadcast.emit("new",newMessage)
+      sock.emit("new",newMessage)
+
+    })
 
 
 
@@ -81,3 +98,14 @@ serverSocket.on("connection", sock => {
 moongoose.connect("mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority")
   .then(console.log("db conectada"))
   .catch(error => console.log(error))
+
+/*
+  app.engine("handlebars", engine({
+     runtimeOptions:{
+        allowProtoPropertiesByDefault : true ,
+        allowProtoMethodsByDefault : true
+     },
+
+
+  }))
+  */

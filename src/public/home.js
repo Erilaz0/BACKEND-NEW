@@ -5,8 +5,9 @@ const socket = io();
 
 const form = document.querySelector("#form")
 const deleteForm = document.querySelector("#del")
+const chatSendButton = document.querySelector("#chatId")
 
-const pr = []
+
 
 function enviar(e){
     e.preventDefault()
@@ -46,12 +47,37 @@ socket.emit("deleted",idObject)
 }
 
 
+function enviarMensaje(e){
+console.log("submittttttt")
+    e.preventDefault()
+const user = document.querySelector("#emailId").value
+const message = document.querySelector("#messageId").value
 
 
+const datos = {user:user,message:message}
+
+socket.emit("ne",datos)
+    
+
+}
+
+if(deleteForm){deleteForm.addEventListener("submit",enviarEliminado)}
+if(form){form.addEventListener("submit",enviar)}
+if(chatSendButton){chatSendButton.addEventListener("submit",enviarMensaje)}
 
 
-deleteForm.addEventListener("submit",enviarEliminado)
-form.addEventListener("submit",enviar)
+socket.on("new", mensaje => {
+    console.log(mensaje)
+    
+    const mensajes = document.querySelector("#msj")
+    mensajes.innerHTML = "";
+    mensaje.forEach((data) => {
+        const mensajeHTML = `${data.user} : ${data.message}<br>`;
+        mensajes.innerHTML += mensajeHTML;
+      })
+   
+
+})
 
 
 
