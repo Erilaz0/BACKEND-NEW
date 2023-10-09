@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat</title>
+
+</head>
+<body>
+    {{{body}}}
+    <h1>Bienvenido! {{nombre}}</h1>
+      <p>Email: {{email}}</p>
+      <br>
+      <br>
+      <br>
+      
+      <a href="/logout">logout</a>
+ 
+                                              
+       {{#each products}}
+       <h1>{{title}}</h1> <p>{{description}}</p> <p>${{price}}</p> <p>stock: {{stock}}</p>  <p>{{category}}</p>
+      {{/each}}
+
+      <a href="/api/products?pagina=1">pagina.1</a>
+      
+
+      {{#if hasPrevPage}}
+      <a href="/api/products?pagina={{prevPage}}">prev.page</a>
+        {{else}}<span>prev.pag</span>
+      {{/if}}
+
+      {{#if hasNextPage}}
+      <a href="/api/products?pagina={{nextPage}}">nextPage</a>
+        {{else}}<span>prev.pag</span>
+      {{/if}}
+      
+
+      <a>totalPages : {{totalPages}}</a>
+    
+
+
+<script src="/socket.io/socket.io.js"></script> 
+
+
+</body>
+</html>

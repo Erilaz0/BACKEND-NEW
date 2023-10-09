@@ -1,17 +1,26 @@
 const express = require("express")
 const app = express()
+const cookieParser = require("cookie-parser")
+const session = require("express-session")
+
 
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
 const handler = require("./Routes/views.router")
 const chat = require("./Routes/chat.router")
+const sessions_ = require("./Routes/session.router")
+
 
 const handleBars = require("express-handlebars")
 const path = require("path")
 const s = require("socket.io").Server
+
+const connectMongo = require("connect-mongo")
 const moongoose = require("mongoose")
+
 const productsModel = require("./models/products.modelo.js")
 const chatModel = require("./models/chat.modelo")
+
 
 
 
@@ -22,7 +31,7 @@ PORT= 8080
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(__dirname + '/public'));
-
+app.use(cookieParser());
 
 // Parse application/json
 
@@ -31,21 +40,22 @@ app.engine("handlebars", handleBars.engine())
 app.set("views", __dirname + "\\views");
 app.set("view engine","handlebars")
 
+app.use(session({
+      secret:"codersecret",
+      resave:true,
+      saveUninitialized:true,
+      store:connectMongo.create({
+        mongoUrl:"mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority",
+        ttl:30
+      })
 
-
-
-
+}))
 
 app.use("/api/products/",products)
 app.use("/api/carts/",cart)
-
-
-
-app.use("/",handler)
-
+app.use("/",handler) //views
 app.use("/chat",chat)
-
-
+app.use("/", sessions_)
 
 const serverExpress = app.listen(PORT,()=>{
 

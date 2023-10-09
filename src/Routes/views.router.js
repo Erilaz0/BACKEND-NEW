@@ -4,18 +4,24 @@ const path = require("path")
 const handleBars = require("express-handlebars")
 const fs = require("fs")
 const productsModel = require("../models/products.modelo")
+const usersModel = require("../models/users.modelo")
 
 
 
 
 
 
-router.get("/", async (req,res)=>{
+
+router.get("/api/products", async (req,res)=>{
     const products = await productsModel.find().lean()
-
+    const {_id} = req.session.data
+    console.log(_id)
+    const users = await usersModel.findOne({_id:_id})
     res.status(200).render("home",{
         layout: false,
-        products:products       
+        products:products,       
+        nombre: users.nombre,
+        email:users.email
 
         })
 
@@ -27,6 +33,77 @@ router.get("/realtimeproducts", async (req,res)=>{
     res.status(200).render("realtimeproducts")
 
 })
+
+
+
+
+
+
+router.get("/",(req,res)=>{
+
+    res.status(200).render("login")
+
+})
+
+
+
+
+
+
+router.get("/register",(req,res)=>{
+    
+    
+    res.status(200).render("register")
+    
+ 
+ })
+ 
+
+
+
+
+
+
+ router.get("/profile",(req,res)=>{
+
+
+    res.status(200).render("profile")
+ 
+ })
+
+ router.get("/logout", (req, res) => {
+    
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error al destruir la sesión:", err);
+      } else {
+        console.log("Sesión de usuario destruida con éxito.");
+        
+        res.redirect("/");
+      }
+    });
+  });
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
@@ -47,42 +124,8 @@ function saveProducts(prod){
 
 }
 
-
-
-
-router.post("/",(req,res)=>{//funcion que no vamos a usar por que era hacerlo sin router el de los sockets
-    const product = getProducts(products)
-
-    const title = req.body.title
-    const price = req.body.price
-    const description = req.body.description
-    const stock = req.body.stock
-    const category = req.body.category
-    const code = req.body.code
-
-    const newProducts = {
-
-        title:title,
-        price:price,
-        description:description,
-        stock:stock,
-        category:category,
-        code:code,
-        status:true,
-        id: product.length + 1
-     
-      }
-      product.push(newProducts)
-      saveProducts(product)
-
-
-
-
-})
-
-
-
 */
+
 
 
 

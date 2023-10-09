@@ -3,6 +3,7 @@ const router = Router()
 const fs = require("fs")
 const path = require("path")
 const cartsModelo = require("../models/carts.modelo.js")
+const cartsModel = require("../models/carts.modelo.js")
 
 
 
@@ -36,7 +37,7 @@ function saveCart(cart){
 
 */
 
-router.get("/", async (req,res)=>{
+router.get("/", async ( req , res  )=>{
     const products = await cartsModelo.find() 
     res.status(200).send(products)
     
@@ -112,16 +113,49 @@ router.put("/:cid/products/:pid", async (req,res)=>{
          else{
             res.status(400).send("error")
          }
-     
-    }
-     
+     }    
+})
 
+
+router.delete("/:cid/products/:pid", async ( req , res )=>{
+   const carritoId = req.params.cid
+   const productId = req.params.pid
+
+   if(carritoId && productId){
+
+
+     const carrito = await cartsModel.updateOne( { _id : carritoId } , {$pull : {products : {product : productId}}} )
+     res.status(200).send("yess you did it¡")
+
+   }
+   else{res.status(400).send("failed to delete product")}
 
 
 
 
 })
 
+
+router.delete("/:cid", async ( req , res ) => {
+
+   const cartId = req.params.cid
+   const cartDelete = await cartsModel.deleteOne( { _id : cartId } )
+   if ( cartDelete ){
+      res.status(200).send("cart deleted")
+      
+
+
+   }
+   else{
+
+      res.status(400).send("failed to delete cart")
+
+
+   }
+  
+
+
+})
 
 
 

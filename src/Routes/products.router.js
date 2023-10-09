@@ -4,7 +4,8 @@ const { error } = require("console")
 const fs = require("fs")
 const path = require("path")
 const productsModelo = require("../models/products.modelo.js") 
-const productsModel = require("../models/products.modelo.js")
+const usersModel = require("../models/users.modelo.js")
+const handleBars = require("express-handlebars")
 
 /*
  
@@ -28,28 +29,159 @@ function getProducts(path){
 }
 */
 
-router.get("/",async (req,res)=>{
+
+
+
+
+router.get("/", async (req,res)=>{
+   
     const limit = parseInt(req.query.limit)
-    //const Products = getProducts(products)
-    const products = await productsModelo.find({},"-_id title description code price stock category")
-    if (!limit || limit === 0){
-        
-        res.status(200).send(products)
-       
+    let pagina = req.query.pagina
+    const sort = parseInt(req.query.sort)
+    const nombre = req.session.nombre
+    const email = req.session.email
+    
+    
+    
+    
+
+    //ORDEN ASC O DECS
+    if(sort === 1 || sort === -1){
+    
+      const products = await productsModelo.aggregate([{ $sort: { price : sort } }]) // tambien tiene $match y $group
+      
+     
+       res.status(200).render("products",{
+
+       products : products,
+       nombre : nombre ,
+        email : email 
+
+      
+      })}
+
+
+
+
+
+
+
+   
+  
+
+    //FILTRAR POR LIMITE
+    if(limit){ 
+      const products = await productsModelo.find().limit(limit).lean()
+      res.status(200).render( "products" , { 
+        products : products,
+        nombre : nombre ,
+        email : email  } ) 
     }
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+    //FILTRAR POR PAGINA
+    //DEVOLVER PAGINA 1
+    if (!pagina || pagina === 0 ){
+        
+        pagina = 1
+        const products = await productsModelo.paginate({},{ limit : 20 , lean : true , page : pagina })
+        
+        let {totalPages,
+             hasPrevPage,
+             hasNextPage,
+             prevPage,
+             nextPage} = products
+        
+        res.status(200).render("products",{
+
+        products : products.docs,
+        nombre : nombre ,
+        email : email ,
+        totalPages,
+        hasPrevPage,
+        hasNextPage,
+        prevPage,
+        nextPage
+
+
+        })
+
+    }//DEVOLVER PAGINA INDICADA EN LA QUERY
     else{
+      
+      const products = await productsModelo.paginate({},{ limit : 20 , lean : true , page : pagina })
+        
+        let {totalPages,
+             hasPrevPage,
+             hasNextPage,
+             prevPage,
+             nextPage} = products
+        
+        res.status(200).render("products",{
 
-       const limitContainer = []
-       for(i = 0; i < limit; i++){
-        limitContainer.push(products[i])
-           
+        products : products.docs,
+        nombre : nombre ,
+        email : email ,
+        totalPages,
+        hasPrevPage,
+        hasNextPage,
+        prevPage,
+        nextPage
 
 
-       }
-       res.send(limitContainer)
+        })
+      
       }
 
+
+
+
+
+
+
+
+      
+        //FILTRAR POR QUERY
+     if(!sort && !pagina && !limit){//acalramos q no tome sort o pagina, ya que al estar todo pasado por query params va a intentar tomar los querys d epaginate,
+      try {
+        const query = req.query
+        
+          const products = await productsModelo.find(query).lean()
+          if(products){res.status(200).render("products",{
+            products:products,
+            nombre : nombre ,
+            email : email 
+          })}
+           
+        
+    }catch(error){console.log(error)}}
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 router.get("/:pid", async (req,res)=>{
@@ -105,7 +237,7 @@ const id = req.params.pid
 const productToUpdate = req.body
 
 
-const updateProduct = await productsModel.updateOne({_id:id},productToUpdate)
+const updateProduct = await productsModelo.updateOne({_id:id},productToUpdate)
 
   
 
@@ -125,7 +257,7 @@ else{
 router.delete("/:pid", async (req,res)=>{
 
     const id = req.params.pid
-    const productDeleted = await productsModel.deleteOne({_id:id})
+    const productDeleted = await productsModelo.deleteOne({_id:id})
     if(productDeleted){
 
      
@@ -156,3 +288,5 @@ router.delete("/:pid", async (req,res)=>{
 
 
 module.exports = router
+
+
