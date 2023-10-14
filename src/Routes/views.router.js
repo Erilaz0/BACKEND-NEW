@@ -39,7 +39,7 @@ router.get("/realtimeproducts", async (req,res)=>{
 
 
 
-router.get("/",(req,res)=>{
+router.get("/api/sessions/login",(req,res)=>{
 
     res.status(200).render("login")
 
@@ -79,13 +79,18 @@ router.get("/register",(req,res)=>{
       } else {
         console.log("Sesión de usuario destruida con éxito.");
         
-        res.redirect("/");
+        res.redirect("/api/sessions/login");
       }
     });
   });
   
 
+router.get("/",(req,res)=>{
 
+  res.redirect("/api/sessions/login")
+
+
+})
 
 
 

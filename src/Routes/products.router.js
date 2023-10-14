@@ -3,6 +3,8 @@ const router = Router()
 const { error } = require("console")
 const fs = require("fs")
 const path = require("path")
+const session = require("express-session")
+const passport = require("passport")
 const productsModelo = require("../models/products.modelo.js") 
 const usersModel = require("../models/users.modelo.js")
 const handleBars = require("express-handlebars")
@@ -36,142 +38,161 @@ function getProducts(path){
 router.get("/", async (req,res)=>{
    
     const limit = parseInt(req.query.limit)
+    const category = req.query.category
+    const status = req.query.status
     let pagina = req.query.pagina
     const sort = parseInt(req.query.sort)
+  
+    
+   
     const nombre = req.session.nombre
     const email = req.session.email
+    if(!nombre && !email){console.log("no estan")}
     
     
     
     
 
-    //ORDEN ASC O DECS
-    if(sort === 1 || sort === -1){
+    if(sort || limit || pagina || category || status){
+      console.log("entre")
+/*sort*/ if(sort && sort === 1 || sort === -1){
     
-      const products = await productsModelo.aggregate([{ $sort: { price : sort } }]) // tambien tiene $match y $group
+          const products = await productsModelo.aggregate([{ $sort: { price : sort } }]) // tambien tiene $match y $group
       
      
-       res.status(200).render("products",{
+          res.status(200).render("products",{
 
-       products : products,
-       nombre : nombre ,
-        email : email 
-
-      
-      })}
-
-
-
-
-
-
-
-   
-  
-
-    //FILTRAR POR LIMITE
-    if(limit){ 
-      const products = await productsModelo.find().limit(limit).lean()
-      res.status(200).render( "products" , { 
-        products : products,
-        nombre : nombre ,
-        email : email  } ) 
-    }
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-    //FILTRAR POR PAGINA
-    //DEVOLVER PAGINA 1
-    if (!pagina || pagina === 0 ){
-        
-        pagina = 1
-        const products = await productsModelo.paginate({},{ limit : 20 , lean : true , page : pagina })
-        
-        let {totalPages,
-             hasPrevPage,
-             hasNextPage,
-             prevPage,
-             nextPage} = products
-        
-        res.status(200).render("products",{
-
-        products : products.docs,
-        nombre : nombre ,
-        email : email ,
-        totalPages,
-        hasPrevPage,
-        hasNextPage,
-        prevPage,
-        nextPage
-
-
-        })
-
-    }//DEVOLVER PAGINA INDICADA EN LA QUERY
-    else{
-      
-      const products = await productsModelo.paginate({},{ limit : 20 , lean : true , page : pagina })
-        
-        let {totalPages,
-             hasPrevPage,
-             hasNextPage,
-             prevPage,
-             nextPage} = products
-        
-        res.status(200).render("products",{
-
-        products : products.docs,
-        nombre : nombre ,
-        email : email ,
-        totalPages,
-        hasPrevPage,
-        hasNextPage,
-        prevPage,
-        nextPage
-
-
-        })
-      
-      }
-
-
-
-
-
-
-
+          products : products,
+          nombre : nombre ,
+          email : email 
 
       
-        //FILTRAR POR QUERY
-     if(!sort && !pagina && !limit){//acalramos q no tome sort o pagina, ya que al estar todo pasado por query params va a intentar tomar los querys d epaginate,
-      try {
-        const query = req.query
+         })}
         
-          const products = await productsModelo.find(query).lean()
-          if(products){res.status(200).render("products",{
-            products:products,
+         if(limit){ 
+          const products = await productsModelo.find().limit(limit).lean()
+          res.status(200).render( "products" , { 
+            products : products,
             nombre : nombre ,
-            email : email 
-          })}
-           
+            email : email  } 
+                  ) 
+            }
+
+            
         
-    }catch(error){console.log(error)}}
+       if(pagina){
+        
+        const products = await productsModelo.paginate({},{ limit : 20 , lean : true , page : pagina })
+          
+          let {totalPages,
+               hasPrevPage,
+               hasNextPage,
+               prevPage,
+               nextPage} = products
+          
+          res.status(200).render("products",{
+  
+          products : products.docs,
+          nombre : nombre ,
+          email : email ,
+          totalPages,
+          hasPrevPage,
+          hasNextPage,
+          prevPage,
+          nextPage
+  
+  
+          })
+        
+        }
+  
+       
+        if(status){    //FILTRAR POR QUERY
+     
+         
+          if(status === "true"){ 
+             
+             
+             const products = await productsModelo.find({status:true}).lean()
+                      if(products){
+            
+                            res.status(200).render("products",{
+             
+                            products:products,
+                            nombre : nombre ,
+                            email : email 
+                             })}}
+           
+           
+          else if(status === "false"){
 
-})
+            
+            
+            const products = await productsModelo.find({status:false}).lean()
+                      if(products){
+            
+                         res.status(200).render("products",{
+            
+                         products:products,
+                         nombre : nombre ,
+                         email : email 
+                         })}
+                        else{res.status(400).send("Todos los productos disponibles")}
+                        }
+
+
+           }
+        
+        
+        if(category){    //FILTRAR POR QUERY
+     
+            console.log("kuchau")
+           if(category){ const products = await productsModelo.find({category}).lean()
+            if(products){
+             
+              res.status(200).render("products",{
+             
+              products:products,
+              nombre : nombre ,
+              email : email 
+            })
+          }
+        }
+          
+            
+         
+     }} 
+    
+   else{
+        
+    pagina = 1
+    const products = await productsModelo.paginate({},{ limit : 20 , lean : true , page : pagina })
+    
+    let {totalPages,
+         hasPrevPage,
+         hasNextPage,
+         prevPage,
+         nextPage} = products
+    
+    res.status(200).render("products",{
+
+    products : products.docs,
+    nombre : nombre ,
+    email : email ,
+    totalPages,
+    hasPrevPage,
+    hasNextPage,
+    prevPage,
+    nextPage
+
+
+      })
+   }//DEVOLVER PAGINA INDICADA EN LA QUERY
 
 
 
+
+  })
 
 
 

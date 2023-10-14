@@ -1,8 +1,51 @@
 const Router = require("express").Router
 const router = Router()
+const passport = require("passport")
+const session = require("express-session")
 const usersModel = require("../models/users.modelo")
 
 
+router.get("/github",passport.authenticate("github",{failureRedirect:"/errorGithub"}),(req,res)=>{
+
+
+
+
+})
+
+
+
+router.get("/callbackGithub",passport.authenticate("github",{failureRedirect:"/errorGithub"}),(req,res)=>{
+   
+   
+   try{
+      
+      if(req.user.nombre && req.user.email){
+      req.session.nombre = req.user.nombre
+      req.session.email = req.user.email
+      console.log("yess")
+
+    }
+  }catch(error){console.log(error)}
+   
+   
+
+      
+   
+     
+  
+   
+
+
+   
+   })
+
+router.get("error",(req,res)=>{
+
+
+  res.status(200).send({"error":"fallo al autenticar"})
+
+
+})
 
 
 
@@ -26,7 +69,7 @@ router.post("/register", async (req,res)=>{
      
         if(userCreate){
    
-           res.status(200).redirect("/login")
+           res.status(200).redirect("/api/sessions/login")
    
         }else{
    
@@ -37,7 +80,7 @@ router.post("/register", async (req,res)=>{
 })
 
 
-router.post("/", async (req,res)=>{
+router.post("/login", async (req,res)=>{
 
    const { email , password } = req.body
 

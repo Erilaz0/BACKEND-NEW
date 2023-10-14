@@ -2,6 +2,8 @@ const express = require("express")
 const app = express()
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
+const passport = require("passport")
+const inicializaPassport = require("./config/passport.config")
 
 
 const products = require("./Routes/products.router")
@@ -48,14 +50,21 @@ app.use(session({
         mongoUrl:"mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority",
         ttl:30
       })
-
+      
 }))
 
-app.use("/api/products/",products)
+
+inicializaPassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use("/api/products",products)
 app.use("/api/carts/",cart)
 app.use("/",handler) //views
 app.use("/chat",chat)
-app.use("/", sessions_)
+app.use("/api/sessions/", sessions_)
+
+
 
 const serverExpress = app.listen(PORT,()=>{
 
