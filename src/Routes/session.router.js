@@ -14,18 +14,17 @@ router.get("/github",passport.authenticate("github",{failureRedirect:"/errorGith
 
 
 
-router.get("/callbackGithub",passport.authenticate("github",{failureRedirect:"/errorGithub"}),(req,res)=>{
+router.get("/callbackGithub",passport.authenticate("github",{failureRedirect:"/errorGithub"}), async (req,res)=>{
    
    
-   try{
-      
-      if(req.user.nombre && req.user.email){
-      req.session.nombre = req.user.nombre
-      req.session.email = req.user.email
-      console.log("yess")
+   
+      const user = await usersModel.findOne({nombre:req.user.nombre,email:req.user.email})
+      if(user){
+      req.session.id = user._id
+      console.log("yess")}
 
-    }
-  }catch(error){console.log(error)}
+    console.log("holaa")
+    
    
    
 

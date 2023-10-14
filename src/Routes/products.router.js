@@ -42,11 +42,25 @@ router.get("/", async (req,res)=>{
     const status = req.query.status
     let pagina = req.query.pagina
     const sort = parseInt(req.query.sort)
+    let nombre = ""
+    let email = ""
   
+    const id = req.session.id
+    if(id){ 
     
+    const user = await usersModel.findOne({_id:id})
+    
+    nombre = user.nombre
+    email = user.email
+  
+  }else{
+
+    nombre = req.session.nombre
+    email = req.session.email
+
+  }
    
-    const nombre = req.session.nombre
-    const email = req.session.email
+
     if(!nombre && !email){console.log("no estan")}
     
     
