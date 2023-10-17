@@ -71,8 +71,13 @@ router.get("/register",(req,res)=>{
  
  })
 
+
+
+
  router.get("/logout", (req, res) => {
-    
+    req.user = null
+    console.log("req.user = " + req.user)
+   
     req.session.destroy((err) => {
       if (err) {
         console.error("Error al destruir la sesión:", err);

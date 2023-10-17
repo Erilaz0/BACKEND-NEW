@@ -44,21 +44,27 @@ router.get("/", async (req,res)=>{
     const sort = parseInt(req.query.sort)
     let nombre = ""
     let email = ""
-  
-    const id = req.session.id
-    if(id){ 
-    
-    const user = await usersModel.findOne({_id:id})
-    
-    nombre = user.nombre
-    email = user.email
-  
-  }else{
 
-    nombre = req.session.nombre
-    email = req.session.email
 
-  }
+    try{
+      const id = req.user._id
+      
+      if(id){ 
+    
+        const user = await usersModel.findOne({_id:id})
+        
+        nombre = user.nombre
+        email = user.email
+      
+      }
+    }catch(error){console.log(error)}
+    
+    if(req.session.nombre && req.session.email){ 
+   
+      nombre = req.session.nombre
+      email = req.session.email
+     console.log("estan")
+    }
    
 
     if(!nombre && !email){console.log("no estan")}

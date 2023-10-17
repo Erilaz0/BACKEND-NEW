@@ -3,6 +3,7 @@ const router = Router()
 const passport = require("passport")
 const session = require("express-session")
 const usersModel = require("../models/users.modelo")
+const bcrypt = require('bcrypt');
 
 
 router.get("/github",passport.authenticate("github",{failureRedirect:"/errorGithub"}),(req,res)=>{
@@ -18,12 +19,9 @@ router.get("/callbackGithub",passport.authenticate("github",{failureRedirect:"/e
    
    
    
-      const user = await usersModel.findOne({nombre:req.user.nombre,email:req.user.email})
-      if(user){
-      req.session.id = user._id
-      console.log("yess")}
-
+    res.status(200).redirect("/api/products")
     console.log("holaa")
+    
     
    
    
@@ -38,7 +36,7 @@ router.get("/callbackGithub",passport.authenticate("github",{failureRedirect:"/e
    
    })
 
-router.get("error",(req,res)=>{
+router.get("/errorGithub",(req,res)=>{
 
 
   res.status(200).send({"error":"fallo al autenticar"})
@@ -50,8 +48,13 @@ router.get("error",(req,res)=>{
 
 router.post("/register", async (req,res)=>{
 
-
+    
     const { nombre , email , password } = req.body
+    
+    
+   
+
+
 
     if( !nombre || !email || !password ){
 
@@ -59,12 +62,17 @@ router.post("/register", async (req,res)=>{
         
     }else{
      const emailVerification = await usersModel.findOne({email:email})
+    
      if(emailVerification){
 
         res.status(400).send("usuario con ese email ya existe")
 
      }else{
-        const userCreate = await usersModel.create({nombre , email , password})
+
+        let hash = await bcrypt.hash( password , 10 )
+        
+
+        const userCreate = await usersModel.create({nombre , email , password : hash})
      
         if(userCreate){
    
@@ -83,6 +91,9 @@ router.post("/login", async (req,res)=>{
 
    const { email , password } = req.body
 
+  
+
+
    if(!email || !password){
 
      res.status(400).send("complete todos los campos")
@@ -92,24 +103,32 @@ router.post("/login", async (req,res)=>{
     if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
 
         res.status(200).redirect("/api/products")
+
     }else{ 
-        
-    const login = await usersModel.findOne({email : email , password : password})
-    if(login){
-        req.session.nombre = login.nombre
-        req.session.email = email
-        res.status(200).redirect("/api/products")
+
+     const user = await usersModel.findOne({email:email})
+     let uncryptPassword = await bcrypt.compare( password , user.password ) 
+
+     if(uncryptPassword){ 
+     
+          req.session.nombre = user.nombre
+          req.session.email = email
+
+
+          console.log( req.session.nombre + req.session.email)
+          res.status(200).redirect("/api/products")
         
         
        
     }else{
-       res.status(400).send("usuario no existente")
-        
-    }
 
+         res.status(400).send("usuario no existente")
+        
+         }
+   }
     }}
 
-})
+)
 
 
 
