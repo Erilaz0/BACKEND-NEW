@@ -5,11 +5,25 @@ const handleBars = require("express-handlebars")
 const fs = require("fs")
 const productsModel = require("../models/products.modelo")
 const usersModel = require("../models/users.modelo")
+const { inicializePassportJWT } = require("../config/jwt.config")
+const passport = require("passport")
 
 
 
 
+router.get("/current",passport.authenticate( "current" , { session : false } ) , (req,res)=>{
+  let data = req.user.usuario
+  res.status(200).render("current",{
 
+    nombre : data.nombre,
+    id: data._id,
+    email: data.email,
+    rol: data.rol,
+    token: req.cookies.token
+
+
+  })
+} )
 
 
 router.get("/api/products", async (req,res)=>{
@@ -40,7 +54,7 @@ router.get("/realtimeproducts", async (req,res)=>{
 
 
 router.get("/api/sessions/login",(req,res)=>{
-
+    let hola = "h"
     res.status(200).render("login")
 
 })
@@ -76,13 +90,21 @@ router.get("/register",(req,res)=>{
 
  router.get("/logout", (req, res) => {
     req.user = null
-    console.log("req.user = " + req.user)
-   
+
+    res.clearCookie("datos")
+    if(res.clearCookie("datos")){console.log("cookie datos destruida archivo views.router.js:95")}
+
+    res.clearCookie("current")
+    if(res.clearCookie("current")){console.log("cookie current destruida archivo views.router linea 86")}
+    
+    res.clearCookie("token")
+    if(res.clearCookie("token")){console.log("cookie token destruida archivo views.router linea 81")}
+    
     req.session.destroy((err) => {
       if (err) {
         console.error("Error al destruir la sesión:", err);
       } else {
-        console.log("Sesión de usuario destruida con éxito.");
+        console.log("Sesión de usuario destruida con éxito views.router linea 86");
         
         res.redirect("/api/sessions/login");
       }

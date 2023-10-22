@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser")
 const session = require("express-session")
 const passport = require("passport")
 const inicializaPassport = require("./config/passport.config")
+const inicializePassportJWT = require("./config/jwt.config")
 
 
 const products = require("./Routes/products.router")
@@ -55,6 +56,7 @@ app.use(session({
 
 
 inicializaPassport()
+inicializePassportJWT()
 app.use(passport.initialize())
 app.use(passport.session())
 

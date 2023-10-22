@@ -8,6 +8,7 @@ const passport = require("passport")
 const productsModelo = require("../models/products.modelo.js") 
 const usersModel = require("../models/users.modelo.js")
 const handleBars = require("express-handlebars")
+const { validarJWT } = require("../utils.js")
 
 /*
  
@@ -35,15 +36,25 @@ function getProducts(path){
 
 
 
-router.get("/", async (req,res)=>{
-   
+router.get("/", validarJWT , async (req,res)=>{
+    
+    if(!req.cookies.token || req.cookies.datos){
+      res.redirect("/api/sessions/login")
+      console.log( " denegado el acceso a products products.router.js:43 " )
+    }
+
+    let data = req.cookies.datos
+    
     const limit = parseInt(req.query.limit)
     const category = req.query.category
     const status = req.query.status
     let pagina = req.query.pagina
     const sort = parseInt(req.query.sort)
-    let nombre = ""
-    let email = ""
+    let nombre = data.nombre
+    let email = data.email
+
+    
+   
 
 
     try{
@@ -56,18 +67,20 @@ router.get("/", async (req,res)=>{
         nombre = user.nombre
         email = user.email
       
-      }
-    }catch(error){console.log(error)}
+      }else{
+        id = false
+           }
+    }catch(error){
+      console.log( error + " products.router.js:63")
+                 }
     
-    if(req.session.nombre && req.session.email){ 
+    
+    
+    
    
-      nombre = req.session.nombre
-      email = req.session.email
-     console.log("estan")
-    }
-   
+    
 
-    if(!nombre && !email){console.log("no estan")}
+    if(!nombre && !email){res.status(200).send( { message : " Datos de la sesion ( nombre y email ) no reconocidos " } ) }
     
     
     
@@ -166,7 +179,7 @@ router.get("/", async (req,res)=>{
         
         if(category){    //FILTRAR POR QUERY
      
-            console.log("kuchau")
+            
            if(category){ const products = await productsModelo.find({category}).lean()
             if(products){
              

@@ -4,6 +4,12 @@ const passport = require("passport")
 const session = require("express-session")
 const usersModel = require("../models/users.modelo")
 const bcrypt = require('bcrypt');
+const { generaJWT } = require("../utils")
+const { validarJWT } = require("../utils")
+const jwt = require("jsonwebtoken")
+const { json } = require("body-parser")
+
+
 
 
 router.get("/github",passport.authenticate("github",{failureRedirect:"/errorGithub"}),(req,res)=>{
@@ -17,7 +23,15 @@ router.get("/github",passport.authenticate("github",{failureRedirect:"/errorGith
 
 router.get("/callbackGithub",passport.authenticate("github",{failureRedirect:"/errorGithub"}), async (req,res)=>{
    
-   
+   const token = generaJWT(req.user._id)
+           if(token){ 
+           
+           
+           res.cookie( "token", token , { httpOnly : false } )
+           
+           
+           //agregamos a la session en caso de que no haya un registro con github
+           }
    
     res.status(200).redirect("/api/products")
     console.log("holaa")
@@ -49,14 +63,14 @@ router.get("/errorGithub",(req,res)=>{
 router.post("/register", async (req,res)=>{
 
     
-    const { nombre , email , password } = req.body
-    
+    const { nombre , apellido ,  email , password } = req.body
+    let { edad } = req.body
     
    
 
 
 
-    if( !nombre || !email || !password ){
+    if( !nombre || !email || !password || !apellido  || !edad ){
 
         res.status(400).send("complete todos los campos")
         
@@ -71,8 +85,8 @@ router.post("/register", async (req,res)=>{
 
         let hash = await bcrypt.hash( password , 10 )
         
-
-        const userCreate = await usersModel.create({nombre , email , password : hash})
+        edad = parseInt(edad)
+        const userCreate = await usersModel.create({nombre , apellido , edad , email , password : hash})
      
         if(userCreate){
    
@@ -88,7 +102,7 @@ router.post("/register", async (req,res)=>{
 
 
 router.post("/login", async (req,res)=>{
-
+  
    const { email , password } = req.body
 
   
@@ -106,26 +120,48 @@ router.post("/login", async (req,res)=>{
 
     }else{ 
 
-     const user = await usersModel.findOne({email:email})
-     let uncryptPassword = await bcrypt.compare( password , user.password ) 
+      const user = await usersModel.findOne({email:email})
+      if(!user){
+   
+      res.status(400).send({message:"usuario no encontrado"}
+      
+      )}
+     else{ 
 
-     if(uncryptPassword){ 
+       let uncryptPassword = await bcrypt.compare( password , user.password ) 
+       if(!uncryptPassword){ 
      
-          req.session.nombre = user.nombre
-          req.session.email = email
-
-
-          console.log( req.session.nombre + req.session.email)
-          res.status(200).redirect("/api/products")
+       res.status(400).send("usuario no existente")
         
         
-       
-    }else{
+        
+    }else{/*generamos un token a partir de los datos del ususario, es decir, le damos el ususario (user) para crear el token y q lo firme,
+           el token es basicamente los datos q le pasamos codificados en base64, y luego
+           en verifyToken lo q hacemos es pasarle el mismo token el cual almacenamos en cookies.token y ahi la funcion verifica el token junto cn la firma
+           la cual es uno de los argumentos de la funcion y si el codigo reconoce q el creo el token,lo decodifica si tiene bien la firma
+           entre otras cosas que debe de tener la libreria,  te devuelve las credenciales a las cuales estan asociadas
+           ese token, es decir, la info decodificada*/
+           const token = generaJWT(user)
+           if(token){ 
+           
+           
+           res.cookie( "token", token , { httpOnly : false } )
+           
+           
+           //agregamos a la session en caso de que no haya un registro con github
+           let datos = { nombre : user.nombre , email : email }
+           res.cookie("datos", datos , { httpOnly : false })
+         
 
-         res.status(400).send("usuario no existente")
+
+           
+           res.status(200).redirect("/api/products")
+}
+          
+         
         
          }
-   }
+       }}
     }}
 
 )
