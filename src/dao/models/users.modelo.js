@@ -6,8 +6,8 @@ const usersCollection = "users"
 const usersEsquema = new mongoose.Schema({
 
 nombre : { type : String , required : true },
-apellido : { type : String , required : true },
-edad : { type : Number , required : true},
+apellido : { type : String  },
+edad : { type : Number },
 email : { type : String , required : true , unique : true },
 password : { type : String},
 rol: { type : String , default:"user" },

@@ -1,6 +1,6 @@
 const passport = require("passport")
 const github = require("passport-github2")
-const usersModel = require("../models/users.modelo")
+const usersService = require("../services/users.service")
 
 const inicializaPassport = ()=>{
 
@@ -19,14 +19,10 @@ const inicializaPassport = ()=>{
         console.log(profile)
         console.log(profile._json.email)
       }
-         let findUser = await usersModel.findOne({email:profile._json.email})
+         let findUser = await usersService.verifyEmailUser(profile._json.email)
          if(!findUser){
              
-               findUser = await usersModel.create({
-                nombre : profile._json.name,
-                email : profile._json.email,
-                github: profile
-            })
+               findUser = await usersService.createUser({  nombre : profile._json.name , email : profile._json.email , profile : profile })
 
          }
         
@@ -46,7 +42,7 @@ const inicializaPassport = ()=>{
    passport.deserializeUser(async(id,done)=>{
 
 
-    findUser = await usersModel.findById(id)
+    findUser = await usersService.userById( id )
     return done(null,findUser)
    })
 

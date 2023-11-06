@@ -1,9 +1,13 @@
 const Router = require("express").Router
 const router = Router()
-const fs = require("fs")
-const path = require("path")
-const cartsModelo = require("../models/carts.modelo.js")
-const cartsModel = require("../models/carts.modelo.js")
+
+const cartDelete = require("../controllers/cartsControllers/cartDeleteController.js")
+const cartProductDelete = require("../controllers/cartsControllers/cartProductDeleteController.js")
+const cartUpdate = require("../controllers/cartsControllers/cartPutController.js")
+const cartCreate = require("../controllers/cartsControllers/cartsPostController.js")
+const cartById = require("../controllers/cartsControllers/cartsByIdController.js")
+const getCarts = require("../controllers/cartsControllers/cartsController.js")
+
 
 
 
@@ -37,125 +41,17 @@ function saveCart(cart){
 
 */
 
-router.get("/", async ( req , res  )=>{
-    const products = await cartsModelo.find() 
-    res.status(200).send(products)
-    
- 
-})
+router.get("/", getCarts )
 
+router.get("/:pid", cartById )
 
-router.get("/:pid", async (req,res)=>{
-      const id = req.params.pid
-      
-      const productById = await cartsModelo.find({_id:id})
-      if(productById){
-        
-        
-        res.status(200).send(productById)
+router.post("/" , cartCreate )
 
+router.put("/:cid/products/:pid", cartUpdate )
 
-      }
-      else(
+router.delete("/:cid/products/:pid", cartProductDelete )
 
-        res.status(400).send({error:"id no encontrado"})
-
-      )
-      
-
-
-
-})
-
-
-router.post("/", async (req,res)=>{
-
-   const newCart = req.body
-   const insertCart = await cartsModelo.create(newCart)
-
-   if(insertCart){
-
-      res.status(200).send("Producto Añadido")
-   }
-    else{
-       
-      res.status(400).send("error al crear producto")
-       
-    }
-
-
-
-})
-
-
-
-router.put("/:cid/products/:pid", async (req,res)=>{
-
-
-    const cartId = req.params.cid
-    const productoId = req.params.pid
-    const quantity = parseInt(req.body.quantity)
-    console.log(quantity)
-
-    if(!quantity && productoId === 0 && cartId === 0){
-
-       res.status(400).send({error:"invalid data"})
-
-    }else{
-       
-      const updateProductQuantity = await cartsModelo.updateOne({ _id : cartId , "products.product" : productoId},{$inc:{"products.$.quantity": quantity}})
-      if(updateProductQuantity){
-
-          res.status(200).send("Cantidad actualizada correctamente")
-
-         }
-         
-         else{
-            res.status(400).send("error")
-         }
-     }    
-})
-
-
-router.delete("/:cid/products/:pid", async ( req , res )=>{
-   const carritoId = req.params.cid
-   const productId = req.params.pid
-
-   if(carritoId && productId){
-
-
-     const carrito = await cartsModel.updateOne( { _id : carritoId } , {$pull : {products : {product : productId}}} )
-     res.status(200).send("yess you did it¡")
-
-   }
-   else{res.status(400).send("failed to delete product")}
-
-
-
-
-})
-
-
-router.delete("/:cid", async ( req , res ) => {
-
-   const cartId = req.params.cid
-   const cartDelete = await cartsModel.deleteOne( { _id : cartId } )
-   if ( cartDelete ){
-      res.status(200).send("cart deleted")
-      
-
-
-   }
-   else{
-
-      res.status(400).send("failed to delete cart")
-
-
-   }
-  
-
-
-})
+router.delete("/:cid", cartDelete )
 
 
 

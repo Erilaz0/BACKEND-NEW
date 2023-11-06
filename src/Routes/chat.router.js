@@ -1,12 +1,11 @@
 const Router = require("express").Router
 const router = Router()
-const chatModel = require("../models/chat.modelo")
+const chat = require("../controllers/chatController/chatController")
 
 
-router.get("/", async ( req , res ) => {
+router.get("/" , chat )
 
-const mensajes = await chatModel.find().lean()
-res.status(200).render("chat")})
+
 
 
 module.exports = router

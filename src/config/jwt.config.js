@@ -48,3 +48,6 @@ const inicializePassportJWT = () =>{
 }
 
 module.exports = inicializePassportJWT
+
+
+
