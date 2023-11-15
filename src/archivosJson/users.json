@@ -1,0 +1,10 @@
+[{ 
+"_id" : "6534a2681247406ef4617110",
+"nombre" : "lucia",
+"apellido" : "ramirez",
+"edad" : 2111,
+"email" : "geldebaño@gmail.com",
+"password": "$2b$10$tZcAY8cVjjr70dpuAtpKsOMT54ieZFd/uuV1dcXMYYnhYZTzrAs2.",
+"rol" : "user",
+"cart" : "6534a2681247406ef4617111"
+}]

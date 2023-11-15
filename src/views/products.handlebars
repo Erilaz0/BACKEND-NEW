@@ -3,26 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="products">
     <title>chat</title>
+
 
 </head>
 <body>
     {{{body}}}
     <h1>Bienvenido! {{nombre}}</h1>
-      <p>Email: {{email}}</p>
+      <p id={{email}} class="email"> Email: {{email}}</p>
       <br>
       <br>
       <br>
       <a href="/current">Detalles de usuario - current </a>
       <br>
+      <a href="/api/carts">Ver Mi Carrito</a>
+      <br>
       <a href="/logout">logout</a>
+      <br>
+      <a href="/chat">Chat</a>
  
-                                              
-       {{#each products}}
-       <h1>{{title}}</h1> <p>{{description}}</p> <p>${{price}}</p> <p>stock: {{stock}}</p>  <p>{{category}}</p>
-      {{/each}}
+       
+    
+    
+       <div id="products" style="width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap;">
 
-      <a href="/api/products?pagina=1">pagina.1</a>
+
+
+       {{#each products}}
+       
+        <div id="product" style="width: 300px; height: 300px; margin : 30px; border-radius : 10px ; border : 1px solid #000000">
+          <h3>{{title}}</h3> 
+          <p>{{description}}</p> 
+          <p>${{price}}</p> 
+          <p>stock: {{stock}}</p>  
+          <p>{{category}}</p>
+          <button class="productbutton" id={{_id}}>agregar al carrito</button>
+          
+          
+        </div>
+       
+      {{/each}}
+       </div>
+      <a href="/api/products?pagina=1"  style="margin-top : 100px">pagina.1</a>
       
 
       {{#if hasPrevPage}}
@@ -41,6 +64,7 @@
 
 
 <script src="/socket.io/socket.io.js"></script> 
+<script src="/addToCart.js"></script>
 
 
 </body>

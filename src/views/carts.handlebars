@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> carrito </title>
+
+</head>
+<body>
+    {{{body}}}
+ <h1> Tu Carrito</h1>
+
+
+<div style="border-radius : 20px ; background-color: antiquewhite ; margin-left: 20% ; padding : 1% ; width : 50%">
+
+{{#each cartInfo}}
+ 
+
+<h1 >{{product}} - cantidad : {{quantity}} - precio : ${{price}}</h1>
+
+
+{{/each}}
+
+<h2>Precio Total: ${{totalPrice}}</h2>
+
+<button id={{id}} class="sendTicket" style="width : 60% ; font-size : 18px">Finalizar compra</button>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script> 
+<script src="/addTicket.js"></script>
+
+
+
+</body>
+</html>

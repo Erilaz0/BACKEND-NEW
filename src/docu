@@ -1,0 +1,4 @@
+en este archivo escribo algunos errores que eh tenido y com los solucione
+
+-si vas a invocar una funcion, asegurate de si es asincrona o no, por q si lo es no podras usarla a menos
+que la uses dentro de otra funcion a la cual le pongas async para poder llamar a la primer funcion usando await

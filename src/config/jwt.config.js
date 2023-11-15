@@ -1,6 +1,6 @@
 const passportJWT= require("passport-jwt")
 const passport = require("passport")
-const { PRIVATE_KEY } = require("../utils")
+const config = require("../config/config")
 
 
 
@@ -23,14 +23,14 @@ const inicializePassportJWT = () =>{
 
          { jwtFromRequest : passportJWT.ExtractJwt.fromExtractors([searchToken]),
         
-           secretOrKey : PRIVATE_KEY
+           secretOrKey : config.PRIVATE_KEY00
         
         }, ( jwtcontent , done ) => {
             
               try{
               
                 
-                return done( null , jwtcontent)
+                 done( null , jwtcontent)
                 
               }catch(error){console.log(error)}
 

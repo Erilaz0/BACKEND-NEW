@@ -5,7 +5,7 @@ const session = require("express-session")
 const passport = require("passport")
 const inicializaPassport = require("./config/passport.config")
 const inicializePassportJWT = require("./config/jwt.config")
-
+const fs = require("fs")
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
 const handler = require("./Routes/views.router")
@@ -17,21 +17,28 @@ const path = require("path")
 const s = require("socket.io").Server
 
 const connectMongo = require("connect-mongo")
-const moongoose = require("mongoose")
+const mongoose = require("mongoose")
 
 const productsService = require("./services/products.service")
 const chatService = require("./services/chat.service")
 
 const config = require("../src/config/config")
+const cartsService = require("./services/carts.service")
+const usersService = require("./services/users.service")
+const ticketsModelo = require("./dao/models/tickets.modelo")
+const ticketsService = require("./services/tickets.service")
+const { selectDAO } = require("./functions/selectDAO")
 
 
+//seleccionamos la persistencia a traves de la consola
+selectDAO()
 
 
 PORT= parseInt(config.PORT)
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname + '/public')));
 app.use(cookieParser());
 
 // Parse application/json
@@ -74,19 +81,19 @@ const serverExpress = app.listen(PORT,()=>{
 })
 
 
-
+//seccion de sockets, en la siguiente seccion se maneja logica CRUD, 
 
 const serverSocket = new s(serverExpress)
 serverSocket.on("connection", sock => {
 
-    console.log(sock.id)
-
+    
+    //agregamos neuvo producto
     sock.on("newProduct", async( agregarProducto ) =>{
-    console.log(agregarProducto)
+    
     const newP = await productsService.createProduct(agregarProducto)
     })
 
-
+    //eliminamos un producto por su id
     sock.on("deleted", async (idProduct) => {
 
      const id = idProduct.id
@@ -94,26 +101,122 @@ serverSocket.on("connection", sock => {
 
 
     })
-    
+    //añadimos mensajes al chat en la db y lo enviamos al chat en la UI
     sock.on("ne", async (nuevoMensaje)=>{
 
-      const newchat = await chatService.addMessage(nuevoMensaje)
-      const newMessage = await chatService.getChat()
-      
-      
-      
-      sock.broadcast.emit("new",newMessage)
-      sock.emit("new",newMessage)
+     
 
+       
+        const newchat = await chatService.addMessage(nuevoMensaje )
+        const newMessage = await chatService.getChat()
+        
+        
+        
+        sock.broadcast.emit("new",newMessage)
+        sock.emit("new",newMessage)
+  
+
+       
+       
     })
+    //añadimos un producto al carrito
+    sock.on("addToCart", async (product)=>{
+
+      
+      const email = product.email //obtenemos el email ya que queremos el id del usuario que agrego un producto al carrito
+      
+      const users = await usersService.verifyEmailUser(email) //obtenemos al usuario
+     
+      const idUser = new mongoose.Types.ObjectId(users._id) // obtenemos el id del usuario para buscar su carrito
+     
+      const productId = new mongoose.Types.ObjectId(product.idProduct) //id del prdoucto a agregar
+      
+      //verificar si el producto ya existe en el carrito
+      const productInCartVerify = await cartsService.productInCartVerify( idUser , productId )
+      
+      if( productInCartVerify ){
+        //si existe aumentamos su cantidad en uno
+        let quantity = 1
+        const uploadProductQuantity = await cartsService.updateQuantity( idUser , productId , quantity)
+        
+      }else{
+        //si no existe lo añadimos al carrito
+        const add = await cartsService.addProduct( idUser , productId )
+        
+      }
+
+   })
+   //aca nos llega el id del cliente q finalizo su compra
+   sock.on("sendTicket", async (ticket)=>{
+   //buscamos el carrito con el id asociado al usuario
+   const cartArray = []
+   const totalArray = []
+   const cartUser = await cartsService.cartsByUserId(ticket)
+   const user = await usersService.userById(ticket)
+   
+   //accedemos a products
+   const cartProducts = cartUser.products
+   if(!cartUser){
+     console.log("no hay carrito")
+     //enviar mail, no seria normal que en este punto en el que se crea el ticket del carrito el id del usuario no
+     //fuera encontrado en la DB , aparte del mail deberiamos de hacer un redirect hacia logout
+    }
+   else{
+
+      //añadimos el nombre de cada producto y su cantidad a un array
+      //añadimos todos los precios de los productos sumados con sus respectivas cantidades a un array
+      for (let i = 0 ; i < cartProducts.length ; i++){
+
+      const product = await productsService.productById(cartProducts[i].product)
+
+      //le decimos que si el stock del producto es menor a la cantidad del producto en el carrito, que no haga nada y quede en el carrito
+      if(product.stock < cartProducts[i].quantity){
+       let stock = false
+
+      }else{
+        //obtenemos los parametros para reducir el stock del producto
+        let id = cartProducts[i].product
+        let cantidad =  cartProducts[i].quantity
+
+        //reducimos el stock del producto
+        const reduceStock = await productsService.stockReduce( id, cantidad)
+
+        //agregamos a los arrays q usaremos para hacer el ticket y obtener la suma total de la compra
+        cartArray.push({product : product.title , quantity : cartProducts[i].quantity })
+        totalArray.push(parseFloat(cartProducts[i].quantity) * parseFloat(product.price))
+
+        //eliminamos el producto del carrito ya que finalizo la compra
+        let carritoId = cartUser._id
+        let productId = cartProducts[i].product
+        const deleteProduct = await cartsService.deleteCartProduct(carritoId , productId)
+
+      }
+
+      }
+    
+  }//obtenemos el precio total de todos los productos
+   const totalPrice = totalArray.reduce(( acumulador , numero ) => acumulador + numero , 0)
+   // guardamos en variables los datos que seran pasados como parametro para la creacion del ticket
+   let products = cartArray
+   let amount = Math.round(totalPrice)
+   let userId = ticket
+   let email = user.email
+   let purchase_datetime = new Date()
 
 
 
+   
+   const createTicket = await ticketsService.createTicket( products , amount , userId , email , purchase_datetime )
+  
+   })
+   
 
 })
 
 
-moongoose.connect(config.MONGO_URL)
+
+
+mongoose.connect(config.MONGO_URL)
   .then(console.log("db conectada"))
   .catch(error => console.log(error))
 

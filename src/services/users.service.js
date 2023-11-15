@@ -1,5 +1,6 @@
 const usersMongoDao = require("../dao/usersDao")
 
+
 class usersService{
 
     constructor(dao){
@@ -41,6 +42,5 @@ class usersService{
     }
 
 }
-
 
 module.exports = new usersService(usersMongoDao)

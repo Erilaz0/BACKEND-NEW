@@ -7,22 +7,21 @@
 
 </head>
 <body>
-    {{{body}}}
- 
-                                              
-       <form id="chatId">
-        <h1>Enviar mensaje</h1>
-        <label for="email">Introduzca su email:</label>
-        <input type="email" id="emailId" name="email" required>
+    {{body}}
 
+                                              
+       <form id="chatId" >
+        <h1>Enviar mensaje</h1>
+        
+        
         <label for="message">Introduzca su mensaje:</label>
-        <input type="text" id="messageId" name="message" required>
+        <input type="text" class="messageId" id={{email}} name="message" required>
 
         
 
        
 
-        <button type="submit"> Enviar </button>
+        <button id="messageButton" type="submit"> Enviar </button>
     </form>
 
     <div id="msj">

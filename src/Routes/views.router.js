@@ -3,6 +3,8 @@ const router = Router()
 const handleBars = require("express-handlebars")
 const { inicializePassportJWT } = require("../config/jwt.config")
 const passport = require("passport")
+const { validarAdminJWT } = require("../utils")
+
 
 const deleteCookiesSession = require("../controllers/viewsController/logoutController")
 const loginRedirection = require("../controllers/viewsController/loginRedirectionController")
@@ -18,7 +20,7 @@ const current = require("../controllers/viewsController/currentController")
 
 router.get("/current", passport.authenticate( "current" , { session : false } ) , current )
 
-router.get("/realtimeproducts", realtimeproductsView )
+router.get("/realtimeproducts", validarAdminJWT , realtimeproductsView )
 
 router.get("/api/sessions/login", loginView )
 

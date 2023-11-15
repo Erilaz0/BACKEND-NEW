@@ -56,6 +56,11 @@ class productsService{
 
     }
    
+    async stockReduce( id , cantidad ){
+
+    return await this.dao.stockReduce(id , cantidad)
+
+    }
 }
     
 

@@ -15,17 +15,30 @@ class cartsService{
 
   }
 
-  async createCart(newCart){
+  async addProduct( cartId , productId ){
 
-     return await this.dao.create(newCart)
+    return await this.dao.addProduct( cartId , productId )
+
+  }
+
+  async createCart({idUser}){
+
+     return await this.dao.create({idUser})
 
   }
 
-  async cartsById(id){
+  async cartsByUserId(idUser){
 
-    return await this.dao.cartsById(id)
+    return await this.dao.cartsByUserId(idUser)
 
   }
+
+  async productInCartVerify( idUser , productId ){
+
+   return await this.dao.productInCartVerify( idUser , productId)
+
+  }
+
   async updateQuantity( cartId , productoId , quantity){
 
    return await this.dao.updateQuantity( cartId , productoId , quantity )

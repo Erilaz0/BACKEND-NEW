@@ -5,7 +5,7 @@ const socket = io();
 
 const form = document.querySelector("#form")
 const deleteForm = document.querySelector("#del")
-const chatSendButton = document.querySelector("#chatId")
+const chatSendButton = document.querySelector("#messageButton")
 
 
 
@@ -36,7 +36,9 @@ socket.emit("newProduct", newProduct)
 
 
 function enviarEliminado(e){
+
     e.preventDefault()
+
 const id = document.querySelector("#idp").value
 
 const idObject = {id : id}
@@ -48,22 +50,30 @@ socket.emit("deleted",idObject)
 
 
 function enviarMensaje(e){
-console.log("submittttttt")
+
     e.preventDefault()
-const user = document.querySelector("#emailId").value
-const message = document.querySelector("#messageId").value
 
+const user = document.querySelector(".messageId").id
+const message = document.querySelector(".messageId").value
 
-const datos = {user:user,message:message}
-
-socket.emit("ne",datos)
+if(!user && !message){
+    console.log("error")
     
+}else{
+  
+   
+    const datos = {user : user, message : message}
+
+    socket.emit("ne",datos)
+    
+    }
+
 
 }
 
 if(deleteForm){deleteForm.addEventListener("submit",enviarEliminado)}
 if(form){form.addEventListener("submit",enviar)}
-if(chatSendButton){chatSendButton.addEventListener("submit",enviarMensaje)}
+if(chatSendButton){chatSendButton.addEventListener("click",enviarMensaje)}
 
 
 socket.on("new", mensaje => {

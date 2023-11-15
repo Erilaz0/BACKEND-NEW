@@ -10,9 +10,9 @@ class chatDao{
     
     }
 
-    async addMessage(nuevoMensaje){
+    async addMessage(message , user){
 
-      return await chatModelo.create(nuevoMensaje)
+      return await chatModelo.create(message , user)
 
     }
 

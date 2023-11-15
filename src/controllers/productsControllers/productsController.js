@@ -1,9 +1,10 @@
 const passport = require("passport")
-const usersModel = require("../../dao/models/products.modelo.js") 
-const productsModelo = require("../../dao/models/products.modelo")
 const handleBars = require("express-handlebars")
 const productsService = require("../../services/products.service.js")
 const usersService = require("../../services/users.service.js")
+const cartsService = require("../../services/carts.service.js")
+const cartCreateAndComprobe = require("../../functions/cartCeateAndComprobe.js")
+
 
 
 async function getProducts( req , res ){
@@ -31,9 +32,7 @@ async function getProducts( req , res ){
       }
       
   
-      
-     
-  
+
   
       try{
         const id = req.user._id
@@ -51,6 +50,14 @@ async function getProducts( req , res ){
       }catch(error){
         console.log( error + " products.router.js:63")
                    }
+     
+     
+     
+     
+     
+     
+     // esta funcion se encarga de comprobar si el usuario que ah ingresado tiene un carrito, si no , se le crea uno 
+     cartCreateAndComprobe(email)
       
       
       
@@ -60,8 +67,7 @@ async function getProducts( req , res ){
   
       if(!nombre && !email){res.status(200).send( { message : " Datos de la sesion ( nombre y email ) no reconocidos " } ) }
       
-      
-      
+     
       
   
       if(sort || limit || pagina || category || status){
@@ -160,7 +166,7 @@ async function getProducts( req , res ){
        }} 
       
      else{
-          
+      
       pagina = 1
       let limite = 20
       const products = await productsService.products_Paginate( pagina , limite )
@@ -185,6 +191,8 @@ async function getProducts( req , res ){
   
   
         })
+
+      
      }//DEVOLVER PAGINA INDICADA EN LA QUERY
   
   

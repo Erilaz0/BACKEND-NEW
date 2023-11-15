@@ -12,22 +12,35 @@ class cartsMongoDao{
 
       }
 
-      async create(newCart){
+      async create({idUser}){
 
-       return await cartsModelo.create(newCart)
+       return await cartsModelo.create({idUser})
 
       }
 
-      async cartsById( id ){
+      async cartsByUserId( idUser ){
 
-      return await cartsModelo.findById({ _id : id })
+      return await cartsModelo.findOne({ idUser : idUser })
     
     
      } 
-     async updateQuantity( cartId , productoId , quantity ){
 
-      return await cartsModelo.updateOne({ _id : cartId , "products.product" : productoId},{$inc:{"products.$.quantity": quantity}})
+      async productInCartVerify( idUser , productId ){
+
+       return await cartsModelo.findOne({idUser : idUser , "products.product" : productId })
+
+      }
+
+     async updateQuantity( idUser , productoId , quantity ){
+
+      return await cartsModelo.updateOne({ idUser : idUser , "products.product" : productoId},{$inc:{"products.$.quantity": quantity}})
      
+     }
+
+     async addProduct( cartId , productId){
+
+      return await cartsModelo.updateOne({ idUser : cartId },{ $push : { products : { product :  productId , quantity : 1 }} })
+
      }
 
      async deleteCartProduct( carritoId , productId ){

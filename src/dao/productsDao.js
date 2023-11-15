@@ -27,7 +27,7 @@ class productsMongoDao{
 
     async productById(id){
 
-     return await productsModelo.findOne({ "_id " : id }).select("-_id")
+     return await productsModelo.findOne(id)
 
     }
 
@@ -64,6 +64,12 @@ class productsMongoDao{
     async productsByCategory( category ){
 
     return await productsModelo.find({category}).lean()
+
+    }
+
+    async stockReduce( id , cantidad ){
+
+    return await productsModelo.updateOne({_id : id},{$inc:{ stock : -cantidad}})
 
     }
 }

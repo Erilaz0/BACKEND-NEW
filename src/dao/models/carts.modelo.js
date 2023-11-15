@@ -1,14 +1,15 @@
 const mongoose = require("mongoose")
+const { Schema } = require("mongoose")
 
 const cartCollection = "carts"
 const cartEsquema = new mongoose.Schema({
 
-
+    idUser : { type : Schema.Types.ObjectId, required : true},
     products:[
         {
-            product : { type : String , required : true},
+            product : { type : Schema.Types.ObjectId , required : true},
             
-            quantity : { type : Number, required : true }
+            quantity : { type : Number , default : 0 }
             
         }
              ]})

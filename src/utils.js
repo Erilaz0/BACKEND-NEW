@@ -2,10 +2,12 @@ const jwt = require("jsonwebtoken")
 const passport = require("passport")
 
 
-const PRIVATE_KEY = "secretPassword"
+const config = require("./config/config")
 
 //funcion para codificara los datos y firmarlos
-const generaJWT = ( usuario ) => jwt.sign ( { usuario } , PRIVATE_KEY , { expiresIn : "1h" } )
+const generaJWT = ( usuario ) => jwt.sign ( { usuario } , config.PRIVATE_KEY00 , { expiresIn : "1h" } )
+
+const generaAdminJWT = ( admin ) => jwt.sign ( { admin } , config.PRIVATE_KEY01 , { expiresIn : "1h"} )
 
 const validarJWT = ( req , res , next ) =>{
         
@@ -18,10 +20,10 @@ const validarJWT = ( req , res , next ) =>{
        // let jwtArgument = data.sessionToken
         
         //verifica el token junto con la private_key , es decir, la firma
-        jwt.verify( getToken , PRIVATE_KEY , ( error , credenciales ) => {
+        jwt.verify( getToken , config.PRIVATE_KEY00 , ( error , credenciales ) => {
           if( error ){
               
-              console.log("acceso === false utils.js:24")
+              res.redirect("/api/sessions/login")
             }else{
                
               console.log("credenciales obtenidas utils.js:27") 
@@ -37,7 +39,37 @@ const validarJWT = ( req , res , next ) =>{
 
 
 
-module.exports = { generaJWT , validarJWT , PRIVATE_KEY } 
+const validarAdminJWT = ( req , res , next )=>{
+
+   const admin = req.cookies.admin 
+   if(!admin){
+
+     return res.redirect("/api/products")
+   }else{
+   
+     jwt.verify( admin , config.PRIVATE_KEY01 , (error , credenciales)=>{
+       if(error){
+
+         console.log("oh no, hubo un error en utils.js - linea : 53")
+
+       }else{
+
+         console.log("siii lo hicimos")
+
+       }
+
+       next()
+
+     })
+
+   }
+   
+
+
+}
+
+
+module.exports = { generaJWT , validarJWT , generaAdminJWT , validarAdminJWT } 
 
 
 

@@ -1,7 +1,8 @@
 const usersService = require("../../services/users.service.js")
 const { generaJWT } = require("../../utils.js")
+const { generaAdminJWT } = require("../../utils.js")
 const bcrypt = require("bcrypt")
-
+const send = require("../../mailing/send.js")
 
 async function login( req , res ){
     
@@ -17,8 +18,14 @@ async function login( req , res ){
  
    }else{
         if(email === "adminCoder@coder.com" && password === "adminCod3r123"){
- 
-             res.status(200).redirect("/api/products")
+          
+          const adminData = { email : email }
+        
+           const adminCookie = generaAdminJWT(adminData)
+        
+            res.cookie("admin", adminCookie , { httpOnly : true } )
+            
+             res.status(200).redirect("/realtimeproducts")
  
        }else{ 
  
@@ -45,7 +52,10 @@ async function login( req , res ){
                     const token = generaJWT(user)
                     if(token){ 
             
-            
+                         send(email)
+                           .then(d => console.log(d))
+                           .catch(error => console.log(error))
+                         
                          res.cookie( "token", token , { httpOnly : false } )
             
             

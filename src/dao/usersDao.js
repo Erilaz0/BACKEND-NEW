@@ -1,5 +1,5 @@
 const usersModelo = require("./models/users.modelo")
-
+const  dao  = require("../config/factory")
 
 
 class usersMongoDao{
@@ -9,7 +9,7 @@ class usersMongoDao{
 
    async verifyEmailUser(email){
 
-    return await usersModelo.findOne({email:email})
+    return await dao.findOne({email:email})
 
    }
 
@@ -17,13 +17,13 @@ class usersMongoDao{
    
       if(!apellido && !edad && !password){
         
-         return await usersModelo.create({ nombre : nombre , email : email , profile : profile })
+         return await dao.create({ nombre : nombre , email : email , profile : profile })
      
        }
       else{
        if(!profile){
 
-         return await usersModelo.create({ nombre , apellido , edad , email , password })
+         return await dao.create({ nombre , apellido , edad , email , password })
 
       }
 
@@ -33,7 +33,7 @@ class usersMongoDao{
 
    async userById( id ){
 
-    return await usersModelo.findOne({ _id : id })
+    return await dao.findOne({ _id : id })
 
    }
 }

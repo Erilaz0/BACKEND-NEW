@@ -25,10 +25,12 @@ async function register( req , res ){
 
      }else{
 
-        let hash = await bcrypt.hash( password , 10 )
+         hash = await bcrypt.hash( password , 10 )
+         
+         
         
         edad = parseInt(edad)
-        const userCreate = await usersService.createUser({ nombre , apellido , edad , email , hash })
+        const userCreate = await usersService.createUser({ nombre , apellido , edad , email , password : hash})
      
         if(userCreate){
    

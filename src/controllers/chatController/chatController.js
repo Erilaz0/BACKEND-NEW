@@ -1,9 +1,11 @@
-const chatModel = require("../../dao/models/chat.modelo")
-
 async function chat( req , res ){
 
+    let email  = req.cookies.datos
     
-    res.status(200).render("chat")
+    res.status(200).render("chat",{
+
+        email : email.email
+    })
 
 
 }

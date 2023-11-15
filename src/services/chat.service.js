@@ -13,9 +13,9 @@ class chatService{
 
    }
 
-   async addMessage(nuevoMensaje){
+   async addMessage(message , user){
 
-     return await this.dao.addMessage(nuevoMensaje)
+     return await this.dao.addMessage(message , user)
 
    }
 
