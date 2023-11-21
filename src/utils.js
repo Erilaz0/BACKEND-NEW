@@ -14,7 +14,7 @@ const validarJWT = ( req , res , next ) =>{
         
         
         let getToken = req.cookies.token
-        if( !getToken ){console.log("no existe la cookie token utils.js:11")}
+        if( !getToken ){console.log(res.redirect("/api/sessions/login"))}
         
        // let data = JSON.parse(getToken)
        // let jwtArgument = data.sessionToken

@@ -10,7 +10,7 @@
     {{{body}}}
  
                                               
-       <form id="form">
+       <form id="form" method="post" action="/realtimeproducts" enctype="multipart/form-data">
         <h1>Agregar Producto</h1>
         <label for="title">title:</label>
         <input type="text" id="title" name="title" required>
@@ -30,6 +30,7 @@
         <label for="stock">stock:</label>
         <input type="text" id="stock" name="stock" required>
 
+       
         <button type="submit">Crear</button>
     </form>
 

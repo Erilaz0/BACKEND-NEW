@@ -27,7 +27,8 @@ const productsEsquema = new mongoose.Schema({
    },category:{
     type : String , require : true
 
-   }
+   },
+   thumbnail:{ Type : String }
 
 
 

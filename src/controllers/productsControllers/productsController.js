@@ -4,6 +4,7 @@ const productsService = require("../../services/products.service.js")
 const usersService = require("../../services/users.service.js")
 const cartsService = require("../../services/carts.service.js")
 const cartCreateAndComprobe = require("../../functions/cartCeateAndComprobe.js")
+const productsModel = require("../../dao/models/products.modelo.js")
 
 
 
@@ -17,7 +18,6 @@ async function getProducts( req , res ){
       }
   
       let data = req.cookies.datos
-      
       const limit = parseInt(req.query.limit)
       const category = req.query.category
       const status = req.query.status
@@ -25,7 +25,8 @@ async function getProducts( req , res ){
       const sort = parseInt(req.query.sort)
       let nombre = ""
       let email = ""
-      
+     
+
       if(data){
          nombre = data.nombre
          email = data.email
@@ -35,7 +36,7 @@ async function getProducts( req , res ){
 
   
       try{
-        const id = req.user._id
+        let id = req.user._id
         
         if(id){ 
       
@@ -48,7 +49,7 @@ async function getProducts( req , res ){
           id = false
              }
       }catch(error){
-        console.log( error + " products.router.js:63")
+        id = false
                    }
      
      
@@ -71,7 +72,7 @@ async function getProducts( req , res ){
       
   
       if(sort || limit || pagina || category || status){
-        console.log("entre")
+        
   /*sort*/ if(sort && sort === 1 || sort === -1){
       
             const products = await productsService.sortPrice(sort) // tambien tiene $match y $group
@@ -170,7 +171,16 @@ async function getProducts( req , res ){
       pagina = 1
       let limite = 20
       const products = await productsService.products_Paginate( pagina , limite )
+      const productsCategory = await productsService.getProducts()
+      const categoriasRepetidas = []
+
+      for(let i = 0 ; i < productsCategory.length ; i++){
      
+        const pr = productsCategory[i].category
+        categoriasRepetidas.push(pr)
+
+       }
+       const categorias = [... new Set(categoriasRepetidas)]
       
       let {totalPages,
            hasPrevPage,
@@ -181,6 +191,7 @@ async function getProducts( req , res ){
       res.status(200).render("products",{
   
       products : products.docs,
+      categorias : categorias ,
       nombre : nombre ,
       email : email ,
       totalPages,

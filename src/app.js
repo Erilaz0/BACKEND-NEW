@@ -5,12 +5,12 @@ const session = require("express-session")
 const passport = require("passport")
 const inicializaPassport = require("./config/passport.config")
 const inicializePassportJWT = require("./config/jwt.config")
-const fs = require("fs")
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
 const handler = require("./Routes/views.router")
 const chat = require("./Routes/chat.router")
 const sessions_ = require("./Routes/session.router")
+const mocking = require("../src/Routes/mocking.router.js")
 
 const handleBars = require("express-handlebars")
 const path = require("path")
@@ -28,10 +28,21 @@ const usersService = require("./services/users.service")
 const ticketsModelo = require("./dao/models/tickets.modelo")
 const ticketsService = require("./services/tickets.service")
 const { selectDAO } = require("./functions/selectDAO")
+const test = require("./functions/testingMongo")
+const errorHandler = require("./Error/errorHandler")
+const CustomError  = require("./Error/customError.js")
+const typeError = require("./Error/typeError.js")
 
-
-//seleccionamos la persistencia a traves de la consola
+//seleccionamos la persistencia a traves del arranque del servidor
 selectDAO()
+
+//al ya haber creado los productos no tengo mas opcion q usar mocks en un testing
+//se q el testing se hace en diferentes condiciones pero al usar asincronia, jest rechazaba este testing debido
+//a el tiempo de espera, asi que lo use en este caso para asegurar la correcta funcionalidad de usersService ya que
+//es el primer servicio en ser utilizado
+test()
+
+
 
 
 PORT= parseInt(config.PORT)
@@ -65,13 +76,16 @@ inicializePassportJWT()
 app.use(passport.initialize())
 app.use(passport.session())
 
+
+
 app.use("/api/products",products)
 app.use("/api/carts/",cart)
 app.use("/",handler) //views
 app.use("/chat",chat)
 app.use("/api/sessions/", sessions_)
+app.use("/mockingproducts",mocking)
 
-
+app.use(errorHandler)
 
 const serverExpress = app.listen(PORT,()=>{
 
@@ -157,7 +171,7 @@ serverSocket.on("connection", sock => {
    //accedemos a products
    const cartProducts = cartUser.products
    if(!cartUser){
-     console.log("no hay carrito")
+     throw CustomError.CustomError("ERROR ID","CONTACTAR AL TECNICO",typeError.ERROR_DATOS,"ID DEL TICKET NO ENCONTRADO EN LA BASE DE DATOS")
      //enviar mail, no seria normal que en este punto en el que se crea el ticket del carrito el id del usuario no
      //fuera encontrado en la DB , aparte del mail deberiamos de hacer un redirect hacia logout
     }

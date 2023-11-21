@@ -6,6 +6,7 @@ const passport = require("passport")
 const { validarAdminJWT } = require("../utils")
 
 
+
 const deleteCookiesSession = require("../controllers/viewsController/logoutController")
 const loginRedirection = require("../controllers/viewsController/loginRedirectionController")
 const profile = require("../controllers/viewsController/profileController")
@@ -20,7 +21,7 @@ const current = require("../controllers/viewsController/currentController")
 
 router.get("/current", passport.authenticate( "current" , { session : false } ) , current )
 
-router.get("/realtimeproducts", validarAdminJWT , realtimeproductsView )
+router.get("/realtimeproducts", validarAdminJWT, realtimeproductsView )
 
 router.get("/api/sessions/login", loginView )
 
@@ -31,6 +32,10 @@ router.get("/profile", profile )
 router.get("/logout", deleteCookiesSession );
   
 router.get("/", loginRedirection )
+
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 const socket = io()
 
+
 const addToCar = document.getElementsByClassName("productbutton")
 const email = document.querySelector(".email")
 

@@ -20,6 +20,7 @@ const stock = document.querySelector("#stock").value
 const category = document.querySelector("#category").value
 const code = document.querySelector("#code").value
 
+console.log(image)
 const newProduct = {
     title:title,
     price:price,

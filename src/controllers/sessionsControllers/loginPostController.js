@@ -3,6 +3,8 @@ const { generaJWT } = require("../../utils.js")
 const { generaAdminJWT } = require("../../utils.js")
 const bcrypt = require("bcrypt")
 const send = require("../../mailing/send.js")
+const   CustomError  = require("../../Error/customError.js")
+const typeError = require("../../Error/typeError.js")
 
 async function login( req , res ){
     
@@ -32,14 +34,14 @@ async function login( req , res ){
              const user = await usersService.verifyEmailUser(email)
              if(!user){
     
-               res.status(400).send({message:"usuario no encontrado"})
+              throw CustomError.CustomError("no encontrado","usuario no encontrado",typeError.ERROR_RECUSO_NO_ENCONTRADO,"no existe este ususario en la base de datos, pruebe con otro")
                       }
             else{ 
  
                let uncryptPassword = await bcrypt.compare( password , user.password ) 
                if(!uncryptPassword){ 
       
-                  res.status(400).send("usuario no existente")
+                throw CustomError.CustomError("credenciales invalidas","contraseña invalida",typeError.ERROR_AUTENTICACION,"contraseña no encontrada en la base de datos")
          
          
          

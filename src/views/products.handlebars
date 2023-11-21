@@ -3,36 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="products">
+    <link rel="stylesheet" src="/products.css">
     <title>chat</title>
 
 
 </head>
-<body>
+<body style="margin: 0;">
+
+   
     {{{body}}}
-    <h1>Bienvenido! {{nombre}}</h1>
-      <p id={{email}} class="email"> Email: {{email}}</p>
+   <header style="width : 100%;">
+    
+    <div style="background-color: #D94229; ;width : 100%; display:flex;">
+    <img style="width:300px ; height : 120px;" src="/assets/logo.png">
+    <a class="links" style=" margin-left : 75% ;font-size:25px; text-decoration : none; color : #000000" href="/api/carts"><img style="width:170px ; height : 100px;" src="/assets/carrito.png"></a>
+   
+     </div>
+     
+      <nav style="background-color: #AE1F08 ; padding : 10px ; width : 100% ; display : flex; justify-content : space-around">
+        
+          <a class="links" style="font-size:25px; text-decoration : none; color : #000000 ;" href="/api/products">Home</a>
+         
+          <a class="links" style="font-size:25px; text-decoration : none; color : #000000 ;" href="/current">Detalles de usuario</a>
+         
+          
+         
+          <a class="links" style="font-size:25px; text-decoration : none; color : #000000" href="/logout">logout</a>
+         
+          <a class="links" style="font-size:25px; text-decoration : none; color : #000000" href="/chat">Chat</a>
+          
+        </nav>
+     
+     
+     
+      </header>
+     
+      <img src="/assets/supermercado.png" style="width:100%; height:800px">
+       <br>
       <br>
       <br>
-      <br>
-      <a href="/current">Detalles de usuario - current </a>
-      <br>
-      <a href="/api/carts">Ver Mi Carrito</a>
-      <br>
-      <a href="/logout">logout</a>
-      <br>
-      <a href="/chat">Chat</a>
- 
+       <h1  class="email" id={{email}}>Bienvenido! {{nombre}}, email :{{email}}</h1>
+       
+        <ul  style=" margin : 0px; display: flex; justify-content : space-between ; flex-wrap:wrap">
+          {{#each categorias}}
+           <li style="list-style : none ; margin : 5px ;  border-radius: 10px; background-color : #D94229 ; padding : 10px ;">
+            <a style="text-decoration : none ; color : #000000 ;" href="/api/products?category={{this}}">{{this}}</a>
+            </li>
+
+           {{/each}}
+        </ul>
+      
        
     
     
-       <div id="products" style="width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap;">
+       <div id="products" style="margin : 3% ;width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; text-align : center">
 
 
 
        {{#each products}}
        
-        <div id="product" style="width: 300px; height: 300px; margin : 30px; border-radius : 10px ; border : 1px solid #000000">
+        <div id="product" style="width: 300px; height: 300px; margin : 30px; border-radius : 10px ; border : 1px solid #D94229">
           <h3>{{title}}</h3> 
           <p>{{description}}</p> 
           <p>${{price}}</p> 
@@ -45,16 +75,16 @@
        
       {{/each}}
        </div>
-      <a href="/api/products?pagina=1"  style="margin-top : 100px">pagina.1</a>
+    <button>  <a href="/api/products?pagina=1"  style="margin-top : 100px">pagina.1</a></button>
       
 
       {{#if hasPrevPage}}
-      <a href="/api/products?pagina={{prevPage}}">prev.page</a>
+      <button>  <a href="/api/products?pagina={{prevPage}}">prev.page</a></button>
         {{else}}<span>prev.pag</span>
       {{/if}}
 
       {{#if hasNextPage}}
-      <a href="/api/products?pagina={{nextPage}}">nextPage</a>
+      <button><a href="/api/products?pagina={{nextPage}}">nextPage</a></button>
         {{else}}<span>prev.pag</span>
       {{/if}}
       
