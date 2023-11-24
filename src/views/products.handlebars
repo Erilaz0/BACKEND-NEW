@@ -8,7 +8,7 @@
 
 
 </head>
-<body style="margin: 0;">
+<body style="margin: 0; background-color:#F6F6F6">
 
    
     {{{body}}}
@@ -16,11 +16,11 @@
     
     <div style="background-color: #D94229; ;width : 100%; display:flex;">
     <img style="width:300px ; height : 120px;" src="/assets/logo.png">
-    <a class="links" style=" margin-left : 75% ;font-size:25px; text-decoration : none; color : #000000" href="/api/carts"><img style="width:170px ; height : 100px;" src="/assets/carrito.png"></a>
+    <a class="links" style="font-size:25px; text-decoration : none; color : #000000" href="/api/carts"><img style="width:170px ; height : 100px;" src="/assets/carrito.png"></a>
    
      </div>
      
-      <nav style="background-color: #AE1F08 ; padding : 10px ; width : 100% ; display : flex; justify-content : space-around">
+      <nav style="background-color: #AE1F08 ; width : 100% ; display : flex; justify-content : space-around">
         
           <a class="links" style="font-size:25px; text-decoration : none; color : #000000 ;" href="/api/products">Home</a>
          
@@ -39,12 +39,10 @@
       </header>
      
       <img src="/assets/supermercado.png" style="width:100%; height:800px">
-       <br>
-      <br>
-      <br>
-       <h1  class="email" id={{email}}>Bienvenido! {{nombre}}, email :{{email}}</h1>
-       
-        <ul  style=" margin : 0px; display: flex; justify-content : space-between ; flex-wrap:wrap">
+      
+       <h1 style="width: 100%; background-color:#FFACAC; margin:0"  class="email" id={{email}}>Bienvenido! {{nombre}}, email :{{email}}</h1>
+      <div>
+        <ul  style=" margin : 0px; display: flex; justify-content : space-between ; flex-wrap:wrap ;margin :10%">
           {{#each categorias}}
            <li style="list-style : none ; margin : 5px ;  border-radius: 10px; background-color : #D94229 ; padding : 10px ;">
             <a style="text-decoration : none ; color : #000000 ;" href="/api/products?category={{this}}">{{this}}</a>
@@ -56,25 +54,27 @@
        
     
     
-       <div id="products" style="margin : 3% ;width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; text-align : center">
+       <div id="products" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));grid-gap: 100px;margin:10% ;">
 
 
 
        {{#each products}}
        
-        <div id="product" style="width: 300px; height: 300px; margin : 30px; border-radius : 10px ; border : 1px solid #D94229">
-          <h3>{{title}}</h3> 
+        <div id="product" style="height: auto; border-radius : 10px ; background-color:#FFFFFF;padding : 20px; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3)">
+          <img style="width: 100%;" src="/assets/lentejas.jpg">
+          <h3 >{{title}}</h3> 
           <p>{{description}}</p> 
           <p>${{price}}</p> 
           <p>stock: {{stock}}</p>  
           <p>{{category}}</p>
-          <button class="productbutton" id={{_id}}>agregar al carrito</button>
+          <button style="width: 100%;" class="productbutton" id={{_id}}>agregar al carrito</button>
           
           
         </div>
        
       {{/each}}
        </div>
+       
     <button>  <a href="/api/products?pagina=1"  style="margin-top : 100px">pagina.1</a></button>
       
 

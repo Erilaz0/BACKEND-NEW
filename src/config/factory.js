@@ -1,5 +1,5 @@
 const config = require("./config")
-const { getJsonUsers } = require("../functions/selectDAO")
+const { getJsonUsers } = require("../functions/serverConfig")
 
 let dao ;
 

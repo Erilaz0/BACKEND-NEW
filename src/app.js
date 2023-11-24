@@ -27,14 +27,14 @@ const cartsService = require("./services/carts.service")
 const usersService = require("./services/users.service")
 const ticketsModelo = require("./dao/models/tickets.modelo")
 const ticketsService = require("./services/tickets.service")
-const { selectDAO } = require("./functions/selectDAO")
+const { serverConfig } = require("./functions/serverConfig.js")
 const test = require("./functions/testingMongo")
 const errorHandler = require("./Error/errorHandler")
 const CustomError  = require("./Error/customError.js")
 const typeError = require("./Error/typeError.js")
 
 //seleccionamos la persistencia a traves del arranque del servidor
-selectDAO()
+serverConfig()
 
 //al ya haber creado los productos no tengo mas opcion q usar mocks en un testing
 //se q el testing se hace en diferentes condiciones pero al usar asincronia, jest rechazaba este testing debido
@@ -42,7 +42,7 @@ selectDAO()
 //es el primer servicio en ser utilizado
 test()
 
-
+//style="margin : 3% ;width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; text-align : center"
 
 
 PORT= parseInt(config.PORT)
@@ -160,7 +160,7 @@ serverSocket.on("connection", sock => {
       }
 
    })
-   //aca nos llega el id del cliente q finalizo su compra
+   //aca nos llega el id del cliente q finalizo su compra nose llega desde la vista del carrito
    sock.on("sendTicket", async (ticket)=>{
    //buscamos el carrito con el id asociado al usuario
    const cartArray = []

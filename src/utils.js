@@ -23,7 +23,7 @@ const validarJWT = ( req , res , next ) =>{
         jwt.verify( getToken , config.PRIVATE_KEY00 , ( error , credenciales ) => {
           if( error ){
               
-              res.redirect("/api/sessions/login")
+              res.status(400).redirect("/api/sessions/login")
             }else{
                
               console.log("credenciales obtenidas utils.js:27") 
@@ -50,7 +50,7 @@ const validarAdminJWT = ( req , res , next )=>{
      jwt.verify( admin , config.PRIVATE_KEY01 , (error , credenciales)=>{
        if(error){
 
-         console.log("oh no, hubo un error en utils.js - linea : 53")
+         res.status(400).redirect("/api/sessions/login")
 
        }else{
 

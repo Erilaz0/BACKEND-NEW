@@ -5,18 +5,23 @@ const usersService = require("../../services/users.service.js")
 const cartsService = require("../../services/carts.service.js")
 const cartCreateAndComprobe = require("../../functions/cartCeateAndComprobe.js")
 const productsModel = require("../../dao/models/products.modelo.js")
-
+const CustomError = require("../../Error/customError.js")
+const typeError = require("../../Error/typeError.js")
 
 
 async function getProducts( req , res ){
 
-
+    
     if(!req.cookies.token){
         res.redirect("/api/sessions/login")
-        console.log( " denegado el acceso a products products.router.js:43 " )
+        req.logger.error(CustomError.CustomError( "ERR invalid token" , "token de session no valido" , typeError.ERROR_AUTENTICACION  , "user in products router with invalid token"))
         return
       }
-  
+     
+     
+      req.logger.error("holaa")
+     
+     
       let data = req.cookies.datos
       const limit = parseInt(req.query.limit)
       const category = req.query.category
