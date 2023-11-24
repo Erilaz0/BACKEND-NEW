@@ -21,12 +21,12 @@ const logger = winston.createLogger({
     new winston.transports.Console({
 
     level:level,
-    format:winston.format.simple()
+   
 
     }),new winston.transports.File({
-        //onedrive no nos permite usar error.log asi q modificamos el nombre
-        filename : "../Error/errors.log",
-        level: "error"
+       
+        filename : `../Error/errors.log`,
+        level: "info"
 
 
     })

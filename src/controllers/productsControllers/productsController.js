@@ -19,7 +19,7 @@ async function getProducts( req , res ){
       }
      
      
-      req.logger.error("holaa")
+      req.logger.warn();
      
      
       let data = req.cookies.datos
