@@ -1,25 +1,32 @@
+const CustomError = require("../../Error/customError")
+const typeError = require("../../Error/typeError")
+
+
+
+CustomError.CustomError()
 async function deleteCookiesSession( req , res ){
 
-
+    
     req.user = null
 
     res.clearCookie("admin")
-    if(res.clearCookie("admin")){console.log("cookie admin destruida archivo views.router.js:7")}
+    if(res.clearCookie("admin")){req.logger.debug("cookie admin deleted views.router.js:12")}
 
     res.clearCookie("datos")
-    if(res.clearCookie("datos")){console.log("cookie datos destruida archivo views.router.js:10")}
+    if(res.clearCookie("datos")){req.logger.debug("cookie datos destruida archivo views.router.js:10")}
 
     res.clearCookie("current")
-    if(res.clearCookie("current")){console.log("cookie current destruida archivo views.router linea 13")}
+    if(res.clearCookie("current")){req.logger.debug("cookie current destruida archivo views.router.js:18")}
     
     res.clearCookie("token")
-    if(res.clearCookie("token")){console.log("cookie token destruida archivo views.router linea 16")}
+    if(res.clearCookie("token")){req.logger.debug("cookie token destruida archivo views.router.js:21")}
     
     req.session.destroy((err) => {
       if (err) {
-        console.error("Error al destruir la sesión:", err);
+        req.logger.error(CustomError.CustomError("SESSION FAIL","USER SESSION NOT DESTROYED",typeError.ERROR_DATOS,err))
+        
       } else {
-        console.log("Sesión de usuario destruida con éxito views.router linea 22");
+        req.logger.debug("sesion destruida con exito")
         
         res.redirect("/api/sessions/login");
       }

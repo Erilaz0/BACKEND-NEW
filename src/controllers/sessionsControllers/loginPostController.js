@@ -65,6 +65,10 @@ async function login( req , res ){
                          let datos = { nombre : user.nombre , email : email }
                          res.cookie("datos", datos , { httpOnly : false })
                          res.status(200).redirect("/api/products")
+                             }else{
+
+                              req.logger.warn(CustomError.CustomError("TOKEN FUNCTION DEPRECATED","TOKEN FUNCTION IS NOT AVIABLE",typeError.ERROR_RECUSO_NO_ENCONTRADO,"THERE'S A FAIL IN JWT GENERATOR FUNCTION"))
+
                              }
            
           

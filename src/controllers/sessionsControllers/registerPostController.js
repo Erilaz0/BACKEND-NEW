@@ -8,8 +8,11 @@ async function register( req , res ){
     const { nombre , apellido ,  email , password } = req.body
     let { edad } = req.body
     
-   
+   console.log(`nuevo usuario ${email}`)
+   if(!console.log(`nuevo usuario ${email}`)){
 
+      console.log("nooo")
+   }
 
 
     if( !nombre || !email || !password || !apellido  || !edad ){

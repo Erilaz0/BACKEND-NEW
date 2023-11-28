@@ -5,12 +5,15 @@ const session = require("express-session")
 const passport = require("passport")
 const inicializaPassport = require("./config/passport.config")
 const inicializePassportJWT = require("./config/jwt.config")
+
+const comun = require("./Routes/comun.router")
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
 const handler = require("./Routes/views.router")
 const chat = require("./Routes/chat.router")
 const sessions_ = require("./Routes/session.router")
 const mocking = require("../src/Routes/mocking.router.js")
+const logger = require("./Routes/logger.router.js")
 
 const handleBars = require("express-handlebars")
 const path = require("path")
@@ -50,7 +53,8 @@ PORT= parseInt(config.PORT)
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname + '/public')));
-app.use(cookieParser());
+app.use(cookieParser());//si le ponemos un string aca lo toma como la firma de las cookies y luego solo hay q
+                        //establecer las cookies en signed : true
 
 // Parse application/json
 
@@ -59,7 +63,7 @@ app.engine("handlebars", handleBars.engine())
 app.set("views", __dirname + "\\views");
 app.set("view engine","handlebars")
 
-app.use(session({
+app.use(session({// revisar esto y el uso de req.sessions
       secret:config.SECRET,
       resave:true,
       saveUninitialized:true,
@@ -82,8 +86,10 @@ app.use("/api/products",products)
 app.use("/api/carts/",cart)
 app.use("/",handler) //views
 app.use("/chat",chat)
-app.use("/api/sessions/", sessions_)
-app.use("/mockingproducts",mocking)
+app.use("/api/sessions/", sessions_ )
+app.use("/mockingproducts",mocking )
+app.use("/loggerTest", logger )
+app.use("/",comun)
 
 app.use(errorHandler)
 

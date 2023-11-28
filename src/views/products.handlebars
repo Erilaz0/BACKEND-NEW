@@ -8,7 +8,7 @@
 
 
 </head>
-<body style="margin: 0; background-color:#F6F6F6">
+<body style="margin: 0; ">
 
    
     {{{body}}}
@@ -38,30 +38,43 @@
      
       </header>
      
-      <img src="/assets/supermercado.png" style="width:100%; height:800px">
+      <img src="/assets/supermercado.png" style="width:100%; height:800px;">
+        
+     
+      <section style="display: flex;flex-wrap:wrap;width:100%;justify-content:space-around;padding-bottom:50px;padding-top:50px;margin:0%">
+      <img style="width:100px;" src="/assets/bimbo.jpg">
+      <img style="width:100px;"  src="/assets/fanta.jpg">
+      <img style="width:100px;"  src="/assets/pringles.jpg">
+      <img style="width:100px; border-radius:50%"  src="/assets/sabritas.png">
+      <img style="width:100px;" src="/assets/nestle.jpg">
+      <img style="width:100px;" src="/assets/chips.jpg">
+      <img style="width:100px;" src="/assets/starbucks.jpg">
+      <img style="width:100px;" src="/assets/whole.jpg">
+      <img style="width:100px;" src="/assets/swirl.png">
       
-       <h1 style="width: 100%; background-color:#FFACAC; margin:0"  class="email" id={{email}}>Bienvenido! {{nombre}}, email :{{email}}</h1>
-      <div>
-        <ul  style=" margin : 0px; display: flex; justify-content : space-between ; flex-wrap:wrap ;margin :10%">
+      </section>
+      <div style="display: flex ; flex-direction : row ; height : auto ; width : 100% ">
+        <ul  style=" width:20%; margin : 0;display:flex;flex-direction:column;padding:0%;height:auto;overflow:auto;border-bottom:1px solid #0081E0">
           {{#each categorias}}
-           <li style="list-style : none ; margin : 5px ;  border-radius: 10px; background-color : #D94229 ; padding : 10px ;">
-            <a style="text-decoration : none ; color : #000000 ;" href="/api/products?category={{this}}">{{this}}</a>
+           <li style="list-style : none ;display:inline-block ;height:auto;padding:10px;padding-right:0%;width:auto;margin:0;border-left:2px solid#0081E0;border-top:0.2px solid #0081E0;">
+            <a style="text-decoration : none ; color : #0081E0;" href="/api/products?category={{this}}">{{this}}&nbsp;&nbsp &gt </a>
             </li>
 
            {{/each}}
+             <h1   class="email" id={{email}}>Bienvenido! {{nombre}}, email :{{email}}</h1>
         </ul>
       
-       
-    
-    
-       <div id="products" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));grid-gap: 100px;margin:10% ;">
+      
+      <div style="width: 100%;">
+       <img style="width:100%;margin-top:0%;height: 300px" src="/assets/foto.png">
+       <div id="products" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));grid-gap: 100px;margin:10% ;margin-top:10%;width:80%;overflow:auto;max-height:700px">
 
 
 
        {{#each products}}
        
-        <div id="product" style="height: auto; border-radius : 10px ; background-color:#FFFFFF;padding : 20px; box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.3)">
-          <img style="width: 100%;" src="/assets/lentejas.jpg">
+        <div id="product" style="height:fit-content; border-radius : 10px ; background-color:#FFFFFF;">
+          <img style="width: 100%; height:30%" src="/assets/lentejas.jpg">
           <h3 >{{title}}</h3> 
           <p>{{description}}</p> 
           <p>${{price}}</p> 
@@ -73,9 +86,13 @@
         </div>
        
       {{/each}}
+      
+    
        </div>
-       
-    <button>  <a href="/api/products?pagina=1"  style="margin-top : 100px">pagina.1</a></button>
+      <div style="display:flex;justify-content:space-evenly">
+           <button>
+            <a href="/api/products?pagina=1"  style="margin-top : 100px">pagina.1</a>
+           </button>
       
 
       {{#if hasPrevPage}}
@@ -85,11 +102,17 @@
 
       {{#if hasNextPage}}
       <button><a href="/api/products?pagina={{nextPage}}">nextPage</a></button>
-        {{else}}<span>prev.pag</span>
+        {{else}}<button>prev.pag</button>
       {{/if}}
       
-
+      <button>
       <a>totalPages : {{totalPages}}</a>
+      </button>
+      </div>
+       </div>
+
+
+       </div>
     
 
 

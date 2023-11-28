@@ -1,17 +1,16 @@
 const winston = require("winston")
 const config = require("../config/config")
-const a = require("../Error/errors.log")
+
 let level;
-
-
+console.log("corriendo servidor en modo entorno de: " + config.ENVIROMENT)
 if(config.ENVIROMENT === "production"){
 
     level = "info"
 
-}else{
+}else if(config.ENVIROMENT === "development"){
 
     level = "debug"
-}
+}else{level = "info"}
 
 const logger = winston.createLogger({
 
@@ -21,12 +20,13 @@ const logger = winston.createLogger({
     new winston.transports.Console({
 
     level:level,
+    format:winston.format.simple()
    
 
     }),new winston.transports.File({
        
-        filename : `../Error/errors.log`,
-        level: "info"
+        filename : `./errors.log`,
+        level: "warn"
 
 
     })

@@ -1,0 +1,10 @@
+{"level":"warn","message":"holaa"}
+{"level":"warn","message":"holaa como estas"}
+{"level":"debug","message":"acceso a products"}
+{"codigo":404,"descripcion":"THERE'S A FAIL IN JWT GENERATOR FUNCTION","level":"warn","name":"TOKEN FUNCTION DEPRECATED"}
+{"level":"info","message":"cookie token destruida archivo views.router linea 16"}
+{"level":"info","message":"cookie token destruida archivo views.router linea 16"}
+{"level":"error","message":"error logger"}
+{"level":"warn","message":"warn logger"}
+{"level":"error","message":"error logger"}
+{"level":"warn","message":"warn logger"}

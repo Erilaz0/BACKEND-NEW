@@ -11,6 +11,7 @@ const login = require("../controllers/sessionsControllers/loginPostController")
 const register = require("../controllers/sessionsControllers/registerPostController")
 const errGithub = require("../controllers/sessionsControllers/errorGithubController")
 const githubLogin = require("../controllers/sessionsControllers/githubController")
+const loggerMid = require("../functions/winstone")
 
 
 
@@ -23,7 +24,7 @@ router.get("/errorGithub", errGithub )
 
 router.post("/register", register )
 
-router.post("/login", login )
+router.post("/login", loggerMid, login )
 
 
 

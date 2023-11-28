@@ -5,19 +5,18 @@ const { json } = require("body-parser")
 
 const pathDAO = path.join(__dirname,"../","archivosJson","persistance.json")
 const pathJsonUsers = path.join(__dirname,"../","archivosJson","users.json")
+const pathEnviroment = path.join(__dirname , "../","archivosJson","enviroment.json")
 
-let enviroment;
 
-async function getJsonUsers(){
 
-  return JSON.parse(fs.readFileSync(pathJsonUsers))
+async function getJsonUsers(){ return JSON.parse( fs.readFileSync( pathJsonUsers ) ) }
+
+
+function getDAO(){ return JSON.parse( fs.readFileSync( pathDAO ) ) }
+
+function getJsonEnviroment(){ return JSON.parse( fs.readFileSync( pathEnviroment ) ) }
+
                   
-
-
-}
-
-
-function getDAO(){return JSON.parse(fs.readFileSync(pathDAO))}
 
 
 async function serverConfig(){
@@ -32,12 +31,12 @@ program
 
 const opciones = program.opts()
 const daoObject = { DAO :  opciones.DAO }
-enviroment = { ENVIROMENT : opciones.ENVIROMENT }
-
+enviroment =  opciones.ENVIROMENT 
+fs.writeFileSync(pathEnviroment,JSON.stringify(enviroment))
 fs.writeFileSync(pathDAO , JSON.stringify(daoObject))
 }
 
 
 
-module.exports = { enviroment , getDAO , getJsonUsers , serverConfig}
+module.exports = { getJsonEnviroment , getDAO , getJsonUsers , serverConfig}
 

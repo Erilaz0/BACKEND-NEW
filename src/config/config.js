@@ -1,7 +1,11 @@
 const dotenv = require("dotenv")
 const { getDAO } = require("../functions/serverConfig")
+const { getJsonEnviroment } = require("../functions/serverConfig")
+
 const dao = getDAO()
-const { enviroment } = require("../functions/serverConfig")
+const enviromentJson = getJsonEnviroment()
+
+
 
 dotenv.config({
 
@@ -23,7 +27,7 @@ const config = {
   PRIVATE_KEY00 : process.env.PRIVATE_KEY00,
   PRIVATE_KEY01 : process.env.PRIVATE_KEY01,
   DAO : dao.DAO || process.env.DAO,
-  ENVIROMENT : enviroment || process.env.ENVIROMENT
+  ENVIROMENT : enviromentJson  || process.env.ENVIROMENT
 
 }
 

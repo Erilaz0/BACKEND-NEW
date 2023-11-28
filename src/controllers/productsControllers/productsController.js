@@ -19,7 +19,7 @@ async function getProducts( req , res ){
       }
      
      
-      req.logger.warn();
+      req.logger.debug("acceso a products");
      
      
       let data = req.cookies.datos
@@ -71,7 +71,7 @@ async function getProducts( req , res ){
      
       
   
-      if(!nombre && !email){res.status(200).send( { message : " Datos de la sesion ( nombre y email ) no reconocidos " } ) }
+      if(!nombre && !email){res.status(typeError.ERROR_DATOS).redirect("/logout") }
       
      
       
