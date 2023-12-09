@@ -32,8 +32,19 @@ program
 const opciones = program.opts()
 const daoObject = { DAO :  opciones.DAO }
 enviroment =  opciones.ENVIROMENT 
-fs.writeFileSync(pathEnviroment,JSON.stringify(enviroment))
-fs.writeFileSync(pathDAO , JSON.stringify(daoObject))
+if(enviroment){
+    fs.writeFileSync(pathEnviroment,JSON.stringify(enviroment))
+
+}else{
+    enviroment = false}
+if(daoObject){
+
+    fs.writeFileSync(pathDAO , JSON.stringify(daoObject))
+}else{
+
+    let i = 0
+}
+
 }
 
 

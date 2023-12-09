@@ -28,7 +28,9 @@ const productsEsquema = new mongoose.Schema({
     type : String , require : true
 
    },
-   thumbnail:{ Type : String }
+   thumbnail:{ type : String },
+   
+  owner : { type : String , default : "admin"}
 
 
 

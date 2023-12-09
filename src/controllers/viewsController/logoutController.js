@@ -9,6 +9,9 @@ async function deleteCookiesSession( req , res ){
     
     req.user = null
 
+    res.clearCookie("premium")
+    if(res.clearCookie("premium")){req.logger.debug("cookie premium deleted views.router.js:12")}
+
     res.clearCookie("admin")
     if(res.clearCookie("admin")){req.logger.debug("cookie admin deleted views.router.js:12")}
 

@@ -8,8 +8,8 @@ class productsMongoDao{
 
     }
 
-    async get(filtro = {}){
-      return await productsModelo.find(filtro)
+    async get(product){
+      return await productsModelo.find(product)
 
     }
 
@@ -27,7 +27,7 @@ class productsMongoDao{
 
     async productById(id){
 
-     return await productsModelo.findOne(id)
+     return await productsModelo.findOne( {_id : id } )
 
     }
 

@@ -16,7 +16,7 @@ addToCar[i].addEventListener("click", async ()=>{
        email : email.id,
 
     }
-    console.log(data)
+    
     socket.emit("addToCart", data)
     
 

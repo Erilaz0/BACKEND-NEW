@@ -22,8 +22,8 @@ class usersMongoDao{
        }
       else{
        if(!profile){
-
-         return await dao.create({ nombre , apellido , edad , email , password })
+        console.log("creando user desde el dao")
+         return await dao.create({ nombre : nombre , apellido : apellido , edad : edad , email : email , password : password})
 
       }
 
@@ -36,6 +36,33 @@ class usersMongoDao{
     return await dao.findOne({ _id : id })
 
    }
+
+
+   async newPassword( id , newPassword ){
+
+     return await dao.updateOne( { _id : id } , { $set : { password : newPassword } } )
+
+   }
+
+   async addOldPassword( id , newPassword){
+
+
+     return await dao.updateOne( { _id : id } , { $push : { oldpasswords : { password : newPassword } } } )
+
+   }
+        
+   async premiumUser( email , premium ){
+
+    return await dao.updateOne( { email } , { $set :{ premium : premium }})
+
+
+   }
+   async ispremium( email ){
+
+    return await dao.findOne( {email : email , premium : true})
+
+   }
+  
 }
 
 module.exports = usersMongoDao

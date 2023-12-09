@@ -11,7 +11,7 @@ const chatSendButton = document.querySelector("#messageButton")
 
 function enviar(e){
     e.preventDefault()
-   
+
 
 const title = document.querySelector("#title").value
 const price = document.querySelector("#price").value
@@ -19,18 +19,41 @@ const description = document.querySelector("#description").value
 const stock = document.querySelector("#stock").value
 const category = document.querySelector("#category").value
 const code = document.querySelector("#code").value
+const email = document.querySelector(".email")
 
-console.log(image)
-const newProduct = {
-    title:title,
-    price:price,
-    description:description,
-    stock:stock,
-    category:category,
-    code:code
+if(email.id === `type="submit"`){
+    const newProduct = {
+        title:title,
+        price:price,
+        description:description,
+        stock:stock,
+        category:category,
+        code:code,
+        
+    
+    }
+
+
+    socket.emit("newProduct", newProduct )
+}else{
+
+    const newProduct = {
+        title:title,
+        price:price,
+        description:description,
+        stock:stock,
+        category:category,
+        code:code,
+        owner:email.id
+    
+    }
+  
+    socket.emit("newProduct", newProduct )
 }
 
-socket.emit("newProduct", newProduct)
+
+
+
 }
 
 
@@ -39,12 +62,23 @@ socket.emit("newProduct", newProduct)
 function enviarEliminado(e){
 
     e.preventDefault()
-
+const email = document.querySelector(".email")
 const id = document.querySelector("#idp").value
+if(email.id === `type="submit"`){
+  
+    const idObject = { id : id }
 
-const idObject = {id : id}
+    socket.emit("deleted",idObject)
 
-socket.emit("deleted",idObject)
+
+}else{
+    
+    const idObject = { id : id , email : email.id }
+
+    socket.emit("deleted",idObject)
+    
+
+}
 
 
 }

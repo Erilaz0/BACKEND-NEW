@@ -1,17 +1,13 @@
-const passport = require("passport")
-const handleBars = require("express-handlebars")
 const productsService = require("../../services/products.service.js")
 const usersService = require("../../services/users.service.js")
-const cartsService = require("../../services/carts.service.js")
 const cartCreateAndComprobe = require("../../functions/cartCeateAndComprobe.js")
-const productsModel = require("../../dao/models/products.modelo.js")
 const CustomError = require("../../Error/customError.js")
 const typeError = require("../../Error/typeError.js")
 
 
 async function getProducts( req , res ){
 
-    
+
     if(!req.cookies.token){
         res.redirect("/api/sessions/login")
         req.logger.error(CustomError.CustomError( "ERR invalid token" , "token de session no valido" , typeError.ERROR_AUTENTICACION  , "user in products router with invalid token"))
@@ -63,7 +59,9 @@ async function getProducts( req , res ){
      
      
      // esta funcion se encarga de comprobar si el usuario que ah ingresado tiene un carrito, si no , se le crea uno 
-     cartCreateAndComprobe(email)
+     try{   cartCreateAndComprobe(email)}
+     catch(error){console.log("no se pudo crear carrito")}
+  
       
       
       

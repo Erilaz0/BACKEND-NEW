@@ -4,9 +4,9 @@ class productsService{
     constructor(dao){
         this.dao = new dao()
     }
-    async getProducts(){
+    async getProducts(product){
 
-        return await this.dao.get()
+        return await this.dao.get(product)
     }
     async createProduct(product){
         
@@ -17,9 +17,9 @@ class productsService{
         return await this.dao.put(id , product)
 
     }
-    async productById( id ){
+    async productById( product ){
 
-       return await this.dao.productById(id)
+       return await this.dao.productById(product)
 
     }
 

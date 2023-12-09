@@ -18,14 +18,14 @@ class usersService{
     async createUser({nombre , apellido , edad , email , password , profile}){
 
       if(!apellido && !edad && !password){
-
+       
         return await this.dao.createUser({ nombre , email , profile })
 
       }
       else{
 
          if(!profile){
-
+          
           return await this.dao.createUser({ nombre , apellido , edad , email , password })
  
          }
@@ -41,6 +41,32 @@ class usersService{
 
     }
 
+    async newPassword( id , newPassword ){
+
+      return await this.dao.newPassword( id , newPassword)
+ 
+    }
+ 
+    async addOldPassword( id , newPassword){
+ 
+ 
+      return await this.dao.addOldPassword( id , newPassword )
+ 
+    }
+
+    async premiumUser( email , premium ){
+
+      return await this.dao.premiumUser( email , premium ) 
+  
+  
+     }
+
+    async ispremium( email ){
+
+      return await this.dao.ispremium( email )
+  
+     }
+  
 }
 
 module.exports = new usersService(usersMongoDao)

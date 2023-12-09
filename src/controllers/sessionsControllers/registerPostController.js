@@ -9,11 +9,7 @@ async function register( req , res ){
     let { edad } = req.body
     
    console.log(`nuevo usuario ${email}`)
-   if(!console.log(`nuevo usuario ${email}`)){
-
-      console.log("nooo")
-   }
-
+   
 
     if( !nombre || !email || !password || !apellido  || !edad ){
 
@@ -21,7 +17,7 @@ async function register( req , res ){
         
     }else{
      const emailVerification = await usersService.verifyEmailUser(email)
-    
+     
      if(emailVerification){
 
         res.status(400).send("usuario con ese email ya existe")
@@ -36,8 +32,17 @@ async function register( req , res ){
         const userCreate = await usersService.createUser({ nombre , apellido , edad , email , password : hash})
      
         if(userCreate){
-   
-           res.status(200).redirect("/api/sessions/login")
+         const emailVerification = await usersService.verifyEmailUser(email)
+         let id = emailVerification._id
+         let newPassword = hash
+         const addOld = await usersService.addOldPassword( id , newPassword ) 
+         if(addOld){
+
+            console.log("ususario grabado en db")
+            res.status(200).redirect("/api/sessions/login")
+
+         }
+          
    
         }else{
    

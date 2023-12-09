@@ -4,6 +4,7 @@ const handleBars = require("express-handlebars")
 const { inicializePassportJWT } = require("../config/jwt.config")
 const passport = require("passport")
 const { validarAdminJWT } = require("../utils")
+const { validarJWT } = require("../utils")
 const loggerMid = require("../functions/winstone")
 
 
@@ -24,7 +25,7 @@ router.get("/current", passport.authenticate( "current" , { session : false } ) 
 
 router.get("/realtimeproducts", validarAdminJWT, realtimeproductsView )
 
-router.get("/api/sessions/login", loginView )
+router.get("/api/sessions/login" , loginView )
 
 router.get("/register", registerView )
  

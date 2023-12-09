@@ -14,6 +14,9 @@ const chat = require("./Routes/chat.router")
 const sessions_ = require("./Routes/session.router")
 const mocking = require("../src/Routes/mocking.router.js")
 const logger = require("./Routes/logger.router.js")
+const passwdReset = require("./Routes/passwdReset.router.js")
+const premium = require("./Routes/premium.router.js")
+
 
 const handleBars = require("express-handlebars")
 const path = require("path")
@@ -36,6 +39,9 @@ const errorHandler = require("./Error/errorHandler")
 const CustomError  = require("./Error/customError.js")
 const typeError = require("./Error/typeError.js")
 
+
+const { generaJWT } = require("./utils.js")
+const { sendReset } = require("./mailing/send.js")
 //seleccionamos la persistencia a traves del arranque del servidor
 serverConfig()
 
@@ -43,8 +49,8 @@ serverConfig()
 //se q el testing se hace en diferentes condiciones pero al usar asincronia, jest rechazaba este testing debido
 //a el tiempo de espera, asi que lo use en este caso para asegurar la correcta funcionalidad de usersService ya que
 //es el primer servicio en ser utilizado
-test()
 
+//test()
 //style="margin : 3% ;width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; text-align : center"
 
 
@@ -90,8 +96,9 @@ app.use("/api/sessions/", sessions_ )
 app.use("/mockingproducts",mocking )
 app.use("/loggerTest", logger )
 app.use("/",comun)
+app.use( "/restablecer" , passwdReset )
+app.use("/api/users/premium" , premium )
 
-app.use(errorHandler)
 
 const serverExpress = app.listen(PORT,()=>{
 
@@ -111,16 +118,59 @@ serverSocket.on("connection", sock => {
     sock.on("newProduct", async( agregarProducto ) =>{
     
     const newP = await productsService.createProduct(agregarProducto)
+    
     })
+
+
+
+
+
+
+
+
+
+
 
     //eliminamos un producto por su id
     sock.on("deleted", async (idProduct) => {
 
      const id = idProduct.id
-     const deletProduct = await productsService.deleteProduct(id)
+    
+     if( !idProduct.email ){
+       
+      return await productsService.deleteProduct( id )
+      
+     }else{ 
+      const email = idProduct.email
+       
+      const product = await productsService.productById( id )
+
+      if( email === product.owner){
+ 
+       const deletProduct = await productsService.deleteProduct( id )
+ 
+ 
+      }else{
+ 
+       return
+      }
+   
+
+     }
+   
 
 
     })
+
+
+
+
+
+
+
+
+
+
     //añadimos mensajes al chat en la db y lo enviamos al chat en la UI
     sock.on("ne", async (nuevoMensaje)=>{
 
@@ -139,6 +189,17 @@ serverSocket.on("connection", sock => {
        
        
     })
+
+
+
+
+
+
+
+
+
+
+
     //añadimos un producto al carrito
     sock.on("addToCart", async (product)=>{
 
@@ -150,22 +211,51 @@ serverSocket.on("connection", sock => {
       const idUser = new mongoose.Types.ObjectId(users._id) // obtenemos el id del usuario para buscar su carrito
      
       const productId = new mongoose.Types.ObjectId(product.idProduct) //id del prdoucto a agregar
-      
-      //verificar si el producto ya existe en el carrito
-      const productInCartVerify = await cartsService.productInCartVerify( idUser , productId )
-      
-      if( productInCartVerify ){
-        //si existe aumentamos su cantidad en uno
-        let quantity = 1
-        const uploadProductQuantity = await cartsService.updateQuantity( idUser , productId , quantity)
+      const productById = await productsService.getProducts(productId)
+      const f = productById.find(product => product.owner === email)
+     
+      if(f){
+        
+            return
         
       }else{
-        //si no existe lo añadimos al carrito
-        const add = await cartsService.addProduct( idUser , productId )
-        
-      }
 
+     //verificar si el producto ya existe en el carrito
+     const productInCartVerify = await cartsService.productInCartVerify( idUser , productId )
+      
+     if( productInCartVerify ){
+       //si existe aumentamos su cantidad en uno
+       let quantity = 1
+       const uploadProductQuantity = await cartsService.updateQuantity( idUser , productId , quantity)
+       
+     }else{
+       //si no existe lo añadimos al carrito
+       const add = await cartsService.addProduct( idUser , productId )
+       
+     }
+
+
+      }
+     
+     
+      
+ 
    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    //aca nos llega el id del cliente q finalizo su compra nose llega desde la vista del carrito
    sock.on("sendTicket", async (ticket)=>{
    //buscamos el carrito con el id asociado al usuario
@@ -230,6 +320,31 @@ serverSocket.on("connection", sock => {
   
    })
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+sock.on("rest",async (email)=>{
+  const token = "http:localhost:8080/restablecer/" + generaJWT(email) 
+  sendReset(email,token)
+  .then(e =>{ console.log(e)})
+  .catch((error)=>{console.log(error)})
+
+
+})
+
+
+
 
 })
 

@@ -30,4 +30,18 @@ const send = async(email) => {
     
 
 }
-module.exports = send
+
+const sendReset = async(email , message) => {
+
+  return transporter.sendMail({
+      
+  from : "Erilaz <alonsoalonsl431432@gmail.com>",
+  to : email ,
+  subject : "correo de prueba de recueracion de constraseña",
+  html: `<a href=${message}>link para el reseteo</a>`
+})
+
+  
+
+}
+module.exports =  { send , sendReset }

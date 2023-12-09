@@ -8,7 +8,7 @@
 
 
 </head>
-<body style="margin: 0; ">
+<body style="margin: 0; background-color:#FAFAFA ">
 
    
     {{{body}}}
@@ -16,7 +16,7 @@
     
     <div style="background-color: #D94229; ;width : 100%; display:flex;">
     <img style="width:300px ; height : 120px;" src="/assets/logo.png">
-    <a class="links" style="font-size:25px; text-decoration : none; color : #000000" href="/api/carts"><img style="width:170px ; height : 100px;" src="/assets/carrito.png"></a>
+    <a class="links" style="font-size:25px; text-decoration : none; color : #000000;" href="/api/carts"><img style="width:170px ; height : 100px;" src="/assets/carrito.png"></a>
    
      </div>
      
@@ -26,7 +26,7 @@
          
           <a class="links" style="font-size:25px; text-decoration : none; color : #000000 ;" href="/current">Detalles de usuario</a>
          
-          
+          <a class="links" style="font-size:25px; text-decoration : none; color : #000000 ;" href="/api/users/premium/{{email}}">Premium User</a>
          
           <a class="links" style="font-size:25px; text-decoration : none; color : #000000" href="/logout">logout</a>
          
@@ -38,10 +38,33 @@
      
       </header>
      
-      <img src="/assets/supermercado.png" style="width:100%; height:800px;">
-        
+
      
-      <section style="display: flex;flex-wrap:wrap;width:100%;justify-content:space-around;padding-bottom:50px;padding-top:50px;margin:0%">
+        <img style="width:90% ; margin: 5% ; margin-bottom: 2%" src="/assets/supermercado.png">
+
+       
+       <div style=" width:90% ; height:400px ; display:flex ; margin :5% ; justify-content:space-between">
+           <img style="width:45% ; height:100%"  src="/assets/lido.jpg">
+           <img  style="width:45%; height:100%" src="/assets/pasta.jpg">
+        </div>
+
+    
+   <!--             <div style="height:fit-content;display: flex;flex-wrap:wrap;width:50%;justify-content:space-around;padding-bottom:50px;padding-top:50px;margin-left:25%;margin-top:950px;background-color:#E9E9E9;border-radius:20px; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.4)">
+      <img style="width:50px; border-radius:50%" src="/assets/bimbo.jpg">
+      <img style="width:50px; border-radius:50%"  src="/assets/fanta.jpg">
+      <img style="width:50px; border-radius:50%"  src="/assets/pringles.jpg">
+      <img style="width:50px; border-radius:50%"  src="/assets/sabritas.png">
+      <img style="width:50px; border-radius:50%" src="/assets/nestle.jpg">
+      <img style="width:50px; border-radius:50%" src="/assets/chips.jpg">
+      <img style="width:50px; border-radius:50%" src="/assets/starbucks.jpg">
+      <img style="width:50px; border-radius:50%" src="/assets/whole.jpg">
+      <img style="width:50px; border-radius:50%" src="/assets/swirl.png">
+      
+      </div>-->
+
+      
+     
+    <!--  <section style="display: flex;flex-wrap:wrap;width:100%;justify-content:space-around;padding-bottom:50px;padding-top:50px;margin:0%">
       <img style="width:100px;" src="/assets/bimbo.jpg">
       <img style="width:100px;"  src="/assets/fanta.jpg">
       <img style="width:100px;"  src="/assets/pringles.jpg">
@@ -53,11 +76,14 @@
       <img style="width:100px;" src="/assets/swirl.png">
       
       </section>
-      <div style="display: flex ; flex-direction : row ; height : auto ; width : 100% ">
-        <ul  style=" width:20%; margin : 0;display:flex;flex-direction:column;padding:0%;height:auto;overflow:auto;border-bottom:1px solid #0081E0">
+      -->
+      
+      <div class="global" style="display: flex ; flex-direction : row ; height : auto ; width : 100% ;justify-content:center; padding-bottom: 200px">
+        <ul  style=" width:20%; margin : 0; margin-top:150px; display:flex; flex-direction:column; padding:0%; height:fit-content; overflow:auto; margin-left:5%; border:1px solid #B3B3B3;">
+         <h1 style="margin: 0%; width:100%;background-color: #D94229; text-align:center;padding:10px; color : #FFFFFF">Categorias</h1>
           {{#each categorias}}
-           <li style="list-style : none ;display:inline-block ;height:auto;padding:10px;padding-right:0%;width:auto;margin:0;border-left:2px solid#0081E0;border-top:0.2px solid #0081E0;">
-            <a style="text-decoration : none ; color : #0081E0;" href="/api/products?category={{this}}">{{this}}&nbsp;&nbsp &gt </a>
+           <li style="list-style : none ;display:inline-block ;height:auto;padding:10px;padding-right:0%;width:auto;margin:0;border-bottom:1px solid #B3B3B3">
+            <a style="text-decoration : none ; color:#000000; " href="/api/products?category={{this}}">{{this}}</a>
             </li>
 
            {{/each}}
@@ -66,22 +92,25 @@
       
       
       <div style="width: 100%;">
-       <img style="width:100%;margin-top:0%;height: 300px" src="/assets/foto.png">
-       <div id="products" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));grid-gap: 100px;margin:10% ;margin-top:10%;width:80%;overflow:auto;max-height:700px">
 
+      <div class="productscontainer" style="width: 95%;margin-top:155px;text-align:center;margin-left:20px;">
+        <h1 style="width: 100%; background-color: #D94229; padding-bottom:13px; padding-top:10px;color:#FFFFFF">Productos</h1>
+       <div id="products" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));grid-gap: 30px; width:100%; ">
+       
 
 
        {{#each products}}
        
-        <div id="product" style="height:fit-content; border-radius : 10px ; background-color:#FFFFFF;">
-          <img style="width: 100%; height:30%" src="/assets/lentejas.jpg">
-          <h3 >{{title}}</h3> 
-          <p>{{description}}</p> 
-          <p>${{price}}</p> 
-          <p>stock: {{stock}}</p>  
-          <p>{{category}}</p>
-          <button style="width: 100%;" class="productbutton" id={{_id}}>agregar al carrito</button>
-          
+        <div id="product" style="height:fit-content;  background-color:#FFFFFF;border:1px solid #B3B3B3;">
+          <img style="width: 200px; height:200px" src="/assets/lentejas.jpg">
+        <!--  <h3 style="text-align: start;"  >{{title}}</h3> -->
+          <p style="text-align: start;">{{description}}</p> 
+          <p style="text-align: start;">stock: {{stock}}</p> 
+          <div style="width:100%; display:flex; justify-content:space-around"> 
+       <!--   <p>{{category}}</p> -->
+          <p style="color: #5DD300;text-align: start; font-size:25px; height:40px">${{price}}</p> 
+          <button style="width: 40%; height:40px; background-color: #D94229; color:#FFFFFF; border:0px solid #000000; margin-top:15px" class="productbutton" id={{_id}}>COMPRAR</button>
+          </div>
           
         </div>
        
@@ -89,7 +118,10 @@
       
     
        </div>
-      <div style="display:flex;justify-content:space-evenly">
+       </div>
+
+
+      <div class="paginatebuttons" style="display:flex; justify-content:space-evenly ; padding-top:30px">
            <button>
             <a href="/api/products?pagina=1"  style="margin-top : 100px">pagina.1</a>
            </button>
@@ -113,6 +145,9 @@
 
 
        </div>
+       <footer style="background-color: #AE1F08; width:100%; height:50px; text-align:center; ">
+        <p style="color:#FAFAFA ; padding-top:15px">@copyright - todos los derechos reservados</p>
+        </footer>
     
 
 

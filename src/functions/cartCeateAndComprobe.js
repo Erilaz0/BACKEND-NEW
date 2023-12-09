@@ -8,7 +8,7 @@ const getUserByEmail = await usersService.verifyEmailUser( email )
      
 if(!getUserByEmail){
 
-   getUserByEmail = false
+   console.log("no se pudo") 
 
 }else{
   

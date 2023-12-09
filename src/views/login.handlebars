@@ -1,5 +1,38 @@
-<h1>login</h1>
-<form action="/api/sessions/login" method="post">
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+<title></title>
+
+
+
+
+</head>
+<body style="margin: 0;">
+<header style="width:100%; background-color:#D94229;padding-top:10px; margin:0px">
+
+<h1 style="margin-left:20px">login</h1>
+    
+    <nav style="background-color:#881301;width:100%;height:50px">
+
+<ul style="display: flex;justify-content:space-around;">
+
+<li style="list-style: none; padding:10px;"><a style="text-decoration:none ; color:antiquewhite" href="/api/sessions/github">Entrar con github</a></li>
+<li style="list-style: none; padding:10px;"><a style="text-decoration:none ; color:antiquewhite" href="/register" >Registrarse</a></li>
+<li style="list-style: none; padding:10px;"><a style="text-decoration:none ; color:antiquewhite"  href="/restablecer">olvidaste tu contraseña?</a></li>
+
+</ul>
+
+
+</nav>
+
+
+
+</header>
+
+<form style="margin:10px;" action="/api/sessions/login" method="post">
         
         <label for="email">Email:</label>
         <input type="text" id="email" name="email" required>
@@ -11,6 +44,13 @@
 
     </form>
 
-<a href="/api/sessions/github">Entrar con github</a>
-<br>
-<a href="/register" >Registrarse</a>
+
+
+
+
+</body>
+
+
+</html>
+
+
