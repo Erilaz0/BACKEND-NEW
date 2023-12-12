@@ -42,7 +42,7 @@ async function login( req , res ){
                let uncryptPassword = await bcrypt.compare( password , user.password ) 
                if(!uncryptPassword){ 
       
-                throw CustomError.CustomError("credenciales invalidas","contraseña invalida",typeError.ERROR_AUTENTICACION,"contraseña no encontrada en la base de datos")
+                res.status(500).redirect("/api/sessions/login")
          
          
          

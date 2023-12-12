@@ -44,14 +44,40 @@ const { generaJWT } = require("./utils.js")
 const { sendReset } = require("./mailing/send.js")
 //seleccionamos la persistencia a traves del arranque del servidor
 serverConfig()
+const swagger_jsdoc = require("swagger-jsdoc")
+const swaggerUi = require("swagger-ui-express")
 
-//al ya haber creado los productos no tengo mas opcion q usar mocks en un testing
-//se q el testing se hace en diferentes condiciones pero al usar asincronia, jest rechazaba este testing debido
-//a el tiempo de espera, asi que lo use en este caso para asegurar la correcta funcionalidad de usersService ya que
-//es el primer servicio en ser utilizado
+const options = {
+  //definition es una propiedad de swagger q tiene varias parametros
+  definition :{
+    
+    openapi : "3.0.0",
+    info:{
+
+     title:"api abm products",
+     version : "1.0.0",
+     description:"documentacion del proyecto api abm products"
+    }
+    },
+    apis:[path.resolve(__dirname, "./docs/*.yaml")]
+
+  
+
+
+}
+const specs = swagger_jsdoc(options);
+
+
+
+
+
+
+
+
+
+
 
 //test()
-//style="margin : 3% ;width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; text-align : center"
 
 
 PORT= parseInt(config.PORT)
@@ -98,6 +124,7 @@ app.use("/loggerTest", logger )
 app.use("/",comun)
 app.use( "/restablecer" , passwdReset )
 app.use("/api/users/premium" , premium )
+app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup(specs))
 
 
 const serverExpress = app.listen(PORT,()=>{

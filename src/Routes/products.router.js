@@ -39,13 +39,13 @@ function getProducts(path){
 
 router.get("/", validarJWT , loggerMid, productsController )
 
-router.get("/:pid", productByIdController )
+router.get("/:pid", validarJWT ,productByIdController )
 
-router.post("/", postProducts )
+router.post("/", validarJWT , postProducts )
 
-router.put("/:pid", putProducts )
+router.put("/:pid", validarJWT , putProducts )
 
-router.delete("/:pid", deleteProduct )
+router.delete("/:pid", validarJWT , deleteProduct )
 
 
 

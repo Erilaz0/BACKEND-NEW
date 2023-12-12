@@ -1,0 +1,323 @@
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  
+  schemas:
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          description: product name.
+        description:
+          type: string
+          description: product description.
+        code:
+          type: number
+          description: product code.
+        price:
+          type: number
+          format: double
+          description: product price.
+        status:
+          type: string
+          format: double
+          description: product status.
+        stock:
+          type: number
+          format: double
+          description: product stock.
+        category:
+          type: number
+          format: double
+          description: product category. 
+        thumbnail:
+          type: string
+          format: double
+          description: path of product photo. 
+    Cart:
+      type: object
+      properties:
+        idUser:
+          type: string
+          description: cart id.
+        products:
+          type: array
+          items:
+            example: 
+              product: product Id
+              quantity: product Quantity
+       
+
+
+
+security:
+  - BearerAuth: [] 
+paths:
+  /api/products/:
+    get:
+      summary: 
+      tags:
+        - Products
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: get products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500": 
+          description : cannot get products
+    post:
+      summary: post product
+      tags:
+        - Products
+      responses:
+        "200":
+          description: product was posted
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "500":
+          description: internal error server
+
+    
+
+  /api/products/{uid}:
+    get:
+      summary: get product by id
+      tags:
+        - Products
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: product id from parameters
+        schema:
+          type: string
+      # - name: Authorization
+      #   in: header
+      #   required: true
+      #   description: Token de autenticación
+      #   schema:
+      #     type: string            
+      responses:
+        "200":
+          description: get one product by its id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: internal error server
+    put:
+      summary: update the product with _id === uid in parameters and modify a keys value in the database according to the specified value in the request body
+      tags:
+        - Products
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: product id from parameters
+        schema:
+          type: string
+      responses:
+        "200":
+          description: updated product
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+              example:
+                title : Tomate 
+        "500":
+          description: internal error server
+    delete:
+      summary: delet product
+      tags:
+        - Products
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: product id from parameters
+        schema:
+          type: string
+      responses:
+        "200":
+          description: deleted product
+        "500":
+          description: internal error server
+
+
+  /api/carts/:
+    get:
+      summary: get all carts from the DB
+      tags:
+        - Carts
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: get carts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        "500": 
+          description : cannot get carts
+    post:
+      summary: post cart
+      tags:
+        - Carts
+      
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: added one cart to the DB
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        "500": 
+          description : cannot post cart
+ 
+ 
+  /api/carts/{uid}:
+    get:
+      summary: get cart by id
+      tags:
+        - Carts
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: cart id from parameters
+        schema:
+          type: string
+      # - name: Authorization
+      #   in: header
+      #   required: true
+      #   description: Token de autenticación
+      #   schema:
+      #     type: string            
+      responses:
+        "200":
+          description: obtained cart by its id
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        "500":
+          description: internal error server
+  /api/carts/{cid}/products/{pid}:
+    put:
+      summary: update product quantity
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: cart id from parameters
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: product id from parameters
+        schema:
+          type: string
+      # - name: Authorization
+      #   in: header
+      #   required: true
+      #   description: Token de autenticación
+      #   schema:
+      #     type: string            
+      responses:
+        "200":
+          description: updated one cart product from the DB
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+              example:
+                quantity : 3
+                  
+        "500":
+          description: internal error server
+    delete:
+      summary: delete cart product
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: cart id from parameters
+        schema:
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: cart product ID from parameters
+        schema:
+          type: string
+      # - name: Authorization
+      #   in: header
+      #   required: true
+      #   description: Token de autenticación
+      #   schema:
+      #     type: string            
+      responses:
+        "200":
+          description: deleted one cart product from the DB         
+        "500":
+          description: internal error server
+ 
+ 
+  /api/carts/{cid}:
+    delete:
+      summary: delete cart by its id
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: cart id from parameters
+        schema:
+          type: string
+      # - name: Authorization
+      #   in: header
+      #   required: true
+      #   description: Token de autenticación
+      #   schema:
+      #     type: string            
+      responses:
+        "200":
+          description: deleted one cart from the DB
+        "500":
+          description: internal error server
