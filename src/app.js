@@ -239,7 +239,7 @@ serverSocket.on("connection", sock => {
      
       const productId = new mongoose.Types.ObjectId(product.idProduct) //id del prdoucto a agregar
       const productById = await productsService.getProducts(productId)
-      const f = productById.find(product => product.owner === email)
+      const f = productById.find( product => product.owner === email )
      
       if(f){
         
@@ -306,8 +306,8 @@ serverSocket.on("connection", sock => {
 
       const product = await productsService.productById(cartProducts[i].product)
 
-      //le decimos que si el stock del producto es menor a la cantidad del producto en el carrito, que no haga nada y quede en el carrito
-      if(product.stock < cartProducts[i].quantity){
+      //si el stock del producto no es suficiente para completar la compra, no hacemos nada, el producto no se añade al ticket
+      if( product.stock < cartProducts[i].quantity ){
        let stock = false
 
       }else{

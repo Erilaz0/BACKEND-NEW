@@ -33,8 +33,9 @@ async function login( req , res ){
  
              const user = await usersService.verifyEmailUser(email)
              if(!user){
-    
-             res.status(400).redirect("/api/sessions/login")
+             res.set("Usuario no encontrado")
+             res.redirect( 400 , "/api/sessions/login" )
+
              console.log("ususario redirigiendose a login desde loginpostcontroller")
                       }
             else{ 
@@ -55,7 +56,8 @@ async function login( req , res ){
                     const premium = await usersService.ispremium(email)
                     if(premium){
 
-                      const token = generaJWT(user) 
+                      const token = generaJWT(user)
+                      
                       if(token){ 
             
                         //send(email)
@@ -66,9 +68,10 @@ async function login( req , res ){
                         res.cookie("premium", true , { httpOnly : false })
            
            //agregamos a la session en caso de que no haya un registro con github
-                        let datos = { nombre : user.nombre , email : email }
+                        let datos = { nombre : user.nombre , email : email , id : user._id}
                         res.cookie("datos", datos , { httpOnly : false })
-                        res.status(200).redirect("/api/products")
+                        res.set("Succefully Login")
+                        res.redirect( 200 , "/api/products" )
 
                       } else{
 
@@ -90,9 +93,11 @@ async function login( req , res ){
               
               
               //agregamos a la session en caso de que no haya un registro con github
-                           let datos = { nombre : user.nombre , email : email }
+                           let datos = { nombre : user.nombre , email : email , id : user._id}
                            res.cookie("datos", datos , { httpOnly : false })
-                           res.status(200).redirect("/api/products")
+                           
+                           res.set({ nombre : user.nombre , email : email })
+                           res.redirect( 200 , "/api/products" )
 
                               } else{
 

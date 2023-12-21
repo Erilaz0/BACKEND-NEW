@@ -8,6 +8,7 @@ const cartCreate = require("../controllers/cartsControllers/cartsPostController.
 const cartById = require("../controllers/cartsControllers/cartsByIdController.js")
 const getCarts = require("../controllers/cartsControllers/cartsController.js")
 
+const { validarJWT } = require("../utils.js")
 
 
 
@@ -41,17 +42,17 @@ function saveCart(cart){
 
 */
 
-router.get("/", getCarts )
+router.get("/", validarJWT , getCarts )
 
-router.get("/:pid", cartById )
+router.get("/:pid", validarJWT , cartById )
 
-router.post("/" , cartCreate )
+router.post("/" , validarJWT , cartCreate )
 
-router.put("/:cid/products/:pid", cartUpdate )
+router.put("/:cid/products/:pid", validarJWT , cartUpdate )
 
-router.delete("/:cid/products/:pid", cartProductDelete )
+router.delete("/:cid/products/:pid", validarJWT , cartProductDelete )
 
-router.delete("/:cid", cartDelete )
+router.delete("/:cid", validarJWT , cartDelete )
 
 
 

@@ -22,7 +22,7 @@ class usersMongoDao{
        }
       else{
        if(!profile){
-        console.log("creando user desde el dao")
+        
          return await dao.create({ nombre : nombre , apellido : apellido , edad : edad , email : email , password : password})
 
       }

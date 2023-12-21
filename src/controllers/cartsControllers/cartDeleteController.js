@@ -6,24 +6,23 @@ async function cartDelete( req , res ){
 
 
     const id = req.params.cid
-    try{const cartDelete = await cartsService.cartDelete(id)}
-    catch(error){
-      
-      throw CustomError.CustomError("cart failed","fallo al eliminar el carrito",typeError.ERROR_DATOS,"fallo al eliminar el carrito, trate de insertar un id valido")
-   }
+    const cartDelete = await cartsService.cartDelete(id)
     if ( cartDelete ){
-       res.status(200).send("cart deleted")
- }
-    else{
-    
-      throw CustomError.CustomError("cart failed","fallo al eliminar el carrito",typeError.ERROR_DATOS,"fallo al eliminar el carrito, trate de insertar un id valido")
- 
- 
-    }
-
-
+      res.status(200).send("cart deleted")
 }
+   else{
+   
+     throw CustomError.CustomError("cart failed","fallo al eliminar el carrito",typeError.ERROR_DATOS,"fallo al eliminar el carrito, trate de insertar un id valido")
 
+
+   }
+
+  
+  
+  }
+    
+      
+  
 
 
 module.exports = cartDelete

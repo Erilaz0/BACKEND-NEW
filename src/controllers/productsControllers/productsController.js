@@ -10,11 +10,7 @@ const typeError = require("../../Error/typeError.js")
 async function getProducts( req , res ){
 
 
-    if(!req.cookies.token){
-        res.redirect("/api/sessions/login")
-        req.logger.error(CustomError.CustomError( "ERR invalid token" , "token de session no valido" , typeError.ERROR_AUTENTICACION  , "user in products router with invalid token"))
-        return
-      }
+    
      
      
       req.logger.debug("acceso a products");
@@ -28,33 +24,19 @@ async function getProducts( req , res ){
       const sort = parseInt(req.query.sort)
       let nombre = ""
       let email = ""
-     
+      let id ;
+      
 
       if(data){
          nombre = data.nombre
          email = data.email
+         id = data.id
       }
       
   
 
   
-      try{
-        let id = req.user._id
-        
-        if(id){ 
       
-          const user = await usersService.userById( id)
-          
-          nombre = user.nombre
-          email = user.email
-        
-        }else{
-          id = false
-             }
-      }catch(error){
-        id = false
-                   }
-     
      
      
      
@@ -67,11 +49,11 @@ async function getProducts( req , res ){
       
       
       
-      
+     
      
       
   
-      if(!nombre && !email){res.status(typeError.ERROR_DATOS).redirect("/logout") }
+      if(!nombre && !email){console.log("no hay email ni nombre") }
       
      
       
@@ -194,8 +176,8 @@ async function getProducts( req , res ){
            nextPage} = products
       
       res.status(200).render("products",{
-  
-      products : products.docs,
+      iduser : id ,
+      products : products.docs ,
       categorias : categorias ,
       nombre : nombre ,
       email : email ,

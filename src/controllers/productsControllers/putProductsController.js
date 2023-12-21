@@ -14,7 +14,7 @@ const update = await productsService.updateProduct(id , productToUpdate)
 
    
 if(update){  
-  res.status(200).json("Producto actualizado correctamente")
+  res.status(200).send("product updated properly")
  }
 else{
 

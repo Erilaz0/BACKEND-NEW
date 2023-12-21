@@ -33,15 +33,27 @@ function getProducts(path){
 }
 */
 
+/*it("testing PUT endpoint" , async function(){
+     
+    const bodyRequest = { "title" : "test" }
+
+    const products = await productsService.createProduct(product)
+    const body = requester.put(`/api/products/${products._id}`)
+                          .set("cookie", `token=${token}`)
+                          .send(bodyRequest)
+
+    
 
 
+   })
 
+*/
 
 router.get("/", validarJWT , loggerMid, productsController )
 
 router.get("/:pid", validarJWT ,productByIdController )
 
-router.post("/", validarJWT , postProducts )
+router.post("/", validarJWT, postProducts )
 
 router.put("/:pid", validarJWT , putProducts )
 

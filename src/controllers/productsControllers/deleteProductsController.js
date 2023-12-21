@@ -5,12 +5,13 @@ const productsService = require("../../services/products.service")
 async function deleteProduct( req , res ){
 
     const id = req.params.pid
+    
     const productDeleted = await productsService.deleteProduct(id)
     if(productDeleted){
 
-     
-      res.status(200).send("Producto id: " + id + "eliminado correctamente")
-       
+           
+      res.status(200).send("product deleted")
+ 
 
     }
     else{

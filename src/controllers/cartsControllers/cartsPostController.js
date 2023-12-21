@@ -8,7 +8,7 @@ async function cartCreate( req , res){
  
     if(insertCart){
  
-       res.status(200).send("Producto Añadido")
+       res.status(200).json(newCart)
     }
      else{
         

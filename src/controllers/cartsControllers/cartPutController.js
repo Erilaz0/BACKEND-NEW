@@ -18,8 +18,10 @@ async function cartUpdate( req , res ){
        
       const updateProductQuantity = await cartsService.updateQuantity( cartId , productoId , quantity)
       if(updateProductQuantity){
-
-          res.status(200).send("Cantidad actualizada correctamente")
+          const cart = await cartsService.getCarts({_id : cartId})
+          
+          res.status(200).json(cart)
+          
 
          }
          

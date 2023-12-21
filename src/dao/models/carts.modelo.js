@@ -4,9 +4,13 @@ const { Schema } = require("mongoose")
 const cartCollection = "carts"
 const cartEsquema = new mongoose.Schema({
 
-    idUser : { type : Schema.Types.ObjectId, required : true},
+    idUser : {
+         type : Schema.Types.ObjectId, required : true,
+         ref : "users",
+        },
+   
     products:[
-        {
+        {   
             product : { type : Schema.Types.ObjectId , required : true},
             
             quantity : { type : Number , default : 0 }
