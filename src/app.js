@@ -6,6 +6,9 @@ const passport = require("passport")
 const inicializaPassport = require("./config/passport.config")
 const inicializePassportJWT = require("./config/jwt.config")
 
+
+
+
 const comun = require("./Routes/comun.router")
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
@@ -16,7 +19,7 @@ const mocking = require("../src/Routes/mocking.router.js")
 const logger = require("./Routes/logger.router.js")
 const passwdReset = require("./Routes/passwdReset.router.js")
 const premium = require("./Routes/premium.router.js")
-
+const image = require("./Routes/image.router.js")
 
 const handleBars = require("express-handlebars")
 const path = require("path")
@@ -38,7 +41,7 @@ const test = require("./functions/testingMongo")
 const errorHandler = require("./Error/errorHandler")
 const CustomError  = require("./Error/customError.js")
 const typeError = require("./Error/typeError.js")
-
+const cors = require('cors');
 
 const { generaJWT } = require("./utils.js")
 const { sendReset } = require("./mailing/send.js")
@@ -73,10 +76,6 @@ const specs = swagger_jsdoc(options);
 
 
 
-
-
-
-
 //test()
 
 
@@ -86,8 +85,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname + '/public')));
 app.use(cookieParser());//si le ponemos un string aca lo toma como la firma de las cookies y luego solo hay q
-                        //establecer las cookies en signed : true
-
+app.use(cors())                        //establecer las cookies en signed : true
+app.use('/uploads', express.static('uploads'));
 // Parse application/json
 
 
@@ -123,8 +122,9 @@ app.use("/mockingproducts",mocking )
 app.use("/loggerTest", logger )
 app.use("/",comun)
 app.use( "/restablecer" , passwdReset )
-app.use("/api/users/premium" , premium )
+app.use("/api/users" , premium )
 app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup(specs))
+app.use("/image",image)
 
 
 const serverExpress = app.listen(PORT,()=>{

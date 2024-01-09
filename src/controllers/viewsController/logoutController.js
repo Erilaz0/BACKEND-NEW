@@ -1,12 +1,17 @@
 const CustomError = require("../../Error/customError")
 const typeError = require("../../Error/typeError")
+const usersService = require("../../services/users.service")
 
 
 
 CustomError.CustomError()
 async function deleteCookiesSession( req , res ){
 
-    
+    const datos = req.cookies.datos
+    let email = datos.email
+    const user = await usersService.verifyEmailUser(email)
+    let date = new Date()
+    const lastUserConnection = await usersService.lastConnection( user._id  , date )
     req.user = null
 
     res.clearCookie("premium")

@@ -66,6 +66,33 @@ class usersService{
       return await this.dao.ispremium( email )
   
      }
+
+
+    async changePhoto( id , profilephoto){
+ 
+      return await this.dao.changePhoto( id , profilephoto )
+  
+     }
+
+    async comporbanteDomicilio( id , document ){
+
+
+      return await this.dao.comporbanteDomicilio( id , document )
+   
+      }
+   
+    async cedulaDeIdentidad( id , document ){
+   
+   
+       return await this.dao.cedulaDeIdentidad( id , document )
+    
+       }
+
+    async lastConnection( id , date ){
+
+      return await this.dao.lastConnection( id , date )
+  
+     }
   
 }
 

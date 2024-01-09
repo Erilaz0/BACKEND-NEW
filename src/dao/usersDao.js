@@ -62,6 +62,32 @@ class usersMongoDao{
     return await dao.findOne( {email : email , premium : true})
 
    }
+
+   async changePhoto( id , profilephoto){
+ 
+    return await dao.updateOne({ _id : id } , { profilephoto : profilephoto })
+
+   }
+
+   async comporbanteDomicilio( id , document ){
+
+
+   return await dao.updateOne( { _id : id , } , { $push : {documents : { C_D : document} }})
+
+   }
+
+   async cedulaDeIdentidad( id , document ){
+
+
+    return await dao.updateOne( { _id : id , } , { $push : {documents : { C_I : document} }})
+ 
+    }
+
+   async lastConnection( id , date ){
+
+    return await dao.updateOne( { _id : id } , { last_connection : date } )
+
+   }
   
 }
 

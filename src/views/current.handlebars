@@ -7,12 +7,48 @@
 
 </head>
 <body>
+    
+
+
    <p>Bienvenido¡¡ {{nombre}}</p>
+   {{#if thumbnail }}
+      <img style="margin-left: 15px , width: 200px; height:200px ; border-radius:50%;" src="/uploads/profile/{{thumbnail}}">
+     
+
+        
+
+           
+    {{/if}}
+   <h1>Change profile photo:</h1> 
+ <form action="/api/users/{{id}}/documents" method="post" enctype="multipart/form-data">
+
+    <input type="file" name="image" required>
+    <button type="submit">change</button>
+   </form>
+     
+    
    <h1>Profile Details: </h1>
    <p>Id de usuario: {{id}}</p>
    <p>Email: {{email}}</p>
    <p>Rol: {{rol}}</p>
    <p>Token: {{token}}</p>
+   <a href="http://localhost:8080/api/products">Home</a>
+   
+   
+   
+  
+   <h1>Upload file:</h1>
+
+   <form action="/api/users/{{id}}/documents?document=pdf" method="post" enctype="multipart/form-data">
+
+    <input type="file" name="pdf" required>
+    
+    <button type="submit"> Upload File</button>
+
+   </form>
+   <br>
+   <br>
+   <br>
 
    <a href="/logout"> Cerrar Sesion</a>
 

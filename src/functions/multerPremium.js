@@ -1,11 +1,11 @@
 const multer = require("multer")
-const path = require("path")
 
 
 
-const productsStorage = multer.diskStorage({
 
-    destination : "./uploads/products" ,
+const premiumStorage = multer.diskStorage({
+
+    destination : "./uploads/documents" ,
     filename : function( req , file , cb ){
      cb(null , file.originalname)
     
@@ -17,7 +17,7 @@ const productsStorage = multer.diskStorage({
     
 const uploadProductImage = multer({
     
-      storage : productsStorage
+      storage : premiumStorage
     }).single("image")
 
 

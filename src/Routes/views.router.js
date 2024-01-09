@@ -6,6 +6,7 @@ const passport = require("passport")
 const { validarAdminJWT } = require("../utils")
 const { validarJWT } = require("../utils")
 const loggerMid = require("../functions/winstone")
+const productImage = require("../functions/multer")
 
 
 
@@ -24,6 +25,8 @@ const current = require("../controllers/viewsController/currentController")
 router.get("/current", passport.authenticate( "current" , { session : false } ) , current )
 
 router.get("/realtimeproducts", validarAdminJWT, realtimeproductsView )
+
+router.post("/realtimeproducts", productImage )
 
 router.get("/api/sessions/login" , loginView )
 

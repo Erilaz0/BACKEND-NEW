@@ -13,8 +13,11 @@ password : { type : String},
 rol: { type : String , default:"user" },
 cart: { type: Schema.Types.ObjectId, default: () => new mongoose.Types.ObjectId()  },
 github:{},
-oldpasswords:[ { password : { type : String ,} } ],
-premium:{ type : Boolean , default : false}
+oldpasswords:[ { password : { type : String } } ],
+premium:{ type : Boolean , default : false},
+profilephoto : { type : String , default:"none"},
+documents : [ { C_I : { type : String } , C_D : { type : String } } ],
+last_connection : { type : String}
 
 
 })

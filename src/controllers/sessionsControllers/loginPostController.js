@@ -55,10 +55,12 @@ async function login( req , res ){
                     ese token, es decir, la info decodificada*/
                     const premium = await usersService.ispremium(email)
                     if(premium){
-
+                      let date = new Date()
+                      const lastConnection = await usersService.lastConnection( user._id , date )
                       const token = generaJWT(user)
                       
                       if(token){ 
+                        console.log(token)
             
                         //send(email)
                           //.then(d => console.log(d))
@@ -70,8 +72,7 @@ async function login( req , res ){
            //agregamos a la session en caso de que no haya un registro con github
                         let datos = { nombre : user.nombre , email : email , id : user._id}
                         res.cookie("datos", datos , { httpOnly : false })
-                        res.set("Succefully Login")
-                        res.redirect( 200 , "/api/products" )
+                        res.status(200).redirect("/api/products" )
 
                       } else{
 
@@ -81,10 +82,12 @@ async function login( req , res ){
                       
                       }
                     }else{
+                      let date = new Date()
+                      const lastConnection = await usersService.lastConnection( user._id , date )
 
                       const token = generaJWT(user)
                       if(token){ 
-              
+                        console.log(token)
                            //send(email)
                              //.then(d => console.log(d))
                              //.catch(error => console.log(error))
@@ -96,8 +99,8 @@ async function login( req , res ){
                            let datos = { nombre : user.nombre , email : email , id : user._id}
                            res.cookie("datos", datos , { httpOnly : false })
                            
-                           res.set({ nombre : user.nombre , email : email })
-                           res.redirect( 200 , "/api/products" )
+                           
+                           res.redirect("/api/products" )
 
                               } else{
 

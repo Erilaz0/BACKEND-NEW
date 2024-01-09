@@ -1,5 +1,5 @@
 const socket = io();
-
+const formdata = new FormData()
 
 
 
@@ -20,6 +20,14 @@ const stock = document.querySelector("#stock").value
 const category = document.querySelector("#category").value
 const code = document.querySelector("#code").value
 const email = document.querySelector(".email")
+const image = document.querySelector("#image")
+const file = image.files[0]
+formdata.append(`image` , file)
+
+fetch("http://localhost:8080/realtimeproducts", {method : `POST` , body: formdata})
+ 
+
+
 
 if(email.id === `type="submit"`){
     const newProduct = {
@@ -29,6 +37,7 @@ if(email.id === `type="submit"`){
         stock:stock,
         category:category,
         code:code,
+        thumbnail:file.name
         
     
     }
@@ -44,7 +53,8 @@ if(email.id === `type="submit"`){
         stock:stock,
         category:category,
         code:code,
-        owner:email.id
+        owner:email.id,
+        thumbnail:file.name
     
     }
   

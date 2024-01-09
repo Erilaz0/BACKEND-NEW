@@ -16,7 +16,7 @@ const validarJWT = ( req , res , next ) =>{
         let getToken = req.cookies.token
         if( !getToken ){
           
-            res.redirect("/api/sessions/login")
+            res.status(400).redirect("/api/sessions/login")
             return
           
           }
