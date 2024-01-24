@@ -80,7 +80,7 @@ const specs = swagger_jsdoc(options);
 test()
 
 
-PORT= process.env.PORT || parseInt(config.PORT)
+PORT= process.env.PORT || 3000
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
