@@ -9,6 +9,7 @@ async function current( req , res ){
 
     if(data && thumbnail !== "none"){ 
       
+      res.setHeader("Content-Type","text/html")
       res.status(200).render("current",{
   
       nombre : data.nombre,
@@ -21,7 +22,7 @@ async function current( req , res ){
   
     })}
     else{
-
+      res.setHeader("Content-Type","text/html")
       res.status(200).render("current",{
   
         nombre : data.nombre,

@@ -24,7 +24,7 @@ async function documents(req , res){
         destination : `./uploads/documents` ,
         filename : function( req , file , cb ){
          cb(null , file.originalname)
-         console.log("ci")
+         
         }
         
         
@@ -45,9 +45,9 @@ async function documents(req , res){
         } else {
           console.log("ci")
            name = req.file.filename
-           console.log(`document - ${name}`)
            add_CI(name)
-           res.status(200).send("hola")
+           return res.status(200).redirect("/api/users/premium")
+           
           
 
             
@@ -90,11 +90,11 @@ async function documents(req , res){
         } else {
           
            name = req.file.originalname
-           console.log(`document - ${name}`)
            add_CD(name)
+           return res.status(200).redirect("/api/users/premium")
           
 
-            res.send('Documento subido correctamente');
+            
 
            
            
@@ -133,10 +133,10 @@ async function documents(req , res){
           if (err) {
             res.send(err);
           } else {
-            res.send('Imagen subida correctamente');
+             
              name = req.file.filename
-             console.log(`profile - ${name}`)
              changeProfilePhoto(name)
+             res.status(200).redirect("/current")
              
          
           }

@@ -8,7 +8,7 @@ async function passwdResetController( req , res ){
 
   const user = await usersService.verifyEmailUser(email)
   if(!user){
-   let a = 0
+    req.logger.warn(`Comportamiento Anormal - Usuario no encontrado en passwdResetController`)
 
   }else{
     let id = user._id
@@ -25,7 +25,9 @@ async function passwdResetController( req , res ){
         for( let i = 0 ; i < userPasswords.length ; i++ ){
 
           let passwd = await bcrypt.compare( password , userPasswords[i].password)
+          
           if(passwd){ arrayOldPasswords.push(passwd)}
+          else{req.logger.info(`Mensaje postPasswdController.js :  Al usuario Email ${email} no se le ah añadido su contraseña a oldpasswords`)}
 
         }
         if(arrayOldPasswords.length === 0){
@@ -43,8 +45,10 @@ async function passwdResetController( req , res ){
 
         }else{
 
-
-            res.status(200).send("tu contraseña no puede ser igual a tus contraseña anteriores")
+            let mensaje = "Tu Nueva Contraseña no puede ser igual a las anteriores"
+            res.status(200).render("resPass",{
+              mensaje : mensaje
+            })
 
 
 
@@ -53,7 +57,10 @@ async function passwdResetController( req , res ){
        
           }else{
     
-        res.status(200).send("tu contraseña no puede ser igual a la de antes - tu contraseña ultima era la misma q esta")
+            let mensaje = "Tu Nueva Contraseña no puede ser igual a las anteriores"
+            res.status(200).render("resPass",{
+              mensaje : mensaje
+            })
 
 
 

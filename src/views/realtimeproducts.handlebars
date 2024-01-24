@@ -8,7 +8,12 @@
 </head>
 <body>
     {{{body}}}
- 
+ <script>
+
+
+    
+    
+ </script>
                                  
        <form id="form" method="post" action="/realtimeproducts" enctype="multipart/form-data">
         <h1>Agregar Producto</h1>
@@ -38,7 +43,6 @@
         <button class="email" id={{email}} type="submit">Crear</button>
     </form>
 
-
     <form id="del">
         <h1>Eliminar Producto</h1>
         <label for="idp">Introduce el Id del producto que deseas eliminar</label>
@@ -48,6 +52,56 @@
        
         <button type="submit">Eliminar</button>
     </form>
+
+
+  {{#if admin}}
+   {{#if rol}}
+   <h1>Rol Actualizado correctamente - user : {{email}} - {{message}}</h1>
+    {{/if}}
+    <form id="change_rol" method="post" action="/api/users/premium/admin/change">
+
+        <h1>Cambiar rol del usuario</h1>
+        <label for="idp">Email del usuario</label>
+        <input type="text" id="idp" name="email" required>
+
+        <label for="idp">Nuevo Rol del Usuario</label>
+        <input type="text" id="idp" name="rol" required>
+
+
+       
+        <button type="submit">Cambiar</button>
+    </form>
+    
+
+
+
+
+
+    <form id="get_user">
+
+        <h1>Ver credenciales de usuario</h1>
+        <label for="id">Introduce el Id del usuario al que quieras acceder</label>
+        
+        <input type="text" id="id" name="id" required>
+
+       
+        <button type="submit">Visualizar</button>
+    </form>
+
+    <div id="user_credentials"></div>
+   <div>
+    {{#if expired}}
+       <p>{{totalExpiredUsers}} usuarios han sido removidos de la base de datos por inactividad</p>
+    {{/if}}
+    <button id="cleanusers" type="button">LIMPIAR USUARIOS EXPIRADOS</button>
+    <div id="expiredusers"></div>
+    
+   </div>
+
+  
+ 
+  {{/if}}
+    
   <script src="/socket.io/socket.io.js"></script> 
  <script  src="home.js"></script>
 

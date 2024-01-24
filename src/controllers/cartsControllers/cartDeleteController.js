@@ -11,9 +11,10 @@ async function cartDelete( req , res ){
       res.status(200).send("cart deleted")
 }
    else{
+    
+    req.logger.debug("fallo al eliminar el carrito, trate de insertar un id valido")
    
-     throw CustomError.CustomError("cart failed","fallo al eliminar el carrito",typeError.ERROR_DATOS,"fallo al eliminar el carrito, trate de insertar un id valido")
-
+     
 
    }
 

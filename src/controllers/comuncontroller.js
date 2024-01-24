@@ -19,8 +19,9 @@ async function comunController( req , res ){
         email: email,
         password: password
     };
-    console.log(` se genero el usuario ${ usuario } ` )
-    res.json({ usuario });
+    req.logger.info(`se genero el usuario ${ usuario }`)
+    res.setHeader("Content-Type","application/json")
+    res.status(200).json({ usuario });
 
 
 } 

@@ -1,17 +1,29 @@
 const CustomError = require("../../Error/customError")
 const typeError = require("../../Error/typeError")
 const usersService = require("../../services/users.service")
+const moment = require("moment")
 
 
 
 CustomError.CustomError()
 async function deleteCookiesSession( req , res ){
 
-    const datos = req.cookies.datos
-    let email = datos.email
-    const user = await usersService.verifyEmailUser(email)
-    let date = new Date()
-    const lastUserConnection = await usersService.lastConnection( user._id  , date )
+    try{
+
+      const datos = req.cookies.datos
+      let email = datos.email
+      const user = await usersService.verifyEmailUser(email)
+      let date = moment()
+      let specifiedDate = date.format("dddd Do MMMM YYYY")
+      date.locale("es")
+      
+      const lastUserConnection = await usersService.lastConnection( user._id  , specifiedDate )
+
+
+    }catch{
+
+      let email = null
+    }
     req.user = null
 
     res.clearCookie("premium")
@@ -35,8 +47,8 @@ async function deleteCookiesSession( req , res ){
         
       } else {
         req.logger.debug("sesion destruida con exito")
-        
-        res.redirect("/api/sessions/login");
+        res.setHeader("location","http://localhost:8080/api/sessions/login")
+        res.status(200).redirect("/api/sessions/login");
       }
     });
 

@@ -22,21 +22,21 @@ const current = require("../controllers/viewsController/currentController")
 
 
 
-router.get("/current", passport.authenticate( "current" , { session : false } ) , current )
+router.get("/current", passport.authenticate( "current" , { session : false } ) ,  loggerMid , current )
 
-router.get("/realtimeproducts", validarAdminJWT, realtimeproductsView )
+router.get("/realtimeproducts", validarAdminJWT , loggerMid , realtimeproductsView )
 
-router.post("/realtimeproducts", productImage )
+router.post("/realtimeproducts", loggerMid , productImage )
 
-router.get("/api/sessions/login" , loginView )
+router.get("/api/sessions/login" , loggerMid , loginView )
 
-router.get("/register", registerView )
+router.get("/register", loggerMid , registerView )
  
-router.get("/profile", profile )
+router.get("/profile", loggerMid , profile )
 
-router.get("/logout", loggerMid, deleteCookiesSession );
+router.get("/logout", loggerMid , deleteCookiesSession );
   
-router.get("/", loginRedirection )
+router.get("/", loggerMid , loginRedirection )
 
 
 

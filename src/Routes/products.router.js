@@ -2,7 +2,7 @@ const Router = require("express").Router
 const router = Router()
 
 
-const { validarJWT } = require("../utils.js")
+const { validarJWT , validarAdminJWT } = require("../utils.js")
 
 const loggerMid = require("../functions/winstone.js")
 const productsController = require("../controllers/productsControllers/productsController.js")
@@ -49,15 +49,15 @@ function getProducts(path){
 
 */
 
-router.get("/", validarJWT , loggerMid, productsController )
+router.get("/" , validarJWT , loggerMid , productsController )
 
-router.get("/:pid", validarJWT ,productByIdController )
+router.get("/:pid" , validarAdminJWT , loggerMid , productByIdController )
 
-router.post("/", validarJWT, postProducts )
+router.post("/" , validarJWT, loggerMid , postProducts )
 
-router.put("/:pid", validarJWT , putProducts )
+router.put("/:pid" , validarJWT , loggerMid , putProducts )
 
-router.delete("/:pid", validarJWT , deleteProduct )
+router.delete("/:pid" , validarJWT , loggerMid , deleteProduct )
 
 
 

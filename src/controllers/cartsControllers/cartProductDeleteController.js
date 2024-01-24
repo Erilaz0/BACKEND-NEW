@@ -12,11 +12,13 @@ async function cartProductDelete( req , res ){
  
       const carrito = await cartsService.deleteCartProduct( carritoId , productId )
       if(carrito){
+        
+        res.setHeader( "Content-Type" , "text/plain")
         res.status(200).send("producto eliminado")
 
       }else{
-
-       res.status(400).send("producto no ah sido eliminado")
+       
+       req.logger.warn("Producto no ah sido Eliminado")
 
       }
         

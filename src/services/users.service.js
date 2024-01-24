@@ -9,6 +9,12 @@ class usersService{
 
     }
 
+    async getAccounts(){
+
+      return await this.dao.getAccounts()
+
+    }
+
     async verifyEmailUser( email ){
 
       return await this.dao.verifyEmailUser( email )
@@ -93,7 +99,13 @@ class usersService{
       return await this.dao.lastConnection( id , date )
   
      }
+ 
+     
+    async deleteUser( id ){
+
+      return await this.dao.deleteUser( id )
   
+     }
 }
 
 module.exports = new usersService(usersMongoDao)

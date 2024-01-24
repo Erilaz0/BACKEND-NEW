@@ -7,17 +7,17 @@
     <title> carrito </title>
 
 </head>
-<body>
+<body style="display: flex; justify-content:center ; background-image:url(/assets/supermercado.png) ; background-repeat:no-repeat ; background-size:cover">
     {{{body}}}
- <h1> Tu Carrito</h1>
+ 
 
 
-<div style="border-radius : 20px ; background-color: antiquewhite ; margin-left: 20% ; padding : 1% ; width : 50%">
-
+<div style="border-radius : 20px ; background-color: #FF9A8A ; padding : 2% ; width :50%; margin-top:50px">
+<h1 style="border-bottom: 2px solid #000000;">TUS PRODUCTOS</h1>
 {{#each cartInfo}}
  
 
-<h1 >{{product}} - cantidad : {{quantity}} - precio : ${{price}}</h1>
+<h1 style="background-color: #FF8A77;">{{product}} - cantidad : {{quantity}} - precio : ${{price}}</h1>
 
 
 {{/each}}
@@ -26,6 +26,7 @@
 
 <button id={{id}} class="sendTicket" style="width : 60% ; font-size : 18px">Finalizar compra</button>
 
+<a style="display: block; margin-top:10px" href="http://localhost:8080/api/products">Ver Productos</a>
 </div>
 
 <script src="/socket.io/socket.io.js"></script> 

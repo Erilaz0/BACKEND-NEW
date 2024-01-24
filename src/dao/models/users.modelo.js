@@ -17,7 +17,7 @@ oldpasswords:[ { password : { type : String } } ],
 premium:{ type : Boolean , default : false},
 profilephoto : { type : String , default:"none"},
 documents : [ { C_I : { type : String } , C_D : { type : String } } ],
-last_connection : { type : String}
+last_connection : { type : String }
 
 
 })

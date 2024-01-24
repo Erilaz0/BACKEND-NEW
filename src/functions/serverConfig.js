@@ -42,7 +42,7 @@ if(daoObject){
     fs.writeFileSync(pathDAO , JSON.stringify(daoObject))
 }else{
 
-    let i = 0
+   return
 }
 
 }

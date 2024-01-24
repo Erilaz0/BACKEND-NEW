@@ -6,6 +6,12 @@ class usersMongoDao{
 
    constructor(){}
 
+   async getAccounts(){
+
+    return await dao.find().lean()
+
+  }
+
 
    async verifyEmailUser(email){
 
@@ -52,7 +58,7 @@ class usersMongoDao{
    }
         
    async premiumUser( email , premium ){
-
+    
     return await dao.updateOne( { email } , { $set :{ premium : premium }})
 
 
@@ -86,6 +92,13 @@ class usersMongoDao{
    async lastConnection( id , date ){
 
     return await dao.updateOne( { _id : id } , { last_connection : date } )
+
+   }
+
+
+   async deleteUser( id ){
+
+    return await dao.deleteOne({ _id : id })
 
    }
   

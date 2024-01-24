@@ -7,13 +7,13 @@ async function githubLogin( req , res){
     
     
     res.cookie( "token", token , { httpOnly : false } )
+    res.status(200).redirect("/api/products")
     
     
-    //agregamos a la session en caso de que no haya un registro con github
+    
     }
 
-    res.status(200).redirect("/api/products")
-    console.log("holaa")
+    
 
 
 

@@ -11,7 +11,7 @@ async function cartById( req , res ){
     
     const user = await usersService.userById(id)
     if(user){
-
+        
         const idUser = user._id
         const cart = await cartsService.cartsByUserId(idUser)
         
@@ -31,7 +31,7 @@ async function cartById( req , res ){
      
 
 
-
+        res.setHeader( "Content-Type" , "text/html")
         res.status(200).render("carts",{
 
         cartInfo: cartArray,
@@ -43,7 +43,10 @@ async function cartById( req , res ){
         })
         
     }
+     else{
 
+        req.logger.debug(`no se ah Encontrado un usuario con ID : ${id}`)
+     }
 
 }
 

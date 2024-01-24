@@ -7,7 +7,14 @@ async function getCarts( req , res){
    
     
     const carts = await cartsService.getCarts()
-    res.status(200).json({carts})
+    if(carts){
+        res.status(200).json({carts})
+
+    }else{
+
+        req.logger.info("No se han Encontrado Carritos en la DB ")
+    }
+    
     
   
 

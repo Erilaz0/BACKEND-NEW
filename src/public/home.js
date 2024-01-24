@@ -1,3 +1,5 @@
+
+
 const socket = io();
 const formdata = new FormData()
 
@@ -6,7 +8,55 @@ const formdata = new FormData()
 const form = document.querySelector("#form")
 const deleteForm = document.querySelector("#del")
 const chatSendButton = document.querySelector("#messageButton")
+const getUser = document.querySelector("#get_user")
+const cleanusers = document.querySelector(`#cleanusers`)
 
+
+async function clean(e){
+   
+    e.preventDefault()
+    
+    const expiredusers = document.querySelector("#expiredusers")
+    fetch(`http://localhost:8080/api/users/expiredusers`, { method: `DELETE` })
+     .then(response => response.json())
+     .then(number => expiredusers.innerHTML = `Usuarios eliminados de la base de datos por expiracion ${number}`)
+     .catch(error => console.log(error))
+
+}
+
+
+
+
+function userById(e){
+    
+    e.preventDefault()
+    const id = document.querySelector("#id").value
+    
+    fetch(`http://localhost:8080/api/users/${id}/user`,{method:`GET`})
+    .then(response => response.json())
+    .then(async (user)=>{
+       let userData = user
+       
+       const user_credentials = document.querySelector("#user_credentials")
+       user_credentials.innerHTML = `
+       
+       <p>ID:${userData._id}</p>
+       <p>Nombre:${userData.nombre}</p>
+       <p>Apellido:${userData.apellido}</p>
+       <p>Edad:${userData.edad}</p>
+       <p>Email:${userData.email}</p>
+       <p>Ultima Conexion:${userData.last_connection}</p>
+       <p>Rol:${userData.rol}</p>
+       <p>Premium:${userData.premium}</p>
+       <p>ID del carrito asociado:${userData.cart}</p>
+       
+       `
+
+    })
+    .catch( error => {console.log(error)})
+
+
+}
 
 
 function enviar(e){
@@ -119,6 +169,8 @@ if(!user && !message){
 if(deleteForm){deleteForm.addEventListener("submit",enviarEliminado)}
 if(form){form.addEventListener("submit",enviar)}
 if(chatSendButton){chatSendButton.addEventListener("click",enviarMensaje)}
+if(getUser){getUser.addEventListener("submit", userById )}
+if(cleanusers){cleanusers.addEventListener("click" , clean )}
 
 
 socket.on("new", mensaje => {

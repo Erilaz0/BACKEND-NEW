@@ -9,7 +9,7 @@ const inicializePassportJWT = require("./config/jwt.config")
 
 
 
-const comun = require("./Routes/comun.router")
+
 const products = require("./Routes/products.router")
 const cart = require("./Routes/cart.router")
 const handler = require("./Routes/views.router")
@@ -34,24 +34,23 @@ const chatService = require("./services/chat.service")
 const config = require("../src/config/config")
 const cartsService = require("./services/carts.service")
 const usersService = require("./services/users.service")
-const ticketsModelo = require("./dao/models/tickets.modelo")
 const ticketsService = require("./services/tickets.service")
 const { serverConfig } = require("./functions/serverConfig.js")
 const test = require("./functions/testingMongo")
-const errorHandler = require("./Error/errorHandler")
 const CustomError  = require("./Error/customError.js")
 const typeError = require("./Error/typeError.js")
 const cors = require('cors');
 
 const { generaJWT } = require("./utils.js")
-const { sendReset } = require("./mailing/send.js")
+const { sendReset, sendDeletedProductAdvice, sendTicket } = require("./mailing/send.js")
 //seleccionamos la persistencia a traves del arranque del servidor
 serverConfig()
 const swagger_jsdoc = require("swagger-jsdoc")
 const swaggerUi = require("swagger-ui-express")
 
+
 const options = {
-  //definition es una propiedad de swagger q tiene varias parametros
+ 
   definition :{
     
     openapi : "3.0.0",
@@ -76,10 +75,12 @@ const specs = swagger_jsdoc(options);
 
 
 
-//test()
 
 
-PORT= parseInt(config.PORT)
+test()
+
+
+PORT= process.env.PORT || parseInt(config.PORT)
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -100,7 +101,7 @@ app.use(session({// revisar esto y el uso de req.sessions
       saveUninitialized:true,
       store:connectMongo.create({
         mongoUrl:config.MONGO_URL,
-        ttl:30
+        ttl:10
       })
       
 }))
@@ -120,11 +121,13 @@ app.use("/chat",chat)
 app.use("/api/sessions/", sessions_ )
 app.use("/mockingproducts",mocking )
 app.use("/loggerTest", logger )
-app.use("/",comun)
 app.use( "/restablecer" , passwdReset )
 app.use("/api/users" , premium )
 app.use("/api-docs" , swaggerUi.serve , swaggerUi.setup(specs))
 app.use("/image",image)
+
+
+
 
 
 const serverExpress = app.listen(PORT,()=>{
@@ -159,27 +162,49 @@ serverSocket.on("connection", sock => {
 
 
     //eliminamos un producto por su id
-    sock.on("deleted", async (idProduct) => {
+    sock.on( "deleted" , async ( idProduct ) => {
 
      const id = idProduct.id
     
      if( !idProduct.email ){
-       
-      return await productsService.deleteProduct( id )
+      const product = await productsService.productById( id )
+      
+      if( product.owner === "admin"){
+
+        return await productsService.deleteProduct( id )
+
+      }else{
+        let ownerEmail = product.owner
+        
+        sendDeletedProductAdvice( ownerEmail , product.title  )
+        .then( async(data) => { return await productsService.deleteProduct( id ) })
+        .catch(console.log("no se ah enviado el avsio de eliminacion del producto"))
+
+
+      
+
+      }
+      
+      
       
      }else{ 
+      
       const email = idProduct.email
-       
       const product = await productsService.productById( id )
 
       if( email === product.owner){
+       
+        let ownerEmail = product.owner
+        sendDeletedProductAdvice( ownerEmail , product.title  )
+        .then( async(data) => { return await productsService.deleteProduct( id ) })
+        .catch(console.log("oh no"))
  
-       const deletProduct = await productsService.deleteProduct( id )
+      
  
  
       }else{
  
-       return
+       let i = 0
       }
    
 
@@ -243,7 +268,7 @@ serverSocket.on("connection", sock => {
      
       if(f){
         
-            return
+            let i = 0
         
       }else{
 
@@ -344,6 +369,9 @@ serverSocket.on("connection", sock => {
 
    
    const createTicket = await ticketsService.createTicket( products , amount , userId , email , purchase_datetime )
+   sendTicket( email , createTicket._id )
+    .then( (data) => {console.log(data) })
+    .catch(console.log("no se ah avisado al usuario de la creacion d su"))
   
    })
    
@@ -362,7 +390,7 @@ serverSocket.on("connection", sock => {
 
 
 sock.on("rest",async (email)=>{
-  const token = "http:localhost:8080/restablecer/" + generaJWT(email) 
+  const token = "http://localhost:8080/restablecer/" + generaJWT(email) 
   sendReset(email,token)
   .then(e =>{ console.log(e)})
   .catch((error)=>{console.log(error)})

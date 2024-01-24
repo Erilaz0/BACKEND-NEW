@@ -11,12 +11,16 @@ async function deleteProduct( req , res ){
 
            
       res.status(200).send("product deleted")
+      req.logger.info("product deleted")
  
 
     }
     else{
 
       res.status(400).send("Producto id: " + id + "no existe")
+      req.logger.info("Producto id: " + id + "no existe")
+      
+
      
 
 

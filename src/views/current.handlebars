@@ -6,13 +6,12 @@
     <title></title>
 
 </head>
-<body>
+<body style="display: flex; justify-content:center ; background-image:url(/assets/supermercado.png) ; background-repeat:no-repeat ; background-size:cover">
     
-
-
-   <p>Bienvenido¡¡ {{nombre}}</p>
+<div style="background-color: #B6311B; width: fit-content ; margin-top:30px ; padding:20px ; border-radius:20px ">
+   <p style="font-size: 50px; background-color:#951A06">Bienvenido {{nombre}}</p>
    {{#if thumbnail }}
-      <img style="margin-left: 15px , width: 200px; height:200px ; border-radius:50%;" src="/uploads/profile/{{thumbnail}}">
+      <img style="margin-left: 15px , width: 200px; height:200px ; border-radius:50%; margin-left:20% ; margin-right:20%" src="/uploads/profile/{{thumbnail}}">
      
 
         
@@ -26,31 +25,24 @@
     <button type="submit">change</button>
    </form>
      
-    
-   <h1>Profile Details: </h1>
-   <p>Id de usuario: {{id}}</p>
-   <p>Email: {{email}}</p>
-   <p>Rol: {{rol}}</p>
-   <p>Token: {{token}}</p>
-   <a href="http://localhost:8080/api/products">Home</a>
+   <div style="background-color:#951A06 ; border-radius:20px ; padding:10px ; margin-top:20px">
+     <h1>Profile Details: </h1>
+     <p>Id de usuario: {{id}}</p>
+     <p>Email: {{email}}</p>
+     <p>Rol: {{rol}}</p>
+     <div style="display: flex; flex-direction:column">
+       <a href="http://localhost:8080/api/products">Ver Productos</a>
+       <a href="/logout"> Cerrar Sesion</a>
+     </div>
+   </div> 
    
    
-   
+</div>
+
   
-   <h1>Upload file:</h1>
 
-   <form action="/api/users/{{id}}/documents?document=pdf" method="post" enctype="multipart/form-data">
 
-    <input type="file" name="pdf" required>
-    
-    <button type="submit"> Upload File</button>
-
-   </form>
-   <br>
-   <br>
-   <br>
-
-   <a href="/logout"> Cerrar Sesion</a>
+   
 
 </body>
 </html>

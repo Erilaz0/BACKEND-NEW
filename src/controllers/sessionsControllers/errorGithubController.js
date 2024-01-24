@@ -1,6 +1,7 @@
 async function errGithub( req , res ){
-
-    res.status(200).send({"error":"fallo al autenticar"})
+    
+    res.setHeader("Content-Type","application/json")
+    res.status(200).json({"error":"fallo al autenticar"})
 
 }
 

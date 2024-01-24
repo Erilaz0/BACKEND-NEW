@@ -8,51 +8,24 @@ const cartCreate = require("../controllers/cartsControllers/cartsPostController.
 const cartById = require("../controllers/cartsControllers/cartsByIdController.js")
 const getCarts = require("../controllers/cartsControllers/cartsController.js")
 
+const loggerMid = require("../functions/winstone.js")
+
 const { validarJWT } = require("../utils.js")
 
 
 
 
-//const products = path.join(__dirname,"..","archivosJson","products.json")
-//const carrito = path.join(__dirname,"..","archivosJson","carts.json")
+router.get("/", validarJWT , loggerMid , getCarts )
 
-/* function getProducts(pr){
+router.get("/:pid", validarJWT , loggerMid , cartById )
 
+router.post("/" , validarJWT , loggerMid , cartCreate )
 
-     return JSON.parse(fs.readFileSync(pr,"utf-8"))
+router.put("/:cid/products/:pid", validarJWT , loggerMid , cartUpdate )
 
+router.delete("/:cid/products/:pid", validarJWT , loggerMid , cartProductDelete )
 
-}
-
-
-
-
-function getCarro(path){
-
-   return JSON.parse(fs.readFileSync(path,"utf-8"))
-
-}
-
-function saveCart(cart){
-
-    fs.writeFileSync(carrito,JSON.stringify(cart))
-
-
-}
-
-*/
-
-router.get("/", validarJWT , getCarts )
-
-router.get("/:pid", validarJWT , cartById )
-
-router.post("/" , validarJWT , cartCreate )
-
-router.put("/:cid/products/:pid", validarJWT , cartUpdate )
-
-router.delete("/:cid/products/:pid", validarJWT , cartProductDelete )
-
-router.delete("/:cid", validarJWT , cartDelete )
+router.delete("/:cid", validarJWT , loggerMid , cartDelete )
 
 
 

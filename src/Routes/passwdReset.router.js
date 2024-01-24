@@ -9,13 +9,16 @@ const loggerMid = require("../functions/winstone")
 
 
 
-router.get( "/" , reset )
+router.get( "/" , loggerMid , reset )
 
 
 router.get( "/:pid" , loggerMid , newPassword )
 
 
-router.post( "/" , validarJWT , postPasswdCotroller )
+router.post( "/" , validarJWT , loggerMid , postPasswdCotroller )
+
+
+
 
 
 module.exports = router

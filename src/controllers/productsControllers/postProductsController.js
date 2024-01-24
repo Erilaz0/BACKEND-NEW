@@ -26,12 +26,15 @@ async function postProducts( req , res ){
 
     const productCreate = await productsServices.createProduct(newProduct)
     if(productCreate){
-
+        
+        res.setHeader("Content-Type" , "application/json")
         res.status(201).json({ newProduct });
 
     }else{
-
+        res.setHeader("Content-Type" , "text")
         res.status(400).send("producto no creado")
+        req.logger.info("producto no creado")
+        
     }
    
 
