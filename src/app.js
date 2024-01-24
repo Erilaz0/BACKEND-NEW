@@ -92,7 +92,7 @@ app.use('/uploads', express.static('uploads'));
 
 
 app.engine("handlebars", handleBars.engine())
-app.set("views", __dirname + "\\views");
+app.set("views", __dirname + "/views");
 app.set("view engine","handlebars")
 
 app.use(session({// revisar esto y el uso de req.sessions
