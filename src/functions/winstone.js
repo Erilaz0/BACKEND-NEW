@@ -2,12 +2,13 @@ const winston = require("winston")
 const config = require("../config/config")
 
 let level;
-console.log("corriendo servidor en modo entorno de: " + config.ENVIROMENT)
-if(config.ENVIROMENT === "production"){
+let i = process.env.ENVIROMENT || config.ENVIROMENT
+console.log("corriendo servidor en modo entorno de: " + i)
+if(i === "production"){
 
     level = "info"
 
-}else if(config.ENVIROMENT === "development"){
+}else if(i === "development"){
 
     level = "debug"
 }else{level = "info"}

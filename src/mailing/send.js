@@ -3,12 +3,12 @@ const  config  = require("../config/config")
 
 const transporter = nodemailer.createTransport({
 
-   service : config.SERVICE, 
-   port : config.MAILINGPASSWORD , 
+   service : process.env.SERVICE || config.SERVICE, 
+   port : process.env.MAILINGPASSWORD || config.MAILINGPASSWORD , 
    auth : {
 
-     user: config.MAILINGUSER,
-     pass : config.MAILINGPASSWORD
+     user: process.env.MAILINGUSER || config.MAILINGUSER,
+     pass : process.env.MAILINGPASSWORD ||config.MAILINGPASSWORD
 
    },
    tls: {

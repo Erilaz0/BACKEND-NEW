@@ -96,11 +96,11 @@ app.set("views", __dirname + "\\views");
 app.set("view engine","handlebars")
 
 app.use(session({// revisar esto y el uso de req.sessions
-      secret:config.SECRET,
+      secret: process.env.SECRET || config.SECRET,
       resave:true,
       saveUninitialized:true,
       store:connectMongo.create({
-        mongoUrl:config.MONGO_URL,
+        mongoUrl: process.env.MONGO_URL || config.MONGO_URL,
         ttl:10
       })
       
@@ -405,8 +405,8 @@ sock.on("rest",async (email)=>{
 
 
 
-
-mongoose.connect(config.MONGO_URL)
+let m = process.env.MONGO_URL || config.MONGO_URL
+mongoose.connect(m)
   .then(console.log("db conectada"))
   .catch(error => console.log(error))
 

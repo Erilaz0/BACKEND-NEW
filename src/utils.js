@@ -5,9 +5,14 @@ const passport = require("passport")
 const config = require("./config/config")
 
 //funcion para codificara los datos y firmarlos
-const generaJWT = ( usuario ) => jwt.sign ( { usuario } , config.PRIVATE_KEY00 , { expiresIn : "1h" } )
+let a = process.env.PRIVATE_KEY00 || config.PRIVATE_KEY00
+let b = process.env.PRIVATE_KEY00 || config.PRIVATE_KEY01
 
-const generaAdminJWT = ( admin ) => jwt.sign ( { admin } , config.PRIVATE_KEY01 , { expiresIn : "1h"} )
+
+
+const generaJWT = ( usuario ) => jwt.sign ( { usuario } , a , { expiresIn : "1h" } )
+
+const generaAdminJWT = ( admin ) => jwt.sign ( { admin } , b , { expiresIn : "1h"} )
 
 const validarJWT = ( req , res , next ) =>{
         

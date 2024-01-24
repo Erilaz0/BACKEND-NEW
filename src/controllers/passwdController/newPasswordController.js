@@ -6,8 +6,9 @@ const { generaJWT } = require("../../utils")
 
 async function newPassword( req , res ){
     const token = req.params.pid
+    let i = process.env.PRIVATE_KEY00 || config.PRIVATE_KEY00
     
-    jwt.verify( token , config.PRIVATE_KEY00 ,async ( error , credenciales )=>{
+    jwt.verify( token , i ,async ( error , credenciales )=>{
     
      if(error){
     

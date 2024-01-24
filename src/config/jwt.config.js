@@ -17,13 +17,15 @@ const searchToken = (req) => {
      
 }
 
+let i = process.env.PRIVATE_KEY00 || config.PRIVATE_KEY00
+
 const inicializePassportJWT = () =>{
 
     passport.use( "current" , new passportJWT.Strategy(
 
          { jwtFromRequest : passportJWT.ExtractJwt.fromExtractors([searchToken]),
         
-           secretOrKey : config.PRIVATE_KEY00
+           secretOrKey : i
         
         }, ( jwtcontent , done ) => {
             
