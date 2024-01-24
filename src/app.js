@@ -130,7 +130,7 @@ app.use("/image",image)
 
 
 
-const serverExpress = app.listen(PORT,()=>{
+const serverExpress = app.listen( PORT , "0.0.0.0" ,()=>{
 
 
 
