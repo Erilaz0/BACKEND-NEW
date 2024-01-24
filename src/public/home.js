@@ -17,7 +17,7 @@ async function clean(e){
     e.preventDefault()
     
     const expiredusers = document.querySelector("#expiredusers")
-    fetch(`http://localhost:8080/api/users/expiredusers`, { method: `DELETE` })
+    fetch(`https://backend-new-production.up.railway.app/api/users/expiredusers`, { method: `DELETE` })
      .then(response => response.json())
      .then(number => expiredusers.innerHTML = `Usuarios eliminados de la base de datos por expiracion ${number}`)
      .catch(error => console.log(error))
@@ -32,7 +32,7 @@ function userById(e){
     e.preventDefault()
     const id = document.querySelector("#id").value
     
-    fetch(`http://localhost:8080/api/users/${id}/user`,{method:`GET`})
+    fetch(`https://backend-new-production.up.railway.app/api/users/${id}/user`,{method:`GET`})
     .then(response => response.json())
     .then(async (user)=>{
        let userData = user
@@ -74,7 +74,7 @@ const image = document.querySelector("#image")
 const file = image.files[0]
 formdata.append(`image` , file)
 
-fetch("http://localhost:8080/realtimeproducts", {method : `POST` , body: formdata})
+fetch("https://backend-new-production.up.railway.app/realtimeproducts", {method : `POST` , body: formdata})
  
 
 

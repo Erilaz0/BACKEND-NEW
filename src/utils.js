@@ -20,7 +20,7 @@ const validarJWT = ( req , res , next ) =>{
          
         let getToken = req.cookies.token
         if( !getToken ){
-            res.setHeader("location","http://localhost:8080/logout")
+            res.setHeader("location","https://backend-new-production.up.railway.app/logout")
             res.status(400).redirect("/api/sessions/login")
             return
           
@@ -34,7 +34,7 @@ const validarJWT = ( req , res , next ) =>{
         //verifica el token junto con la private_key , es decir, la firma
         jwt.verify( getToken , config.PRIVATE_KEY00 , ( error , credenciales ) => {
           if( error ){
-              res.setHeader("location","http://localhost:8080/logout")
+              res.setHeader("location","https://backend-new-production.up.railway.app/logout")
               res.status(400).redirect("/logout")
             }else{
                
@@ -64,7 +64,7 @@ const validarAdminJWT = ( req , res , next )=>{
 
         jwt.verify( token , config.PRIVATE_KEY00 , (error , credenciales)=>{
           if(error){
-            res.setHeader("location","http://localhost:8080/logout")
+            res.setHeader("location","https://backend-new-production.up.railway.app/logout")
             res.status(400).redirect("/logout")
    
           }else{
@@ -88,14 +88,14 @@ const validarAdminJWT = ( req , res , next )=>{
     }else{
 
 
-         res.setHeader("location","http://localhost:8080/logout")
+         res.setHeader("location","https://backend-new-production.up.railway.app/logout")
          res.status(400).redirect("/logout")    }
 
    }else{
    
      jwt.verify( admin , config.PRIVATE_KEY01 , (error , credenciales)=>{
        if(error){
-         res.setHeader("location","http://localhost:8080/logout")
+         res.setHeader("location","https://backend-new-production.up.railway.app/logout")
          res.status(400).redirect("/logout")
 
        }else{

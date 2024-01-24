@@ -390,7 +390,7 @@ serverSocket.on("connection", sock => {
 
 
 sock.on("rest",async (email)=>{
-  const token = "http://localhost:8080/restablecer/" + generaJWT(email) 
+  const token = "https://backend-new-production.up.railway.app/restablecer/" + generaJWT(email) 
   sendReset(email,token)
   .then(e =>{ console.log(e)})
   .catch((error)=>{console.log(error)})

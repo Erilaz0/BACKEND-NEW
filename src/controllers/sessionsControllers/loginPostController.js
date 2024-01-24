@@ -18,7 +18,7 @@ async function login( req , res ){
 
     if(!email || !password){
  
-      res.setHeader("location","http://localhost:8080/api/sessions/register")
+      res.setHeader("location","https://backend-new-production.up.railway.app/api/sessions/register")
       res.status(400).redirect("/api/sessions/register")
  
  
@@ -76,7 +76,7 @@ async function login( req , res ){
           
                         let datos = { nombre : user.nombre , email : email , id : user._id}
                         res.cookie("datos", datos , { httpOnly : false })
-                        res.setHeader("location","http://localhost:8080/api/products")
+                        res.setHeader("location","https://backend-new-production.up.railway.app/api/products")
                         res.status(200).redirect("/api/products")
 
                       } else{

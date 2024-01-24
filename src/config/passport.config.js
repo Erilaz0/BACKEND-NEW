@@ -8,7 +8,7 @@ const inicializaPassport = ()=>{
 
      clientID:"Iv1.294f6c3e7a76e8da",
      clientSecret:"d014edb9be3f7f8f9a25cccb3b7262455c6dcae1",
-     callbackURL:"http://localhost:8080/api/sessions/callbackGithub"
+     callbackURL:"https://backend-new-production.up.railway.app/api/sessions/callbackGithub"
     
 
    },

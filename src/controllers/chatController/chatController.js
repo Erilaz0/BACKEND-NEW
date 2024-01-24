@@ -10,7 +10,7 @@ async function chat( req , res ){
     
 
     }else{
-        res.setHeader( "Content-Type" , 'Location', 'http://localhost:8080/logout' )
+        res.setHeader( "Content-Type" , 'Location', 'https://backend-new-production.up.railway.app/logout' )
         res.status(400).redirect("/api/sessions/logout")
     }
     
