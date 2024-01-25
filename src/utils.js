@@ -6,7 +6,7 @@ const config = require("./config/config")
 
 //funcion para codificara los datos y firmarlos
 let a = process.env.PRIVATE_KEY00 || config.PRIVATE_KEY00
-let b = process.env.PRIVATE_KEY00 || config.PRIVATE_KEY01
+let b = process.env.PRIVATE_KEY01 || config.PRIVATE_KEY01
 
 
 
@@ -32,7 +32,7 @@ const validarJWT = ( req , res , next ) =>{
        
         
         //verifica el token junto con la private_key , es decir, la firma
-        jwt.verify( getToken , config.PRIVATE_KEY00 , ( error , credenciales ) => {
+        jwt.verify( getToken , a , ( error , credenciales ) => {
           if( error ){
               
               res.status(400).redirect("/logout")
@@ -62,7 +62,7 @@ const validarAdminJWT = ( req , res , next )=>{
       if(token){
 
 
-        jwt.verify( token , config.PRIVATE_KEY00 , (error , credenciales)=>{
+        jwt.verify( token , a , (error , credenciales)=>{
           if(error){
             
             res.status(400).redirect("/logout")
@@ -93,7 +93,7 @@ const validarAdminJWT = ( req , res , next )=>{
 
    }else{
    
-     jwt.verify( admin , config.PRIVATE_KEY01 , (error , credenciales)=>{
+     jwt.verify( admin , b , (error , credenciales)=>{
        if(error){
        
          res.status(400).redirect("/logout")
