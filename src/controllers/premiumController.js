@@ -36,7 +36,7 @@ if( !premium && email){
  
     }else{
     req.logger.error("no existen documentos suficientes para cambiar el rol del usuario")
-    res.setHeader("location","https://backend-new-production.up.railway.app/api/products")
+   
     return res.status(200).redirect("/api/products")
  
 
@@ -47,7 +47,7 @@ if( !premium && email){
    
 }else{
   req.logger.error("no existen email para cambiar el ro del usuario - premiumController.js")
-  res.setHeader("location","https://backend-new-production.up.railway.app/api/products")
+ 
   return res.status(200).redirect("/api/products")
 }
 

@@ -48,7 +48,7 @@ async function register( req , res ){
 
 
             }
-            res.setHeader("location","https://backend-new-production.up.railway.app/api/sessions/login")
+            
             res.status(302).redirect("/api/sessions/login")
 
          }

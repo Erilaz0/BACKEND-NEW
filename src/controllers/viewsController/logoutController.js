@@ -47,7 +47,7 @@ async function deleteCookiesSession( req , res ){
         
       } else {
         req.logger.debug("sesion destruida con exito")
-        res.setHeader("location","https://backend-new-production.up.railway.app/api/sessions/login")
+        
         res.status(200).redirect("/api/sessions/login");
       }
     });
