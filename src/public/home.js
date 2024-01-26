@@ -1,5 +1,3 @@
-const { sendError } = require("../mailing/send")
-
 const socket = io();
 const formdata = new FormData()
 
@@ -20,9 +18,7 @@ async function clean(e){
     fetch(`https://backend-new-production.up.railway.app/api/users/expiredusers`, { method: `DELETE` })
      .then(response => response.json())
      .then(number => expiredusers.innerHTML = `Usuarios eliminados de la base de datos por expiracion ${number}`)
-     .catch(error => sendError(error)
-                       .then((sended) =>{ let i = sended })
-                       .catch((error) =>{ let i = error }))
+     .catch(error => {let i = error})
 
 }
 
@@ -55,9 +51,7 @@ function userById(e){
        `
 
     })
-    .catch( error => sendError(error)
-                     .then((sended) =>{ let i = sended })
-                     .catch((error) =>{ let i = error }))
+    .catch(error => {let i = error})
 
 
 }
@@ -156,9 +150,7 @@ const user = document.querySelector(".messageId").id
 const message = document.querySelector(".messageId").value
 
 if(!user && !message){
-    sendError(error)
-        .then((sended) =>{ let i = sended })
-        .catch((error) =>{ let i = error })
+let i = 0
     
 }else{
   
