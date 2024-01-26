@@ -19,7 +19,7 @@ const productsEsquema = new mongoose.Schema({
     type : Number , require : true
 
    },status:{
-    type : Boolean , require : true
+    type : Boolean , require : true , default : true 
 
    },stock:{
     type : Number , require : true
