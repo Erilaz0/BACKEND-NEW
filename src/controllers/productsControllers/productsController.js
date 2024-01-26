@@ -42,7 +42,7 @@ async function getProducts( req , res ){
      
      
      
-     // esta funcion se encarga de comprobar si el usuario que ah ingresado tiene un carrito, si no , se le crea uno 
+  
      try{   cartCreateAndComprobe(email)}
      catch(error){req.logger.debug("No se ah poidio crear el carrito - productsController.js")}
   
@@ -60,9 +60,9 @@ async function getProducts( req , res ){
   
       if(sort || limit || pagina || category || status){
         
-  /*sort*/ if(sort && sort === 1 || sort === -1){
+         if(sort && sort === 1 || sort === -1){
       
-            const products = await productsService.sortPrice(sort) // tambien tiene $match y $group
+            const products = await productsService.sortPrice(sort) 
             const productsCategory = await productsService.getProducts()
             const categoriasRepetidas = []
             if( products && productsCategory && categoriasRepetidas ){
@@ -171,7 +171,7 @@ async function getProducts( req , res ){
           }
     
          
-          if(status){    //FILTRAR POR QUERY
+          if(status){  
        
            
             const productsCategory = await productsService.getProducts()
@@ -214,7 +214,7 @@ async function getProducts( req , res ){
              
           
           
-          if(category){    //FILTRAR POR QUERY
+          if(category){    
        
               
              if(category){ 
@@ -295,7 +295,7 @@ async function getProducts( req , res ){
      
 
       
-     }//DEVOLVER PAGINA INDICADA EN LA QUERY
+     }
   
   
   

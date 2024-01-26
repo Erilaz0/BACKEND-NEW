@@ -6,6 +6,7 @@ const { send } = require("../../mailing/send.js")
 const  CustomError  = require("../../Error/customError.js")
 const typeError = require("../../Error/typeError.js")
 const moment = require("moment")
+const { sendError } = require("../../mailing/send.js")
 
 async function login( req , res ){
     
@@ -67,8 +68,10 @@ async function login( req , res ){
                         
             
                         send(email)
-                          .then(d => console.log(d))
-                          .catch(error => console.log(error))
+                          .then(d => {let i = d})
+                          .catch(error => sendError(error)
+                             .then((sended) =>{ let i = sended })
+                             .catch((error) =>{ let i = error }))
                         
                         res.cookie( "token", token , { httpOnly : false } )
                         res.cookie("premium", true , { httpOnly : false })
@@ -97,9 +100,11 @@ async function login( req , res ){
                       const token = generaJWT(user)
                       if( token && lastConnection ){ 
                         
-                         // send(email)
-                           //  .then(d => console.log(d))
-                            // .catch(error => console.log(error))
+                          send(email)
+                             .then(d => { let i = d })
+                             .catch(error => sendError(error)
+                                .then((sended) =>{ let i = sended })
+                                .catch((error) =>{ let i = error }))
                            
                           res.cookie( "token", token , { httpOnly : false } )
                           

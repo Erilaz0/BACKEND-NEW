@@ -11,3 +11,5 @@
 {"level":"error","message":"no existen email para cambiar el ro del usuario - premiumController.js"}
 {"level":"error","message":"no se ah podido cambiar el rol del usuario"}
 {"level":"error","message":"no se ah podido cambiar el rol del usuario"}
+{"level":"error","message":"no se han encontrado usuarios"}
+{"level":"error","message":"no se han encontrado usuarios"}

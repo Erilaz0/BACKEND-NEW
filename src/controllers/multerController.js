@@ -1,6 +1,6 @@
 const multer = require("multer")
 const usersService = require("../services/users.service")
-let name 
+const { sendError } = require("../mailing/send")
 
 async function documents(req , res){
     let id = req.params.uid
@@ -16,7 +16,7 @@ async function documents(req , res){
     
     
     if(document === "C_I"){
-      console.log("ci")
+      
 
       const add_CI = async ( name )=>{ await usersService.cedulaDeIdentidad( id , name ) }
       const productsStorage = multer.diskStorage({
@@ -41,9 +41,11 @@ async function documents(req , res){
     
     uploadImage(req, res, err => {
         if (err) {
-          res.send(err);
+           sendError(err)
+              .then((sended) =>{ let i = sended })
+              .catch((error) =>{ let i = error })
         } else {
-          console.log("ci")
+          
            name = req.file.filename
            add_CI(name)
            return res.status(200).redirect("/api/users/premium")
@@ -62,7 +64,7 @@ async function documents(req , res){
 
     }
     else if(document === "C_D"){
-      console.log("cd")
+      
       const add_CD = async ( name )=>{ await usersService.comporbanteDomicilio( id , name ) }
       const productsStorage = multer.diskStorage({
     
@@ -86,7 +88,9 @@ async function documents(req , res){
     
     uploadImage(req, res, err => {
         if (err) {
-          res.send(err);
+           sendError(error)
+                .then((sended) =>{ let i = sended })
+                .catch((error) =>{ let i = error })
         } else {
           
            name = req.file.originalname
@@ -131,7 +135,9 @@ async function documents(req , res){
       
       uploadImage(req, res, err => {
           if (err) {
-            res.send(err);
+            sendError(err)
+              .then((sended) =>{ let i = sended })
+              .catch((error) =>{ let i = error })
           } else {
              
              name = req.file.filename

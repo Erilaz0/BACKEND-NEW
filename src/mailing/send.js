@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
    },
    tls: {
-    rejectUnauthorized: false, // Configuración para aceptar certificados autofirmados
+    rejectUnauthorized: false, 
   },
 
 })
@@ -83,4 +83,18 @@ const sendTicket = async( email , id )=>{
   })
 
 }
-module.exports =  { send , sendReset , sendDeletedProductAdvice , sendDeletedUserAdvice , sendTicket }
+
+
+const sendError = async( error )=>{
+
+  return transporter.sendMail({
+
+    from : "Erilaz <alonsoalonsl431432@gmail.com>",
+    to : "alonsoalonsl431432@gmail.com" ,
+    subject : "ERROR EN ERILAZ ICOMMERCE",
+    html: `<p>ERROR:${error}</p>`
+
+  })
+
+}
+module.exports =  { send , sendReset , sendDeletedProductAdvice , sendDeletedUserAdvice , sendTicket , sendError }

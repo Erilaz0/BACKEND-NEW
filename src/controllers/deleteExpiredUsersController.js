@@ -6,7 +6,7 @@ const { sendDeletedUserAdvice } = require("../mailing/send")
 
 const clear = async ( req , res )=>{
     
-   console.log("siiiii")
+   
         
         let hoy = moment()
         let totalExpiredUsers = 0;
@@ -58,16 +58,9 @@ const clear = async ( req , res )=>{
 
    
     
-//1200000 30 min
-//let hoyDate = hoy.format("dddd Do MMMM YYYY")
-////let ayer = hoy.clone().subtract( 40 , "days")
-//hoy.locale("es")
-//if(hoy.diff(ayer , "days") === 40 ){
-    //console.log(hoy.format("dddd Do MMMM YYYY"))
-  //  console.log("ya es un dia despues")
-   // console.log(hoy)
-  //  console.log(ayer)
-//}
+
+
+
 
 
 

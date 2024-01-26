@@ -5,8 +5,7 @@ async function changeRolUserController( req , res ){
 try{
     let email = req.body.email
     let premium = req.body.rol
-    console.log(email)
-    console.log(premium)
+    
 
     
     

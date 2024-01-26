@@ -1,4 +1,5 @@
 const multer = require("multer")
+const { sendError } = require("../mailing/send")
 
 
 
@@ -25,11 +26,13 @@ const productImage = (req , res , err)=>{
 
   uploadProductImage(req, res, err => {
     if (err) {
-      res.send(err);
+      sendError(err)
+              .then((sended) =>{ let i = sended })
+              .catch((error) =>{ let i = error })
     } else {
       res.send('Imagen subida correctamente');
       const name = req.file.filename
-      console.log(name) 
+      
     }
   });
 

@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken")
-const passport = require("passport")
+
 
 
 const config = require("./config/config")
 
-//funcion para codificara los datos y firmarlos
+
 let a = process.env.PRIVATE_KEY00 || config.PRIVATE_KEY00
 let b = process.env.PRIVATE_KEY01 || config.PRIVATE_KEY01
 
@@ -31,13 +31,13 @@ const validarJWT = ( req , res , next ) =>{
         
        
         
-        //verifica el token junto con la private_key , es decir, la firma
+     
         jwt.verify( getToken , a , ( error , credenciales ) => {
           if( error ){
               
               res.status(400).redirect("/logout")
             }else{
-               
+             
               let i = 0
              
             }

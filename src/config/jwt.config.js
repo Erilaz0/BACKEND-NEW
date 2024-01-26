@@ -1,6 +1,7 @@
 const passportJWT= require("passport-jwt")
 const passport = require("passport")
 const config = require("../config/config")
+const { sendError } = require("../mailing/send")
 
 
 
@@ -10,7 +11,7 @@ const searchToken = (req) => {
      if(req.cookies.token){
 
         token = req.cookies.token
-        console.log("token obtenido jwt.config.js:10")
+       
      }
      
      return token
@@ -34,7 +35,9 @@ const inicializePassportJWT = () =>{
                 
                  done( null , jwtcontent)
                 
-              }catch(error){console.log(error)}
+              }catch(error){error => sendError(error)
+                 .then((sended) =>{ let i = sended })
+                 .catch((error) =>{ let i = error })}
 
 
 

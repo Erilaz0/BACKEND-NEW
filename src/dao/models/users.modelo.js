@@ -22,10 +22,7 @@ last_connection : { type : String }
 
 })
 
-//usersEsquema.set('toObject', { getters: true }); // To ensure the default value is always returned
 
-// Set default value for oldpasswords
-//usersEsquema.path('oldpasswords').default([]);
 
 
 const usersModelo = mongoose.model(usersCollection,usersEsquema)

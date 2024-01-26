@@ -16,8 +16,7 @@ const inicializaPassport = ()=>{
 
     try{
       if(profile){
-        console.log(profile)
-        console.log(profile._json.email)
+      let i = 0
       }
          let findUser = await usersService.verifyEmailUser(profile._json.email)
          if(!findUser){

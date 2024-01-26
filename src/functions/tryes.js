@@ -15,7 +15,7 @@ const date2 = moment(date2String, "YYYY-MM-DD");
 
 
 const differenceInDays = date2.diff(date1, "days");
-console.log(differenceInDays)
+
 
 }
 

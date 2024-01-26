@@ -6,7 +6,7 @@ const multer = require("multer")
 async function documentsStorage(req , res){
 
     const dest = req.params.uid
-    console.log(dest)
+  
     
     const productsStorage = multer.diskStorage({
     

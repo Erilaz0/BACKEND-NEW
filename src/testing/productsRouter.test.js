@@ -4,6 +4,7 @@ const { describe , it } = require("mocha")
 const { generaJWT } = require("../utils")
 const mongoose = require("mongoose")
 const productsService = require("../services/products.service")
+const { sendError } = require("../mailing/send")
 
 
 mongoose.connect('mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority')
@@ -68,7 +69,9 @@ describe( "PRODUCTS ROUTER TEST" ,async function (){
       
     }catch(error){
 
-      console.log(error)
+     sendError(error)
+        .then((sended) =>{ let i = sended })
+        .catch((error) =>{ let i = error })
     }
     
    

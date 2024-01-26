@@ -8,7 +8,7 @@ class usersMongoDao{
 
    async getAccounts(){
 
-    return await dao.find().lean()
+    return await dao.find().select("nombre , email , rol ").exec()
 
   }
 

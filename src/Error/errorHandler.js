@@ -1,6 +1,6 @@
 const errorHandler = ( error , req , res , next)=>{
   if(error.codigo){
-       console.log(`caaaaaa${error.name} : ${error.descripcion} `)
+     
        return res.status(error.codigo).json({error:error.message})
        
 }else{

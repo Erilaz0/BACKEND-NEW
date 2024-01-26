@@ -5,9 +5,7 @@ async function postProducts( req , res ){
    
     const {title, description, code, price, status, stock, category} = req.body
     
-  //  if (!title || !description || !code || !price || !status || !stock || !category) {//si falla el test de post quita esto 
-    //   return res.status(400).json({ error: 'Complete all required fields in the body' });
-    //}
+   
    
     
 
@@ -25,15 +23,20 @@ async function postProducts( req , res ){
           }
 
     const productCreate = await productsServices.createProduct(newProduct)
+
     if(productCreate){
-        
-        res.setHeader("Content-Type" , "application/json")
-        res.status(201).json({ newProduct });
+    try{
+        req.logger.info("producto creado")
+        return res.status(201).json({ newProduct });
+
+    }catch{req.logger.info("producto no creado")}
+       
 
     }else{
-        res.setHeader("Content-Type" , "text")
-        res.status(400).send("producto no creado")
         req.logger.info("producto no creado")
+       
+        return res.status(400).send("producto no creado")
+       
         
     }
    

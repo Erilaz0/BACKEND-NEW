@@ -3,7 +3,7 @@ const config = require("../config/config")
 
 let level;
 let i = process.env.ENVIROMENT || config.ENVIROMENT
-console.log("corriendo servidor en modo entorno de: " + i)
+
 if(i === "production"){
 
     level = "info"
