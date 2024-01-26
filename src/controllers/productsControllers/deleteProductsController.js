@@ -8,9 +8,16 @@ async function deleteProduct( req , res ){
     
     const productDeleted = await productsService.deleteProduct(id)
     if(productDeleted){
-
+     try{
       req.logger.info("product deleted")
       return res.status(200).send("product deleted")
+
+     }catch{
+        req.logger.info("no eliminado")
+      
+     }
+      
+     
      
  
 

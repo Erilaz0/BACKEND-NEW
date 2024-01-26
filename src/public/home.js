@@ -174,7 +174,7 @@ if(!user && !message){
 
 if(deleteForm){deleteForm.addEventListener("submit",enviarEliminado)}
 if(form){form.addEventListener("submit",enviar)}
-if(chatSendButton){chatSendButton.addEventListener("click",enviarMensaje)}
+if(chatSendButton){chatSendButton.addEventListener("submit",enviarMensaje)}
 if(getUser){getUser.addEventListener("submit", userById )}
 if(cleanusers){cleanusers.addEventListener("click" , clean )}
 
