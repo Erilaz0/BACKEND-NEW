@@ -21,7 +21,7 @@ async function cartById( req , res ){
         for( let i = 0 ; i < cartInfo.length ; i++){
 
             const product = await productsService.productById(cartInfo[i].product)
-            cartArray.push({product : product.title , quantity : cartInfo[i].quantity , price : parseFloat(cartInfo[i].quantity) * parseFloat(product.price)})  
+            cartArray.push({product : product.title , quantity : cartInfo[i].quantity , price : parseFloat(cartInfo[i].quantity) * parseFloat(product.price) , productId : cartInfo[i].product , id: id})  
             precioTotal.push(parseFloat(cartInfo[i].quantity) * parseFloat(product.price))
 
         }

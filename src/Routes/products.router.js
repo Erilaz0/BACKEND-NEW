@@ -11,43 +11,7 @@ const postProducts = require("../controllers/productsControllers/postProductsCon
 const putProducts = require("../controllers/productsControllers/putProductsController.js")
 const deleteProduct = require("../controllers/productsControllers/deleteProductsController.js")
 
-/*
- 
 
-const products = path.join(__dirname,"..","archivosJson","products.json")
-
-function saveProducts(pr){
-
-     fs.writeFileSync(products,JSON.stringify(pr))
-
-}
-
-
-function getProducts(path){
-
-    return JSON.parse(fs.readFileSync(path))
-
-
-
-
-}
-*/
-
-/*it("testing PUT endpoint" , async function(){
-     
-    const bodyRequest = { "title" : "test" }
-
-    const products = await productsService.createProduct(product)
-    const body = requester.put(`/api/products/${products._id}`)
-                          .set("cookie", `token=${token}`)
-                          .send(bodyRequest)
-
-    
-
-
-   })
-
-*/
 
 router.get("/" , validarJWT , loggerMid , productsController )
 

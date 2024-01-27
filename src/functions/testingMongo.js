@@ -10,6 +10,9 @@ async function test(){
       
        let trueEmail = "alonsoalonsl431432@gmail.com"     
        let emailVerify = await usersService.verifyEmailUser(trueEmail)
+       if(emailVerify){
+        let i = "prueba pasada"
+       }
       
 
 }

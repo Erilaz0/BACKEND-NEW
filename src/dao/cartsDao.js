@@ -45,7 +45,7 @@ class cartsMongoDao{
 
      async deleteCartProduct( carritoId , productId ){
 
-      return await cartsModelo.updateOne( { _id : carritoId } , {$pull : {products : {product : productId} } } )
+      return await cartsModelo.updateOne( { _id : carritoId } , {$pull : {products : { product : productId } } } )
 
      }
 

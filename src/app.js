@@ -406,6 +406,20 @@ sock.on("rest",async (email)=>{
 
 
 
+sock.on("deleteProductCart",async (productInCart) =>{
+
+let id = productInCart.id
+let idProduct = productInCart.idProduct
+
+let cart = await cartsService.cartsByUserId(id)
+await cartsService.deleteCartProduct( cart._id , idProduct )
+ let reloadPage = "ok"
+ sock.emit("reload" , reloadPage)
+
+
+})
+
+
 
 })
 

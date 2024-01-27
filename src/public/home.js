@@ -10,6 +10,10 @@ const getUser = document.querySelector("#get_user")
 const cleanusers = document.querySelector(`#cleanusers`)
 
 
+
+
+
+
 async function clean(e){
    
     e.preventDefault()
@@ -169,6 +173,8 @@ if(form){form.addEventListener("submit",enviar)}
 if(chatSendButton){chatSendButton.addEventListener("click",enviarMensaje)}
 if(getUser){getUser.addEventListener("submit", userById )}
 if(cleanusers){cleanusers.addEventListener("click" , clean )}
+
+        
 
 
 socket.on("new", mensaje => {

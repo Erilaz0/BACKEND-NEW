@@ -16,8 +16,11 @@
 <h1 style="border-bottom: 2px solid #000000;">TUS PRODUCTOS</h1>
 {{#each cartInfo}}
  
+<div style="display: flex;">
+    <h1 class="product" style="background-color: #FF8A77;">{{product}} - cantidad : {{quantity}} - precio : ${{price}}</h1>
+    <button id={{productId}} class="delete_product" style="height: 20px; margin-left:5px ; margin-top:30px" >Delete</button>
+</div>
 
-<h1 style="background-color: #FF8A77;">{{product}} - cantidad : {{quantity}} - precio : ${{price}}</h1>
 
 
 {{/each}}

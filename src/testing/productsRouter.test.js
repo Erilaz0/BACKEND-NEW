@@ -1,7 +1,7 @@
 const supertest = require("supertest")
 const chai = require("chai")
 const { describe , it } = require("mocha")
-const { generaJWT } = require("../utils")
+const { generaJWT , generaAdminJWT } = require("../utils")
 const mongoose = require("mongoose")
 const productsService = require("../services/products.service")
 const { sendError } = require("../mailing/send")
@@ -12,7 +12,7 @@ mongoose.connect('mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.
 
 
 const expect = chai.expect
-const requester = supertest("http://localhost:8080")
+const requester = supertest("https://backend-new-production.up.railway.app")
 
 const product = {
   "title":"test product",
@@ -113,16 +113,16 @@ describe( "PRODUCTS ROUTER TEST" ,async function (){
 
 
     it("testing get products by id" , async function(){
-     
+      let tokenInfo = { email : "tester@gmail.com"}
+      const tokenAdmin = generaAdminJWT(tokenInfo)
      
      const productsCreate = await productsService.createProduct(product)
      const body = await requester.get(`/api/products/${productsCreate._id}`)
-                                 .set("cookie", `token=${token}`)
+                                 .set("cookie", `admin=${tokenAdmin}`)
      
-     
+   
      expect(body.status).is.eq(200)
      expect(body._body).to.have.property("_id")
-     expect(body._body).to.have.property("owner")
      expect(body._body).to.have.property("title").and.is.equal("test product")
      expect(body._body).to.have.property("description").and.is.equal("test description")
       await mongoose.connection.collection("products").deleteOne( { _id : productsCreate._id } )

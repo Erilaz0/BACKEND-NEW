@@ -61,26 +61,6 @@ router.get("/", loggerMid , loginRedirection )
 
 
 
-/*
-
-const products = path.join(__dirname,"..","archivosJson","products.json")
-
-function getProducts(products){
-
-    return  JSON.parse(fs.readFileSync(products))
-
-}
-
-
-function saveProducts(prod){
-
-      fs.writeFileSync(products,JSON.stringify(prod))
-
-
-}
-
-*/
-
 
 
 

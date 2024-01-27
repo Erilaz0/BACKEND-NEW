@@ -8,7 +8,7 @@ const cartsService = require("../services/carts.service")
 const cartsModel = require("../dao/models/carts.modelo")
 
 mongoose.connect('mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority')
-const requester = supertest("http://localhost:8080")
+const requester = supertest("https://backend-new-production.up.railway.app")
 const expect = chai.expect
 
 const testingUser = {
@@ -17,7 +17,7 @@ nombre : "test",
 apellido : "tester",
 edad : 0 , 
 email : "tester@gmail.com" ,
-password : 0 , 
+password : "testingpassword" , 
 
 }
 
@@ -50,6 +50,7 @@ describe("inicialazing carts router" , async function(){
     
     
     const bodyJson = JSON.parse(body.text)
+    
     expect(bodyJson).to.have.property("idUser").that.exist
     
     await mongoose.connection.collection("users").deleteMany({ nombre : "test"})

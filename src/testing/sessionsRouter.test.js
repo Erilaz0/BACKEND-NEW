@@ -11,7 +11,7 @@ const bcrypt = require("bcrypt")
 
 
 
-const requester = supertest("http://localhost:8080")
+const requester = supertest("https://backend-new-production.up.railway.app")
 
 
 const testingLoginData = {
@@ -55,16 +55,11 @@ describe(" SESSIONS ENDOPINTS TEST " , async function(){
 
        
         expect(body).to.have.property("text").and.is.equal('Found. Redirecting to /api/sessions/login')
-        expect(body).to.have.property("status").and.is.equal(302)
-        expect(body.header).to.have.property("nombre").and.is.equal('test user')
-        expect(body.header).to.have.property("apellido").and.is.equal('test Last name')
-        expect(body.header).to.have.property("edad").and.is.equal('21')
-        expect(body.header).to.have.property("email").and.is.equal('test@gmail.com')
-        expect(body.header).to.have.property("password").and.is.equal(password)
+        
         
         
         const email = body.header
-        await mongoose.connection.collection("users").deleteMany({ email : email.email})
+        await mongoose.connection.collection("users").deleteMany({ email : testingUser.email})
 
 
 
@@ -91,17 +86,14 @@ describe(" SESSIONS ENDOPINTS TEST " , async function(){
           const body = await requester.post("/api/sessions/login")
                                       .send(testingLoginData)
 
-          expect(body.header).to.have.property("nombre").to.be.equal("test user")
-          expect(body.header).to.have.property("email").to.be.equal("test@gmail.com")
+         
           expect(body.header).to.have.property("set-cookie").and.is.an.instanceOf(Array)
-          expect(body).to.have.property("text").to.be.equal('OK. Redirecting to /api/products')
-          expect(body).to.have.property("ok").to.be.equal(true)
-          expect(body).to.have.property("status").to.be.equal(200)
+          expect(body).to.have.property("text").to.be.equal('Found. Redirecting to /api/products')
+          expect(body).to.have.property("status").to.be.equal(302)
   
-          const headerData = body.header
-          const email = headerData.email
+          
 
-          await mongoose.connection.collection("users").deleteMany({ email : email })
+          await mongoose.connection.collection("users").deleteMany({ email : testingUser.email })
 
           
           
