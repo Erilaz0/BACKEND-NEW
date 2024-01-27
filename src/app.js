@@ -178,7 +178,7 @@ serverSocket.on("connection", sock => {
         
         sendDeletedProductAdvice( ownerEmail , product.title  )
         .then( async(data) => { return await productsService.deleteProduct( id ) })
-        .catch(sendError(error)
+        .catch(error => sendError(error)
                .then((sended) =>{ let i = sended })
                .catch((error) =>{ let i = error }))
 
@@ -199,7 +199,7 @@ serverSocket.on("connection", sock => {
         let ownerEmail = product.owner
         sendDeletedProductAdvice( ownerEmail , product.title  )
         .then( async(data) => { return await productsService.deleteProduct( id ) })
-        .catch(sendError(error)
+        .catch(error => sendError(error)
                .then((sended) =>{ let i = sended })
                .catch((error) =>{ let i = error }))
  
@@ -373,7 +373,7 @@ serverSocket.on("connection", sock => {
    const createTicket = await ticketsService.createTicket( products , amount , userId , email , purchase_datetime )
    sendTicket( email , createTicket._id )
     .then( (data) => { let i = data })
-    .catch(sendError(error)
+    .catch(error => sendError(error)
              .then((sended) =>{ let i = sended })
              .catch((error) =>{ let i = error }))
   
