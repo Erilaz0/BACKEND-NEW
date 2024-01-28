@@ -6,8 +6,10 @@ const { generaJWT } = require("../utils")
 const usersService = require("../services/users.service")
 const cartsService = require("../services/carts.service")
 const cartsModel = require("../dao/models/carts.modelo")
+const config = require("../config/config")
 
-mongoose.connect('mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority')
+let DB = process.env.MONGO_URL || config.MONGO_URL
+mongoose.connect(DB)
 const requester = supertest("https://backend-new-production.up.railway.app")
 const expect = chai.expect
 

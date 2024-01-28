@@ -5,9 +5,11 @@ const { generaJWT , generaAdminJWT } = require("../utils")
 const mongoose = require("mongoose")
 const productsService = require("../services/products.service")
 const { sendError } = require("../mailing/send")
+const config = require("../config/config")
 
+let DB = process.env.MONGO_URL || config.MONGO_URL
 
-mongoose.connect('mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect(DB)
 
 
 

@@ -5,7 +5,9 @@ const supertest = require("supertest")
 const mongoose = require("mongoose")
 const usersService = require("../services/users.service")
 const bcrypt = require("bcrypt")
+const config = require("../config/config")
 
+let DB = process.env.MONGO_URL || config.MONGO_URL
 
 
 
@@ -23,7 +25,7 @@ const testingLoginData = {
 
 
 
-mongoose.connect('mongodb+srv://alonsoalonsl431432:4810FWBGvJc1ajOm@eri.tytp383.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect(DB)
 
 
 describe(" SESSIONS ENDOPINTS TEST " , async function(){
