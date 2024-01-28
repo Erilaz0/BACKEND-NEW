@@ -1,9 +1,10 @@
 components:
   securitySchemes:
     BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT  
+      type: apiKey
+      scheme: cookie
+      name: token
+      bearerFormat: token 
   schemas:
     Product:
       type: object
@@ -103,13 +104,7 @@ paths:
         required: true
         description: product id from parameters
         schema:
-          type: string
-      # - name: Authorization
-      #   in: header
-      #   required: true
-      #   description: Token de autenticación
-      #   schema:
-      #     type: string            
+          type: string          
       responses:
         "200":
           description: get one product by its id
@@ -212,13 +207,7 @@ paths:
         required: true
         description: cart id from parameters
         schema:
-          type: string
-      # - name: Authorization
-      #   in: header
-      #   required: true
-      #   description: Token de autenticación
-      #   schema:
-      #     type: string            
+          type: string         
       responses:
         "200":
           description: obtained cart by its id
@@ -247,13 +236,7 @@ paths:
         required: true
         description: product id from parameters
         schema:
-          type: string
-      # - name: Authorization
-      #   in: header
-      #   required: true
-      #   description: Token de autenticación
-      #   schema:
-      #     type: string            
+          type: string          
       responses:
         "200":
           description: updated one cart product from the DB
@@ -284,13 +267,7 @@ paths:
         required: true
         description: cart product ID from parameters
         schema:
-          type: string
-      # - name: Authorization
-      #   in: header
-      #   required: true
-      #   description: Token de autenticación
-      #   schema:
-      #     type: string            
+          type: string          
       responses:
         "200":
           description: deleted one cart product from the DB         
@@ -309,13 +286,7 @@ paths:
         required: true
         description: cart id from parameters
         schema:
-          type: string
-      # - name: Authorization
-      #   in: header
-      #   required: true
-      #   description: Token de autenticación
-      #   schema:
-      #     type: string            
+          type: string         
       responses:
         "200":
           description: deleted one cart from the DB

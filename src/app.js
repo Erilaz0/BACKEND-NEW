@@ -134,7 +134,7 @@ const serverExpress = app.listen( PORT , "0.0.0.0" ,()=>{
 
 
 
-    let puerto = PORT
+    console.log(`Servidor corriendo en el puerto ${PORT}`)
 })
 
 
@@ -427,7 +427,10 @@ await cartsService.deleteCartProduct( cart._id , idProduct )
 
 let m = process.env.MONGO_URL || config.MONGO_URL
 mongoose.connect(m)
-  .then(conn => {let db_connection = conn })
+  .then(conn => {
+    console.log("conexion a mongodb exitosa")
+    
+    let db_connection = conn })
   .catch(error => sendError(error)
   .then((sended) =>{ let i = sended })
   .catch((error) =>{ let i = error }))
