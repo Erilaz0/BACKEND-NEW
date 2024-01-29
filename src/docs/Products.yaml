@@ -2,9 +2,9 @@ components:
   securitySchemes:
     BearerAuth:
       type: apiKey
-      scheme: cookie
+      in: cookie
       name: token
-      bearerFormat: token 
+      description: JWT token obtained after authentication 
   schemas:
     Product:
       type: object
