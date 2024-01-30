@@ -33,6 +33,11 @@ describe(" SESSIONS ENDOPINTS TEST " , async function(){
 
     this.timeout(10000)
 
+    before(async function(){
+
+        await mongoose.connection.collection("users").deleteMany({ email : testingLoginData.email})
+    
+      })
 
     describe( "Starting test..." , async function(){
 
